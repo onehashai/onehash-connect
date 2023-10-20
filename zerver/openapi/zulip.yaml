@@ -15334,9 +15334,9 @@ paths:
                         "email_auth_enabled": true,
                         "require_email_format_usernames": true,
                         "realm_uri": "http://localhost:9991",
-                        "realm_name": "Zulip Dev",
-                        "realm_icon": "https://secure.gravatar.com/avatar/62429d594b6ffc712f54aee976a18b44?d=identicon",
-                        "realm_description": "<p>The Zulip development environment default organization.  It's great for testing!</p>",
+                        "realm_name": "OneHash Connect Dev",
+                        "realm_icon": "../../static/images/logo/org_avatar.png",
+                        "realm_description": "<p>The OneHash Connect development environment default organization.  It's great for testing!</p>",
                         "realm_web_public_access_enabled": false,
                         "result": "success",
                         "external_authentication_methods":
