@@ -297,26 +297,26 @@ def add_integrations_context(context: Dict[str, Any]) -> None:
 def add_integrations_open_graph_context(context: Dict[str, Any], request: HttpRequest) -> None:
     path_name = request.path.rstrip("/").split("/")[-1]
     description = (
-        "Zulip comes with over a hundred native integrations out of the box, "
+        "OneHash Connect comes with over a hundred native integrations out of the box, "
         "and integrates with Zapier and IFTTT to provide hundreds more. "
-        "Connect the apps you use every day to Zulip."
+        "Connect the apps you use every day to OneHash Connect."
     )
 
     if path_name in INTEGRATIONS:
         integration = INTEGRATIONS[path_name]
-        context["PAGE_TITLE"] = f"{integration.display_name} | Zulip integrations"
+        context["PAGE_TITLE"] = f"{integration.display_name} | OneHash Connect integrations"
         context["PAGE_DESCRIPTION"] = description
 
     elif path_name in CATEGORIES:
         category = CATEGORIES[path_name]
         if path_name in META_CATEGORY:
-            context["PAGE_TITLE"] = f"{category} | Zulip integrations"
+            context["PAGE_TITLE"] = f"{category} | OneHash Connect integrations"
         else:
-            context["PAGE_TITLE"] = f"{category} tools | Zulip integrations"
+            context["PAGE_TITLE"] = f"{category} tools | OneHash Connect integrations"
         context["PAGE_DESCRIPTION"] = description
 
     elif path_name == "integrations":
-        context["PAGE_TITLE"] = "Zulip integrations"
+        context["PAGE_TITLE"] = "OneHash Connect integrations"
         context["PAGE_DESCRIPTION"] = description
 
 

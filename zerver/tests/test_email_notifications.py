@@ -503,7 +503,7 @@ class TestFollowupEmails(ZulipTestCase):
         self.assert_length(outbox, 1)
 
         message = outbox[0]
-        self.assertIn("you have created a new Zulip organization", message.body)
+        self.assertIn("you have created a new OneHash Connect organization", message.body)
         self.assertNotIn("demo org", message.body)
 
     def test_followup_emails_for_demo_realms(self) -> None:
@@ -534,7 +534,7 @@ class TestFollowupEmails(ZulipTestCase):
         self.assert_length(outbox, 1)
 
         message = outbox[0]
-        self.assertIn("you have created a new demo Zulip organization", message.body)
+        self.assertIn("you have created a new demo OneHash Connect organization", message.body)
 
     def test_onboarding_zulip_guide_with_invalid_org_type(self) -> None:
         cordelia = self.example_user("cordelia")

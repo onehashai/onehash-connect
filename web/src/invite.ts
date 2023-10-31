@@ -415,7 +415,7 @@ function open_invite_user_modal(e: JQuery.ClickEvent<Document, undefined>): void
     }
 
     dialog_widget.launch({
-        html_heading: $t_html({defaultMessage: "Invite users to Zulip"}),
+        html_heading: $t_html({defaultMessage: "Invite users to OneHash Connect"}),
         html_body,
         html_submit_button: $t_html({defaultMessage: "Invite"}),
         id: "invite-user-modal",

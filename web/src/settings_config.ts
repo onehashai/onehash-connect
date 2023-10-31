@@ -572,7 +572,7 @@ export const notification_settings_labels = {
         defaultMessage: "Send email notifications for new logins to my account",
     }),
     enable_marketing_emails: $t({
-        defaultMessage: "Send me Zulip's low-traffic newsletter (a few emails a year)",
+        defaultMessage: "Send me OneHash Connect's low-traffic newsletter (a few emails a year)",
     }),
     message_content_in_email_notifications: $t({
         defaultMessage: "Include message content in message notification emails",
