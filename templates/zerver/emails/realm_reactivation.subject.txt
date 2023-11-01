@@ -1,1 +1,1 @@
-{% trans %}Reactivate your Zulip organization{% endtrans %}
+{% trans %}Reactivate your OneHash Connect organization{% endtrans %}

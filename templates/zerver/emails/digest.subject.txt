@@ -1,1 +1,1 @@
-{% trans %}Zulip digest for {{ realm_name }}{% endtrans %}
+{% trans %}OneHash Connect digest for {{ realm_name }}{% endtrans %}
