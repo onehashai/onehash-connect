@@ -100,7 +100,7 @@ Form is validated both client-side using jquery-validation (see signup.js) and s
                             {% endfor %}
                         </select>
                     </div>
-                    <label for="source_realm_id" class="inline-block">{{ _('Import settings from existing Zulip account') }}
+                    <label for="source_realm_id" class="inline-block">{{ _('Import settings from existing OneHash Connect account') }}
                         <a href="{{ root_domain_url }}/help/import-your-settings"><i class="fa fa-question-circle"></i></a>
                     </label>
                 </div>
@@ -221,7 +221,7 @@ Form is validated both client-side using jquery-validation (see signup.js) and s
                         <input id="id_enable_marketing_emails" type="checkbox" name="enable_marketing_emails"
                           checked="checked" />
                         <span></span>
-                        {% trans %}Subscribe me to Zulip's low-traffic newsletter (a few emails a year).{% endtrans %}
+                        {% trans %}Subscribe me to OneHash Connect's low-traffic newsletter (a few emails a year).{% endtrans %}
                     </label>
                 </div>
                 {% endif %}
