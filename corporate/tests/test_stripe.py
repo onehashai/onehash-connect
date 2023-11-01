@@ -742,7 +742,7 @@ class StripeTest(StripeTestCase):
         self.assertEqual(charge.amount, 8000 * self.seat_count)
         # TODO: fix Decimal
         self.assertEqual(
-            charge.description, f"Upgrade to Zulip Cloud Standard, $80.0 x {self.seat_count}"
+            charge.description, f"Upgrade to OneHash Connect Cloud Standard, $80.0 x {self.seat_count}"
         )
         self.assertEqual(charge.receipt_email, user.delivery_email)
         self.assertEqual(charge.statement_descriptor, "Zulip Cloud Standard")

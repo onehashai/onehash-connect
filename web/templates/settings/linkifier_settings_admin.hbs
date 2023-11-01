@@ -3,7 +3,7 @@
 
         <p>
             {{t "Configure regular expression patterns that will be used to
-              automatically transform any matching text in Zulip messages
+              automatically transform any matching text in OneHash Connect messages
               and topics into links." }}
         </p>
         <p>
@@ -11,14 +11,14 @@
               third party issue trackers, like GitHub, Salesforce, Zendesk,
               and others. For instance, you can add a linkifier that
               automatically turns #2468 into a link to the GitHub issue
-              in the Zulip repository with:" }}
+              in the OneHash Connect repository with:" }}
         </p>
         <ul>
             <li>
                 {{t "Pattern" }}: <span class="rendered_markdown"><code>#(?P&lt;id&gt;[0-9]+)</code></span>
             </li>
             <li>
-                {{t "URL template" }}: <span class="rendered_markdown"><code>https://github.com/zulip/zulip/issues/{id}</code></span>
+                {{t "URL template" }}: <span class="rendered_markdown"><code>https://github.com/onehashai/onehash-connect/issues/{id}</code></span>
             </li>
         </ul>
         <p>
@@ -45,7 +45,7 @@
                     </div>
                     <div class="input-group">
                         <label for="linkifier_template">{{t "URL template" }}</label>
-                        <input type="text" id="linkifier_template" class="settings_text_input" name="url_template" placeholder="https://github.com/zulip/zulip/issues/{id}" />
+                        <input type="text" id="linkifier_template" class="settings_text_input" name="url_template" placeholder="https://github.com/onehashai/onehash-connect/issues/{id}" />
                         <div class="alert" id="admin-linkifier-template-status"></div>
                     </div>
                     <button type="submit" class="button rounded sea-green">

@@ -10904,7 +10904,7 @@ paths:
                           [
                             {
                               "pattern": "#(?P<id>[0-9]+)",
-                              "url_template": "https://github.com/zulip/zulip/issues/{id}",
+                              "url_template": "https://github.com/onehashai/onehash-connect/issues/{id}",
                               "id": 1,
                             },
                           ],
@@ -15335,8 +15335,8 @@ paths:
                         "require_email_format_usernames": true,
                         "realm_uri": "http://localhost:9991",
                         "realm_name": "Zulip Dev",
-                        "realm_icon": "https://secure.gravatar.com/avatar/62429d594b6ffc712f54aee976a18b44?d=identicon",
-                        "realm_description": "<p>The Zulip development environment default organization.  It's great for testing!</p>",
+                        "realm_icon": "../../static/images/logo/org_avatar.png",
+                        "realm_description": "<p>The zulip development environment default organization.  It's great for testing!</p>",
                         "realm_web_public_access_enabled": false,
                         "result": "success",
                         "external_authentication_methods":
@@ -20094,7 +20094,7 @@ components:
         named groups' content could be inserted with `%(name_of_group)s`.
       schema:
         type: string
-      example: https://github.com/zulip/zulip/issues/{id}
+      example: https://github.com/onehashai/onehash-connect/issues/{id}
       required: true
     DirectMemberOnly:
       name: direct_member_only

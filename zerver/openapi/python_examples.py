@@ -450,7 +450,7 @@ def add_realm_filter(client: Client) -> None:
     # issue in Zulip's server repo
     request = {
         "pattern": "#(?P<id>[0-9]+)",
-        "url_template": "https://github.com/zulip/zulip/issues/{id}",
+        "url_template": "https://github.com/onehashai/onehash-connect/issues/{id}",
     }
     result = client.call_endpoint("/realm/filters", method="POST", request=request)
     # {code_example|end}
@@ -465,7 +465,7 @@ def update_realm_filter(client: Client) -> None:
     filter_id = 4
     request = {
         "pattern": "#(?P<id>[0-9]+)",
-        "url_template": "https://github.com/zulip/zulip/issues/{id}",
+        "url_template": "https://github.com/onehashai/onehash-connect/issues/{id}",
     }
 
     result = client.call_endpoint(

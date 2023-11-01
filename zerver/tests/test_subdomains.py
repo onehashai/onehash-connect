@@ -68,10 +68,10 @@ class SubdomainsTest(ZulipTestCase):
         def test(url: str) -> bool:
             return is_static_or_current_realm_url(url, realm)
 
-        self.assertTrue(test("/static/images/logo/zulip-org-logo.svg"))
+        self.assertTrue(test("/static/images/logo/onehash_logo.svg"))
         self.assertTrue(test("/anything"))
-        self.assertFalse(test("https://zulip.com"))
-        self.assertFalse(test("http://zulip.com"))
+        self.assertFalse(test("https://www.onehash.ai"))
+        self.assertFalse(test("http://www.onehash.ai"))
         self.assertTrue(test(f"{realm.uri}"))
 
         self.assertFalse(test(f"{realm.uri}@www.google.com"))
@@ -85,7 +85,7 @@ class SubdomainsTest(ZulipTestCase):
             self.assertFalse(test(evil_url))
             self.assertFalse(test(f"{evil_url}/x"))
             self.assertTrue(test(f"{realm.uri}"))
-            self.assertTrue(test("/static/images/logo/zulip-org-logo.svg"))
+            self.assertTrue(test("/static/images/logo/onehash_logo.svg"))
             self.assertTrue(test("/anything"))
 
     @use_s3_backend

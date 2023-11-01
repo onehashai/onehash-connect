@@ -61,7 +61,7 @@ def send_initial_direct_message(user: UserProfile) -> None:
             getting_started_help = user.realm.uri + "/help/getting-started-with-zulip"
             getting_started_string = (
                 _(
-                    "If you are new to Zulip, check out our [Getting started guide]({getting_started_url})!"
+                    "If you are new to OneHash Connect, check out our [Getting started guide]({getting_started_url})!"
                 )
             ).format(getting_started_url=getting_started_help)
 
@@ -101,7 +101,7 @@ def send_initial_direct_message(user: UserProfile) -> None:
 
         content = "".join(
             [
-                _("Hello, and welcome to Zulip!") + "👋" + " ",
+                _("Hello, and welcome to OneHash Connect!") + "👋" + " ",
                 _("This is a direct message from me, Welcome Bot.") + "\n\n",
                 "{getting_started_text}",
                 "{organization_setup_text}\n\n",
