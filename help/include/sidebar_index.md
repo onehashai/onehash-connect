@@ -1,10 +1,10 @@
 ## Guides
-* [Getting started with Connect](/help/getting-started-with-connect)
+* [Getting started with connect](/help/getting-started-with-connect)
 * [Setting up your organization](/help/getting-your-organization-started-with-connect)
 * [Moderating open organizations](/help/moderating-open-organizations)
-* [Setting up Connect for a class](/help/setting-up-connect-for-a-class)
-* [Using Connect for a class](/help/using-connect-for-a-class)
-* [Using Connect via email](/help/using-connect-via-email)
+* [Setting up connect for a class](/help/setting-up-connect-for-a-class)
+* [Using connect for a class](/help/using-connect-for-a-class)
+* [Using connect via email](/help/using-connect-via-email)
 
 ## Getting started
 * [Joining an organization](/help/join-a-connect-organization)
@@ -19,7 +19,7 @@
 * [Keyboard shortcuts](/help/keyboard-shortcuts)
 
 ## Setting up your organization
-* [Trying out Connect](/help/trying-out-connect)
+* [Trying out connect](/help/trying-out-connect)
 * [Connect Cloud or self-hosting?](/help/connect-cloud-or-self-hosting)
 * [Migrating from other chat tools](/help/migrating-from-other-chat-tools)
 * [Create your organization profile](/help/create-your-organization-profile)
@@ -232,8 +232,8 @@
 * [View all bots in your organization](/help/view-all-bots-in-your-organization)
 
 ## Support
-* [View Connect version](/help/view-connect-version)
+* [View connect version](/help/view-connect-version)
 * [Connect Cloud billing](/help/connect-cloud-billing)
-* [Support the Connect project](/help/support-connect-project)
-* [Linking to the Connect website](/help/linking-to-connect-website)
+* [Support the connect project](/help/support-connect-project)
+* [Linking to the connect website](/help/linking-to-connect-website)
 * [Contact support](/help/contact-support)
