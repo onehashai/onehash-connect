@@ -8,7 +8,7 @@
 
 1. Click **Save**.
 
-1. Find the group in the list below, and add members. Zulip will notify
+1. Find the group in the list below, and add members. OneHash Connect will notify
    everyone who is added.
 
 {end_tabs}

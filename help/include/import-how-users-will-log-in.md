@@ -9,7 +9,7 @@ configured. There are a few options for how users can log in for the first time.
 
 When you create your organization, users will immediately be able to log in with
 [authentication methods](/help/configure-authentication-methods) that do not
-require a password. Zulip offers a variety of authentication methods, including
+require a password. OneHash Connect offers a variety of authentication methods, including
 Google, GitHub, GitLab, Apple, LDAP and [SAML](/help/saml-authentication).
 
 ### Send password reset emails to all users
@@ -17,14 +17,14 @@ Google, GitHub, GitLab, Apple, LDAP and [SAML](/help/saml-authentication).
 You can send password reset emails to all users in your organization, which
 will allow them to set an initial password.
 
-If you imported your organization into Zulip Cloud, simply e-mail
+If you imported your organization into OneHash Connect Cloud, simply e-mail
 [support@zulip.com](mailto:support@zulip.com) to request this.
 
 !!! warn ""
 
     To avoid confusion, first make sure that the users in your
     organization are aware that their account has been moved to
-    Zulip, and are expecting to receive a password reset email.
+    OneHash Connect, and are expecting to receive a password reset email.
 
 #### Send password reset emails (self-hosted organization)
 
@@ -67,4 +67,4 @@ If you imported your organization into Zulip Cloud, simply e-mail
 ### Manual password resets
 
 Alternatively, users can reset their own passwords by following the instructions
-on your Zulip organization's login page.
+on your OneHash Connect organization's login page.

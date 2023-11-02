@@ -3,7 +3,7 @@
 {!admin-only.md!}
 
 By default, anyone other than guests can [add a bot](/help/add-a-bot-or-integration) or
-integration to the Zulip organization. Organization administrators can
+integration to the OneHash Connect organization. Organization administrators can
 change who is allowed to add bots.
 
 ## Configure who can add bots

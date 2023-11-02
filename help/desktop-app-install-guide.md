@@ -1,8 +1,8 @@
-# Installing the Zulip desktop app
+# Installing the OneHash Connect desktop app
 
-Zulip on your macOS, Windows, or Linux desktop is even better than
-Zulip on the web, with a cleaner look, tray/dock integration, native
-notifications, and support for multiple Zulip accounts.
+OneHash Connect on your macOS, Windows, or Linux desktop is even better than
+OneHash Connect on the web, with a cleaner look, tray/dock integration, native
+notifications, and support for multiple OneHash Connect accounts.
 
 To install the latest stable release (recommended for most users),
 find your operating system below.  If you're interested in an early
@@ -25,7 +25,7 @@ The app will update automatically to future versions.
 
 1. Run the command `brew install --cask zulip` from a terminal.
 
-1. Run Zulip from `Applications`.
+1. Run OneHash Connect from `Applications`.
 
 The app will update automatically to future versions. Alternatively, you can
 run the command `brew upgrade zulip` to immediately upgrade.
@@ -66,10 +66,10 @@ to future versions. <!-- TODO fact check -->
         sudo apt update
         sudo apt install zulip
 
-    These commands set up the Zulip Desktop APT repository and its signing
-    key, and then install the Zulip client.
+    These commands set up the OneHash Connect Desktop APT repository and its signing
+    key, and then install the OneHash Connect client.
 
-1. Run Zulip from your app launcher, or with `zulip` from a terminal.
+1. Run OneHash Connect from your app launcher, or with `zulip` from a terminal.
 
 The app will be updated automatically to future versions when you do a
 regular software update on your system, e.g. with
@@ -85,18 +85,18 @@ regular software update on your system, e.g. with
 
 3. Run the file from your app launcher, or from a terminal.
 
-No installer is necessary; this file is the Zulip app. The app will update
+No installer is necessary; this file is the OneHash Connect app. The app will update
 automatically to future versions.
 
 #### Snap
 
 1. Make sure [snapd](https://docs.snapcraft.io/core/install) is installed.
 
-2. Execute following command to install Zulip:
+2. Execute following command to install OneHash Connect:
 
         sudo snap install zulip
 
-3. Run Zulip from your app launcher, or with `zulip` from a terminal.
+3. Run OneHash Connect from your app launcher, or with `zulip` from a terminal.
 
 <!-- TODO why dpkg? -->
 
@@ -110,7 +110,7 @@ Get a peek at new features before they're released!
 
 Start by finding the latest version marked "Pre-release" on the
 [release list page][release-list].  There may or may not be a "Pre-release"
-later than the latest release. If there is, download the appropriate Zulip
+later than the latest release. If there is, download the appropriate OneHash Connect
 installer or app from there, and follow the instructions for your operating
 system above.
 
@@ -134,4 +134,4 @@ sudo apt install zulip
 
 * [Connect through a proxy](/help/connect-through-a-proxy)
 * [Use a custom certificate](/help/custom-certificates)
-* [View Zulip version](/help/view-zulip-version)
+* [View Connect version](/help/view-connect-version)

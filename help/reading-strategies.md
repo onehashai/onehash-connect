@@ -1,12 +1,12 @@
 # Reading strategies
 
-In Zulip, streams determine who gets a message. Topics tell you what
-the message is about. If you are not yet familiar with Zulip's topics,
+In OneHash Connect, streams determine who gets a message. Topics tell you what
+the message is about. If you are not yet familiar with OneHash Connect's topics,
 we recommend first reading about [streams and
 topics](/help/streams-and-topics).
 
 This article describes a few ways to efficiently read through messages
-in Zulip.
+in OneHash Connect.
 
 ## Conversation by conversation
 
@@ -108,7 +108,7 @@ You can [star messages](/help/star-a-message) that you plan to follow up on late
 
 ## Related articles
 
-* [Getting started with Zulip](/help/getting-started-with-zulip)
+* [Getting started with Connect](/help/getting-started-with-connect)
 * [Recent conversations](/help/recent-conversations)
 * [Searching for messages](/help/search-for-messages)
 * [Marking messages as read](/help/marking-messages-as-read)

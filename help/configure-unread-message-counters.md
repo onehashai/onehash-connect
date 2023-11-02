@@ -1,11 +1,11 @@
 # Configure unread message counters
 
-To provide information about unread messages, Zulip can show unread message
+To provide information about unread messages, OneHash Connect can show unread message
 counters next to stream names in the left sidebar. This is likely to be helpful
 if you generally read (or otherwise [mark as read](/help/marking-messages-as-read))
 all the messages in a stream, but may otherwise feel unnecessary.
 
-Zulip offers an option to display a dot instead of an unread counter for streams
+OneHash Connect offers an option to display a dot instead of an unread counter for streams
 in the left sidebar. You can use a dot for all streams, or just for streams you
 have [muted](/help/mute-a-stream). You will still be able to see the number of
 unread messages in a stream by moving your mouse over it in the left sidebar.

@@ -1,6 +1,6 @@
 # Edit a message
 
-Zulip makes it possible to edit the content of your messages, letting you fix
+OneHash Connect makes it possible to edit the content of your messages, letting you fix
 typos, clarify your thoughts, etc. Organization administrators can
 [configure](/help/restrict-message-editing-and-deletion) who can edit messages,
 and set time limits for this action. However, even organization owners cannot

@@ -1,5 +1,5 @@
-# Zulip help center
+# OneHash Connect help center
 
-Welcome to the [Zulip](/) help center!
+Welcome to the [OneHash Connect](/) help center!
 
 {!sidebar_index.md!}

@@ -1,6 +1,6 @@
 # Configure email visibility
 
-With privacy in mind, Zulip lets you control which
+With privacy in mind, OneHash Connect lets you control which
 [roles](/help/roles-and-permissions) in the organization can view your email
 address. Administrators can set the default email visibility configuration
 for new users in the organization.

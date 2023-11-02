@@ -1,6 +1,6 @@
-Zulip integrates directly with dozens of products, and with hundreds
+OneHash Connect integrates directly with dozens of products, and with hundreds
 more through [Zapier](/integrations/doc/zapier) and
-[IFTTT](/integrations/doc/ifttt).  Popular Zulip integrations include
+[IFTTT](/integrations/doc/ifttt).  Popular OneHash Connect integrations include
 [GitHub](/integrations/doc/github), [Jira](/integrations/doc/jira),
 [PagerDuty](/integrations/doc/pagerduty),
 [Sentry](/integrations/doc/sentry) and

@@ -1,9 +1,9 @@
 !!! tip ""
 
-    If this is your first time using Zulip, we recommend starting with the web
+    If this is your first time using OneHash Connect, we recommend starting with the web
     or desktop experience to set up your account and get oriented.
 
-- Get the [mobile and desktop apps](/apps/). Zulip also works great in a
+- Get the [mobile and desktop apps](/apps/). OneHash Connect also works great in a
   [browser](/help/supported-browsers).
 
 - [Add a profile picture](/help/change-your-profile-picture) and
@@ -13,7 +13,7 @@
 - [Review your Preferences](/help/review-your-settings#review-your-preferences).
   You can [switch between light and dark theme](/help/dark-theme),
   [pick your favorite emoji theme](/help/emoji-and-emoticons#change-your-emoji-set),
-  [change your language](/help/change-your-language), and make other tweaks to your Zulip experience.
+  [change your language](/help/change-your-language), and make other tweaks to your OneHash Connect experience.
 
 - [Browse and subscribe to streams](/help/browse-and-subscribe-to-streams).
 

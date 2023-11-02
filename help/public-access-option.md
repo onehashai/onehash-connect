@@ -8,7 +8,7 @@ Web-public streams are indicated with a **globe** (<i class="zulip-icon zulip-ic
 
 Enabling web-public streams makes it possible to create web-public
 streams in your organization. It also makes certain information about
-your organization accessible to anyone on the Internet via the Zulip
+your organization accessible to anyone on the Internet via the OneHash Connect
 API (details below).
 
 To help protect closed organizations, creating web-public streams is
@@ -16,7 +16,7 @@ disabled by default for all organizations.
 
 ### Information that can be accessed via API when web-public streams are enabled
 
-The following information about your organization can be accessed via the Zulip
+The following information about your organization can be accessed via the OneHash Connect
 API if web-public streams are enabled and there is currently at least one
 web-public stream.
 
@@ -32,7 +32,7 @@ communities such as open-source projects and research communities.
 ### Enable or disable web-public streams
 
 !!! warn ""
-    Self-hosted Zulip servers must enable support for web-public streams in their
+    Self-hosted OneHash Connect servers must enable support for web-public streams in their
     [server settings](https://zulip.readthedocs.io/en/stable/production/settings.html)
     by setting `WEB_PUBLIC_STREAMS_ENABLED = True` prior to proceeding.
 
@@ -77,7 +77,7 @@ stream](/help/change-the-privacy-of-a-stream), selecting the
 ## What can logged out visitors do?
 
 Logged out visitors can browse all content in web-public streams,
-including using Zulip's [built-in search](/help/search-for-messages)
+including using OneHash Connect's [built-in search](/help/search-for-messages)
 to find conversations. Logged out visitors can only access
 the web-public streams in your organization, and the topics, messages
 (including uploaded files) and emoji reactions in those streams.
@@ -92,14 +92,14 @@ They **cannot**:
   other users.
 
 Logged out visitors have access to a subset of the metadata
-information available to any new account in the Zulip organization,
+information available to any new account in the OneHash Connect organization,
 detailed below.
 
 ### Information about the organization
 
 * The **Organization settings** and **Stream settings** menus are not
   available to logged out visitors. However, organization settings data is
-  required for Zulip to load, and may thus be [accessed via the Zulip API][info-via-api].
+  required for OneHash Connect to load, and may thus be [accessed via the Zulip API][info-via-api].
 * Logged out visitors cannot view [usage statistics](/help/analytics).
 
 [info-via-api]: /help/public-access-option#information-that-can-be-accessed-via-api-when-web-public-streams-are-enabled
@@ -108,8 +108,8 @@ detailed below.
 
 Logged out visitors can see the following information about users who
 participate in web-public streams. They do not see this information
-about users who do not participate in web-public streams in the Zulip
-UI, though they may access it via the Zulip API.
+about users who do not participate in web-public streams in the OneHash Connect
+UI, though they may access it via the OneHash Connect API.
 
 * Name
 * Avatar
@@ -118,7 +118,7 @@ UI, though they may access it via the Zulip API.
 
 The following additional information is not available in the UI for
 logged out visitors, but may be accessed without an account via the
-Zulip API:
+OneHash Connect API:
 
 * Configured time zone
 * Which user groups a user belongs to
@@ -139,9 +139,9 @@ The unfortunate reality is that any service
 that allows hosting files visible to the Internet is a potential target for bad
 actors looking for places to distribute illegal or malicious content.
 
-In order to protect Zulip organizations from
+In order to protect OneHash Connect organizations from
 bad actors, web-public streams have a few limitations designed to make
-Zulip an inconvenient target:
+OneHash Connect an inconvenient target:
 
 * Only users in trusted roles (moderators and administrators) can be given
   permission to create web-public streams. This is intended to make it hard
@@ -155,7 +155,7 @@ interfere with legitimate use. Please [contact us](/help/contact-support)
 if your organization encounters any problems with legitimate activity caused
 these anti-abuse features.
 
-As a reminder, Zulip Cloud organizations are expected to
+As a reminder, OneHash Connect Cloud organizations are expected to
 [moderate content](/help/moderating-open-organizations) to ensure compliance
 with [Zulip's Rules of Use](https://zulip.com/policies/rules).
 
@@ -163,9 +163,9 @@ with [Zulip's Rules of Use](https://zulip.com/policies/rules).
 
 * Web-public streams do not yet support search engine indexing. You
   can use [zulip-archive](https://github.com/zulip/zulip-archive) to
-  create an archive of a Zulip organization that can be indexed by
+  create an archive of a OneHash Connect organization that can be indexed by
   search engines.
-* The web-public view is not yet integrated with Zulip's live-update
+* The web-public view is not yet integrated with OneHash Connect's live-update
   system. As a result, a visitor will not see new messages that are
   sent to a topic they are currently viewing without reloading the
   browser window.

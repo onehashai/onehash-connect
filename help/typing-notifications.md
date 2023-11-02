@@ -1,6 +1,6 @@
 # Typing notifications
 
-The Zulip web app displays typing notifications in [conversation
+The OneHash Connect web app displays typing notifications in [conversation
 views](/help/reading-topics) and [**All direct
 messages**](/help/direct-messages#access-all-dms). The mobile app displays
 typing notifications in direct message conversations.
@@ -14,7 +14,7 @@ Just having the compose box open will not send a typing notification.
 ### Disable typing notifications
 
 If you'd prefer that others not know whether you're typing, you can
-configure Zulip to not send typing notifications.
+configure OneHash Connect to not send typing notifications.
 
 {start_tabs}
 

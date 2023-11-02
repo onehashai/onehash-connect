@@ -1,30 +1,30 @@
 # Use a custom certificate
 
-By default, Zulip generates a signed certificate during the server install
+By default, OneHash Connect generates a signed certificate during the server install
 process. In some cases, a server administrator may choose not to use that
-feature, in which case your Zulip server may be using a self-signed
-certificate. This is most common for Zulip servers not connected to the
+feature, in which case your OneHash Connect server may be using a self-signed
+certificate. This is most common for OneHash Connect servers not connected to the
 public internet.
 
 ## Web
 
-Most browsers will show a warning if you try to connect to a Zulip server
+Most browsers will show a warning if you try to connect to a OneHash Connect server
 with a self-signed certificate.
 
-If you are absolutely, 100% sure that the Zulip server you are connecting to
+If you are absolutely, 100% sure that the OneHash Connect server you are connecting to
 is supposed to have a self-signed certificate, click through the warnings
 and follow the instructions on-screen.
 
 If you are less than 100% sure, contact your server
 administrator. Accepting a malicious self-signed certificate would
-give a stranger full access to your Zulip account, including your
+give a stranger full access to your OneHash Connect account, including your
 username and password.
 
 ## Desktop
 
 ### Version 5.4.0 and above
 
-Zulip Desktop version 5.4.0 and above use the operating system's
+OneHash Connect Desktop version 5.4.0 and above use the operating system's
 certificate store, like your web browser.
 
 {start_tabs}
@@ -46,10 +46,10 @@ certificate store, like your web browser.
 7. Close the window.  You will be prompted for your password to verify
    the change.
 
-8. Restart the Zulip Desktop application.
+8. Restart the OneHash Connect Desktop application.
 
 {tab|windows}
-On Windows, Zulip Desktop shares the certificate store with
+On Windows, OneHash Connect Desktop shares the certificate store with
 Google Chrome, so you can add certificates to it from inside
 Chrome.
 
@@ -69,7 +69,7 @@ Chrome.
 
 7. Select **Done**.
 
-8. Restart the Zulip Desktop application.
+8. Restart the OneHash Connect Desktop application.
 
 {tab|linux}
 The required packages and steps vary by distribution; see the Chromium
@@ -82,15 +82,15 @@ certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n zulip \
   -i path/to/certificate.pem
 ```
 
-You will need to restart the Zulip Desktop application to pick up the
+You will need to restart the OneHash Connect Desktop application to pick up the
 new certificate.
 {end_tabs}
 
 
 ### Version 5.3.0 and below
 
-On Zulip Desktop version 5.3.0 and below, we require you to manually
-enter the certificate details before you can connect to your Zulip
+On OneHash Connect Desktop version 5.3.0 and below, we require you to manually
+enter the certificate details before you can connect to your OneHash Connect
 server. You'll need to get a certificate file (should end in `.crt` or
 `.pem`) from your server administrator and add it:
 

@@ -1,9 +1,9 @@
 # Keyboard shortcuts
 
-Everything in Zulip can be done with the mouse, but mastering a few keyboard
+Everything in OneHash Connect can be done with the mouse, but mastering a few keyboard
 shortcuts will change your experience of the app. Start with the basics below,
 and use the convenient [**keyboard shortcuts reference**](#keyboard-shortcuts-reference)
-in the Zulip app to add more to your repertoire as needed.
+in the OneHash Connect app to add more to your repertoire as needed.
 
 * [The basics](#the-basics)
 * [Navigation](#navigation)
@@ -129,7 +129,7 @@ in the Zulip app to add more to your repertoire as needed.
 
 * **Insert bold text**: `**bold**` or <kbd>Ctrl</kbd> + <kbd>B</kbd>
 
-* **Insert link**: `[Zulip website](https://zulip.org)` or <kbd>Ctrl</kbd> +
+* **Insert link**: `[OneHash website](https://www.onehash.ai)` or <kbd>Ctrl</kbd> +
   <kbd>Shift</kbd> + <kbd>L</kbd>
 
 * **Cancel compose and save draft**: <kbd>Esc</kbd> or <kbd>Ctrl</kbd> +
@@ -232,7 +232,7 @@ Keyboard navigation (e.g. arrow keys) works as expected.
 
 ## Keyboard shortcuts reference
 
-A summary of the keyboard shortcuts above is available in the Zulip app.
+A summary of the keyboard shortcuts above is available in the OneHash Connect app.
 
 {start_tabs}
 

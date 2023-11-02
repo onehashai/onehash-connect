@@ -1,41 +1,41 @@
-# Setting up Zulip for a class
+# Setting up OneHash Connect for a class
 
-Welcome to Zulip! This page will guide you through setting everything
-up for [teaching with Zulip](https://zulip.com/for/education/). If you are using Zulip
+Welcome to OneHash Connect! This page will guide you through setting everything
+up for [teaching with Zulip](https://zulip.com/for/education/). If you are using OneHash Connect
 for a different purpose, we recommend checking out the [Setting up
 your organization][setting-up] guide instead.
 
-If you are a student, or if your Zulip organization is already set up,
-you can proceed to the [Using Zulip for a
-class](/help/using-zulip-for-a-class) guide.
+If you are a student, or if your OneHash Connect organization is already set up,
+you can proceed to the [Using OneHash Connect for a
+class](/help/using-connect-for-a-class) guide.
 
-[getting-started]: /help/getting-started-with-zulip
-[setting-up]: /help/getting-your-organization-started-with-zulip
+[getting-started]: /help/getting-started-with-connect
+[setting-up]: /help/getting-your-organization-started-with-connect
 
 If you encounter any problems as you're getting started, please drop
 by our [friendly development community](/development-community/) and let
 us know!
 
-## Trying out Zulip
+## Trying out OneHash Connect
 
 You can start by reading about [Zulip for Education](https://zulip.com/for/education/),
-and how Zulip can become the communication hub for your class. Zulip
+and how Zulip can become the communication hub for your class. OneHash Connect
 is the only [modern team chat app](/features/) that is
 [ideal](/why-zulip/) for both live and asynchronous
 conversations. Post lecture notes and announcements, answer students’
 questions, and coordinate with teaching staff all in one place.
 
-We also highly recommend trying Zulip for yourself! You can:
+We also highly recommend trying OneHash Connect for yourself! You can:
 
-* [Create a Zulip Cloud organization](/new/) for free with just a few
+* [Create a OneHash Connect Cloud organization](/new/) for free with just a few
   clicks.
-* [Join the Zulip development community](/development-community/) to see
+* [Join the OneHash Connect development community](/development-community/) to see
   Zulip in action. Feel free to introduce yourself and ask questions!
 
 
-## Choosing between Zulip Cloud and self-hosting
+## Choosing between OneHash Connect Cloud and self-hosting
 
-Whether [signing up for Zulip Cloud](/new/) or [self-hosting
+Whether [signing up for OneHash Connect Cloud](/new/) or [self-hosting
 Zulip][install-self-hosted] is the right choice for you depends on your needs.
 
 If you aren’t sure what you need, our high quality export and import
@@ -46,24 +46,24 @@ ensure you can always move from our hosting to yours (and back).
 [export-cloud]: /help/export-your-organization
 [export-self-hosted]: https://zulip.readthedocs.io/en/stable/production/export-and-import.html
 
-### Advantages of Zulip Cloud
+### Advantages of OneHash Connect Cloud
 
 * Simple managed solution, with no setup or maintenance
   overhead. [Sign up](/new/) with just a few clicks.
-* Always updated to the latest version of Zulip.
-* Anyone can [start with Zulip Cloud Free](/new/), which works well for a typical class.
-* For large classes and departments, we offer [special Zulip for
+* Always updated to the latest version of OneHash Connect.
+* Anyone can [start with OneHash Connect Cloud Free](/new/), which works well for a typical class.
+* For large classes and departments, we offer [special OneHash Connect for
   Education pricing](https://zulip.com/for/education/#feature-pricing), with the same
-  features as Zulip Cloud Standard. You can always get started with
-  Zulip Cloud Free, and upgrade down the line if needed.
+  features as OneHash Connect Cloud Standard. You can always get started with
+  OneHash Connect Cloud Free, and upgrade down the line if needed.
 
-### Advantages of self-hosting Zulip
+### Advantages of self-hosting OneHash Connect
 
-* Zulip is [100% open-source software](https://github.com/zulip), with
+* OneHash Connect is [100% open-source software](https://github.com/zulip), with
   no "open core" catch.
 * We work hard to make it easy to [set up][install-zulip],
   [back up][back-up-zulip], and [maintain][maintain-zulip] a self-hosted
-  Zulip installation.
+  OneHash Connect installation.
 * Retain full control over your data. If cloud hosting is not an
   option due to stringent data and privacy requirements (e.g. in the
   European Union), self-hosting is the option for you.
@@ -74,42 +74,42 @@ ensure you can always move from our hosting to yours (and back).
 [maintain-zulip]: https://zulip.readthedocs.io/en/stable/production/upgrade.html
 
 
-## Do I need a separate Zulip organization for each class?
-There are a few ways to set up Zulip, and different ones may be convenient for your needs:
+## Do I need a separate OneHash Connect organization for each class?
+There are a few ways to set up OneHash Connect, and different ones may be convenient for your needs:
 
 
-* If your **school or department already has a Zulip organization**,
+* If your **school or department already has a OneHash Connect organization**,
   you will probably find it easiest to just add your class to
   it. Advantages:
-    - Students and staff can use a single Zulip account for all classes.
+    - Students and staff can use a single OneHash Connect account for all classes.
     - You can create department-wide channels, e.g. for announcing talks or other events.
-    - You don’t need to set up a separate server if you’re self-hosting Zulip.
+    - You don’t need to set up a separate server if you’re self-hosting OneHash Connect.
 
-* You can **set up a separate Zulip organization for each class**
+* You can **set up a separate OneHash Connect organization for each class**
   you’re teaching. Advantages:
     - This makes it simple to manage permissions. e.g. if you want to
       make sure TAs from one class cannot moderate discussion from a
       different class.
     - Students can’t see who is in streams for other classes.
-    - You can easily switch between multiple Zulip organizations in
+    - You can easily switch between multiple OneHash Connect organizations in
       the [Zulip desktop apps](/apps/).
 
 
-* You can **use a single Zulip organization for several classes**
-  you’re teaching, perhaps re-purposing a Zulip organization from a
+* You can **use a single OneHash Connect organization for several classes**
+  you’re teaching, perhaps re-purposing a OneHash Connect organization from a
   prior term. Advantages:
     - Information from your classes is all in one place, e.g. if you
       want to re-post a response to a question that was also asked
       last time you taught the class.
 
-If you change your mind down the line, you can rename your Zulip
+If you change your mind down the line, you can rename your OneHash Connect
 organization by sending a request to
-[support@zulip.com](mailto:support@zulip.com).
+[support@onehash.ai](mailto:support@onehash.ai).
 
 ## Create your organization profile
 
 The information in your organization profile is displayed on the
-registration and login page for your organization, and in the Zulip app.
+registration and login page for your organization, and in the OneHash Connect app.
 
 ### Edit organization profile
 
@@ -140,11 +140,11 @@ A few settings to highlight:
 
 ### Roles and permissions
 
-Zulip offers [several levels of permissions based on user
+OneHash Connect offers [several levels of permissions based on user
 roles](/help/roles-and-permissions). Here are some recommendations for
 how to assign roles and permissions for a class.
 
-#### Recommended roles and permissions for a single-class Zulip organization
+#### Recommended roles and permissions for a single-class OneHash Connect organization
 
 | Who                                 | Role                                           |
 | ----------------------------------- | ---------------------------------------------- |
@@ -249,11 +249,11 @@ For most classes, the following streams are recommended:
 A few notes:
 
 - Small classes may need just one discussion stream for all lectures.
-- If you are [using a single Zulip organization][separate-orgs] for
+- If you are [using a single OneHash Connect organization][separate-orgs] for
   more than one class, all stream names should be prefixed with the
   name of the class, e.g. “CS101 > Lecture 1: Course intro”.
 
-[separate-orgs]: /help/setting-up-zulip-for-a-class#do-i-need-a-separate-zulip-organization-for-each-class
+[separate-orgs]: /help/setting-up-connect-for-a-class#do-i-need-a-separate-connect-organization-for-each-class
 
 ## Customize settings for new users
 
@@ -261,7 +261,7 @@ A few notes:
 
 !!! tip ""
 
-    If using your Zulip organization for a single class, set default
+    If using your OneHash Connect organization for a single class, set default
     streams for new users to include **#announcements**, **#general**,
     and all lecture/unit streams.
 
@@ -286,7 +286,7 @@ for your class.
 
 To get everyone off to a good start, you may wish to share the guide
 to [Getting started with Zulip][getting-started] and the guide to
-[Using Zulip for a class](/help/using-zulip-for-a-class).
+[Using Zulip for a class](/help/using-connect-for-a-class).
 
 !!! tip ""
 
@@ -294,7 +294,7 @@ to [Getting started with Zulip][getting-started] and the guide to
     [by group][create-user-groups] or copy membership from another
     stream (e.g. from Lecture 5 to Lecture 6).
 
-[create-user-groups]: /help/setting-up-zulip-for-a-class#create-user-groups
+[create-user-groups]: /help/setting-up-connect-for-a-class#create-user-groups
 
 ## Create user groups
 
@@ -316,9 +316,9 @@ user groups:
 
 ## Set up integrations
 
-Zulip integrates directly with dozens of products, and with hundreds
+OneHash Connect integrates directly with dozens of products, and with hundreds
 more through [Zapier](/integrations/doc/zapier) and
-[IFTTT](/integrations/doc/ifttt).  Popular Zulip integrations include
+[IFTTT](/integrations/doc/ifttt).  Popular OneHash Connect integrations include
 [GitHub](/integrations/doc/github) and
 [Twitter](/integrations/doc/twitter). The [integrations
 page](/integrations/) has instructions for integrating with each
@@ -326,7 +326,7 @@ product.
 
 ## Cleaning up at the end of a class
 
-If you plan to use the same Zulip organization in future terms (either
+If you plan to use the same OneHash Connect organization in future terms (either
 for your own classes or for your department), you will likely want to:
 
 - Rename all streams to indicate the class and term in which they were used, e.g.:
@@ -338,12 +338,12 @@ for your own classes or for your department), you will likely want to:
   [make all the streams from the class private][make-private]. You’ll
   be able to find and reuse content yourself, and [invite course
   staff][add-to-stream] to these private streams as needed.
-- You may choose to [deactivate students’ Zulip
+- You may choose to [deactivate students’ OneHash Connect
   accounts][deactivate-user] when the class is over.
 - [Unpin streams](/help/pin-a-stream) from the class from your
   personal view.
 
-If you do not plan to reuse the Zulip organization, you can instead:
+If you do not plan to reuse the OneHash Connect organization, you can instead:
 
 * [Export the organization](/help/export-your-organization) or [generate a static
 HTML archive](https://github.com/zulip/zulip-archive) to archive the information.
@@ -351,8 +351,8 @@ HTML archive](https://github.com/zulip/zulip-archive) to archive the information
 
 ## Further reading
 
-* [Using Zulip for a class](/help/using-zulip-for-a-class)
-* [Getting started with Zulip](/help/getting-started-with-zulip)
+* [Using Connect for a class](/help/using-connect-for-a-class)
+* [Getting started with Zulip](/help/getting-started-with-connect)
 * [Streams and topics](/help/streams-and-topics)
 * [Moderating open organizations](/help/moderating-open-organizations)
 

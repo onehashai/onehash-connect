@@ -2,7 +2,7 @@
 
 {!translation-project-info.md!}
 
-## Change the language of the Zulip app
+## Change the language of the OneHash Connect app
 
 Note that this will not change stream names, topic names, or the language of
 messages you receive.

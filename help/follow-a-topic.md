@@ -1,6 +1,6 @@
 # Follow a topic
 
-Zulip lets you follow topics you are interested in. You can configure how you get notified about new messages for topics you follow.
+OneHash Connect lets you follow topics you are interested in. You can configure how you get notified about new messages for topics you follow.
 
 In muted streams, topics you follow are automatically treated as
 [unmuted](/help/mute-a-topic).

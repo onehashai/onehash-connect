@@ -44,11 +44,11 @@
 
 ## Change your video call provider
 
-By default, Zulip integrates with
+By default, OneHash Connect integrates with
 [Jitsi Meet](https://jitsi.org/jitsi-meet/), a fully-encrypted, 100% open
 source video conferencing solution. Organization administrators can also
 change the organization's video call provider. The video call providers
-supported by zulip are:
+supported by OneHash Connect are:
 
 * [Jitsi Meet](/integrations/doc/jitsi)
 * [Zoom integration](/integrations/doc/zoom)

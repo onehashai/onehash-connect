@@ -1,6 +1,6 @@
 # Dark theme
 
-Zulip provides both a light theme and a dark theme, which is great
+OneHash Connect provides both a light theme and a dark theme, which is great
 for working in a dark space.
 
 ## Manage color theme
@@ -27,7 +27,7 @@ for working in a dark space.
 The default is **Automatic (follows system settings)**, which detects which
 theme to use based on the color scheme used by your operating system.
 
-You can also specify **Light** or **Dark** if you'd like Zulip to use the same
+You can also specify **Light** or **Dark** if you'd like OneHash Connect to use the same
 color scheme regardless of your operating system configuration.
 
 ## Related articles

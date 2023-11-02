@@ -1,8 +1,8 @@
 # Deactivate your account
 
-In Zulip, you have a dedicated account for each organization you belong to.
-Deactivating your Zulip account in one organization will have no effect on any
-other Zulip accounts you may have.
+In OneHash Connect, you have a dedicated account for each organization you belong to.
+Deactivating your OneHash Connect account in one organization will have no effect on any
+other OneHash Connect accounts you may have.
 
 Once you deactivate your account, you cannot register in the same organization
 with the email address you used before. If you are re-joining an organization,
@@ -12,7 +12,7 @@ account.
 
 !!! tip ""
 
-    You can find all the Zulip Cloud accounts associated with your email address
+    You can find all the OneHash Connect Cloud accounts associated with your email address
     with the [**Find your accounts**](https://zulip.com/accounts/find/) tool.
     If you have forgotten your account password, you can
     [reset it](/help/change-your-password).

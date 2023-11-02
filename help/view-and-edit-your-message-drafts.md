@@ -1,6 +1,6 @@
 # Draft messages
 
-Zulip automatically saves the content of your message as a draft when you
+OneHash Connect automatically saves the content of your message as a draft when you
 close the compose box, ensuring that you never lose your work. Drafts are
 saved for 30 days.
 

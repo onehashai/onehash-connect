@@ -1,6 +1,6 @@
 # Change the color of a stream
 
-Zulip assigns each of your streams a color when you subscribe to the
+OneHash Connect assigns each of your streams a color when you subscribe to the
 stream. Changing a stream's color does not change it for anyone else.
 
 ## Change the color of a stream

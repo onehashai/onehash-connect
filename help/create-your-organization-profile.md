@@ -8,11 +8,11 @@
 
 {!edit-organization-profile.md!}
 
-## Zulip communities directory
+## OneHash Connect communities directory
 
 {!communities-directory-intro.md!}
 
-### Change whether your organization may be listed in the Zulip communities directory
+### Change whether your organization may be listed in the OneHash Connect communities directory
 
 {!communities-directory-instructions.md!}
 
@@ -24,8 +24,8 @@ For more details, see [Communities directory](/help/communities-directory).
 
 ## Related articles
 
-* [Setting up your organization](/help/getting-your-organization-started-with-zulip)
+* [Setting up your organization](/help/getting-your-organization-started-with-connect)
 * [Customize organization settings](/help/customize-organization-settings)
 * [Create streams](/help/create-streams)
 * [Communities directory](/help/communities-directory)
-* [Getting started with Zulip](/help/getting-started-with-zulip)
+* [Getting started with Connect](/help/getting-started-with-connect)

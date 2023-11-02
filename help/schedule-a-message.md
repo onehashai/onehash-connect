@@ -1,6 +1,6 @@
 # Schedule a message
 
-Zulip lets you schedule a message to be sent at a later time. For example, if
+OneHash Connect lets you schedule a message to be sent at a later time. For example, if
 you are working outside of regular business hours for your organization, you
 can schedule a message for next morning to avoid disturbing others.
 

@@ -1,7 +1,7 @@
 # View your mentions
 
 You can [mention a user or a group](/help/mention-a-user-or-group) to call their
-attention to a message. To make such messages easy to find, Zulip lets you view
+attention to a message. To make such messages easy to find, OneHash Connect lets you view
 the messages where you were mentioned from a dedicated tab.
 
 !!! warn ""

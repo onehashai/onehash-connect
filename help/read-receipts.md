@@ -4,7 +4,7 @@ Read receipts let you check who has read a message. You can see read receipts
 for any message, including both [stream messages](/help/streams-and-topics) and
 [direct messages](/help/direct-messages).
 
-With privacy in mind, Zulip lets you [control][configure-personal-read-recipts]
+With privacy in mind, OneHash Connect lets you [control][configure-personal-read-recipts]
 whether your read receipts are shared, and administrators can
 [choose][configure-organization-read-recipts] whether to enable read receipts in
 their organization.
@@ -36,9 +36,9 @@ their organization.
     In addition to a list of names, you will see how many people have read
     the message.
 
-## Configure whether Zulip lets others see when you've read messages
+## Configure whether OneHash Connect lets others see when you've read messages
 
-Zulip supports the privacy option of never sharing whether or not you have read
+OneHash Connect supports the privacy option of never sharing whether or not you have read
 a message. If this setting is turned off, your name will never appear in the
 list of read receipts.
 

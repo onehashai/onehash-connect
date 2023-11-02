@@ -1,13 +1,13 @@
 # Link to a message or conversation
 
-Zulip makes it easy to share links to messages, topics, and streams. You can
-link from one Zulip [conversation](/help/recent-conversations) to another, or
-share links to Zulip conversations in issue trackers, emails, or other external
+OneHash Connect makes it easy to share links to messages, topics, and streams. You can
+link from one OneHash Connect [conversation](/help/recent-conversations) to another, or
+share links to OneHash Connect conversations in issue trackers, emails, or other external
 tools.
 
-## Link to a stream or topic within Zulip
+## Link to a stream or topic within OneHash Connect
 
-Zulip automatically creates links to streams and topics in messages you send.
+OneHash Connect automatically creates links to streams and topics in messages you send.
 
 The easiest way to link to a stream or topic is:
 
@@ -33,9 +33,9 @@ Stream: #**stream name**
 Topic: #**stream name>topic name**
 ```
 
-## Link to Zulip from anywhere
+## Link to OneHash Connect from anywhere
 
-All URLs in Zulip are designed to be shareable.  Copying the URL from
+All URLs in OneHash Connect are designed to be shareable.  Copying the URL from
 the browser's address bar will work for all views, including searches.
 
 ### Get a link to a specific message
@@ -49,7 +49,7 @@ These links will still work even when the message is
 or [stream](/help/move-content-to-another-stream) or
 if its [topic is resolved](/help/resolve-a-topic).
 
-Zulip uses the same permanent link syntax when [quoting a
+OneHash Connect uses the same permanent link syntax when [quoting a
 message](/help/quote-and-reply).
 
 {start_tabs}
@@ -62,7 +62,7 @@ message](/help/quote-and-reply).
 
 !!! tip ""
 
-    If using Zulip in a browser, you can also click on the timestamp
+    If using OneHash Connect in a browser, you can also click on the timestamp
     of a message, and copy the URL from your browser's address bar.
 
 {end_tabs}
@@ -79,7 +79,7 @@ message](/help/quote-and-reply).
 
 !!! tip ""
 
-    If using Zulip in a browser, you can also click on a topic name,
+    If using OneHash Connect in a browser, you can also click on a topic name,
     and copy the URL from your browser's address bar.
 
 {tab|mobile}
@@ -104,7 +104,7 @@ message](/help/quote-and-reply).
 
 !!! tip ""
 
-    If using Zulip in a browser, you can also click on a stream in the
+    If using OneHash Connect in a browser, you can also click on a stream in the
     left sidebar, and copy the URL from your browser's address bar.
 
 {tab|mobile}
@@ -121,4 +121,4 @@ message](/help/quote-and-reply).
 
 * [Add a custom linkifier](/help/add-a-custom-linkifier)
 * [Message formatting](/help/format-your-message-using-markdown)
-* [Linking to your organization](/help/linking-to-zulip)
+* [Linking to your organization](/help/linking-to-connect)

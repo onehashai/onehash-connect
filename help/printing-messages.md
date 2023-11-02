@@ -1,6 +1,6 @@
 # Printing messages
 
-Zulip lets you print the messages in any view, including
+OneHash Connect lets you print the messages in any view, including
 [topics](/help/reading-topics), [direct message
 conversations](/help/reading-dms), and [searches](/help/search-for-messages).
 

@@ -2,7 +2,7 @@
 
 {!admin-only.md!}
 
-Zulip has a beta feature to send weekly emails to users who haven't
+OneHash Connect has a beta feature to send weekly emails to users who haven't
 been active for 5 or more days.  These emails include details on new
 streams created and highlights of traffic (of subscribed streams) that
 can intrigue users.
@@ -13,7 +13,7 @@ organizations that have enabled it.
 
 You can view a sample digest email for your account in HTML and
 plain-text formats by visiting `https://zulip.example.com/digest/`,
-if `https://zulip.example.com` is your Zulip server URL.
+if `https://zulip.example.com` is your OneHash Connect server URL.
 
 ## Enable digest emails for an organization
 

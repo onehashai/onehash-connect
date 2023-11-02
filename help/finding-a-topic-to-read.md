@@ -20,6 +20,6 @@
 
 ## Related articles
 
-* [Getting started with Zulip](/help/getting-started-with-zulip)
+* [Getting started with Connect](/help/getting-started-with-connect)
 * [Reading strategies](/help/reading-strategies)
 * [Reading conversations](/help/reading-topics)

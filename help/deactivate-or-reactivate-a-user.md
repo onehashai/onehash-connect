@@ -6,7 +6,7 @@
 
 When you deactivate a user:
 
-* The user will be immediately logged out of all Zulip sessions, including
+* The user will be immediately logged out of all OneHash Connect sessions, including
   desktop, web and mobile apps.
 
 * The user's credentials for logging in will no longer work, including password
@@ -24,8 +24,8 @@ When you deactivate a user:
 
 !!! warn ""
     You must go through the deactivation process below to fully remove a user's
-    access to your Zulip organization. Changing a user's password or removing
-    their single sign-on account will not log them out of their open Zulip
+    access to your OneHash Connect organization. Changing a user's password or removing
+    their single sign-on account will not log them out of their open OneHash Connect
     sessions, or disable their API keys.
 
 ### Deactivate a user

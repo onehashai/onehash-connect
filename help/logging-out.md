@@ -21,7 +21,7 @@ right corner of the app.
 !!! tip ""
 
     Logging out doesn't affect any other organizations you may be logged in
-    to. To log out of all your Zulip organizations, repeat the steps above
+    to. To log out of all your OneHash Connect organizations, repeat the steps above
     for each one.
 
 ## Related articles

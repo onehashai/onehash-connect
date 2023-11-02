@@ -58,7 +58,7 @@ def send_initial_direct_message(user: UserProfile) -> None:
                 )
             ).format(getting_started_url=getting_started_help)
         else:
-            getting_started_help = user.realm.uri + "/help/getting-started-with-zulip"
+            getting_started_help = user.realm.uri + "/help/getting-started-with-connect"
             getting_started_string = (
                 _(
                     "If you are new to OneHash Connect, check out our [Getting started guide]({getting_started_url})!"
@@ -225,7 +225,7 @@ def select_welcome_bot_response(human_response_lower: str) -> str:
                 _("Here are a few messages I understand:") + " ",
                 bot_commands(no_help_command=True) + "\n\n",
                 _(
-                    "Check out our [Getting started guide](/help/getting-started-with-zulip), "
+                    "Check out our [Getting started guide](/help/getting-started-with-connect), "
                     "or browse the [Help center](/help/) to learn more!"
                 ),
             ]

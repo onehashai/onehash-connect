@@ -1,6 +1,6 @@
 # Review your organization settings
 
-It's good to periodically review your organization's settings. Zulip is in
+It's good to periodically review your organization's settings. OneHash Connect is in
 active development and is constantly adding new features, and as your
 organization grows, features that may not have been applicable at a small
 scale may be applicable now.

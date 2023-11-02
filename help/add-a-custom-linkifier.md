@@ -7,7 +7,7 @@ party issue trackers, like GitHub, Salesforce, Zendesk, and others.
 For instance, you can add a linkifier that automatically turns `#2468`
 into a link to `https://github.com/zulip/zulip/issues/2468`.
 
-If the pattern appears in a topic, Zulip adds an **Open**
+If the pattern appears in a topic, OneHash Connect adds an **Open**
 (<i class="fa fa-external-link-square"></i>) button to the right of the
 topic in the message recipient bar that links to the appropriate URL.
 
@@ -67,9 +67,9 @@ Salesforce, Zendesk, and others.
 
 To set up linkifiers for issues or tickets in multiple projects,
 consider extending the `#2468` format with project-specific
-variants. For example, the Zulip development community
+variants. For example, the OneHash Connect development community
 [uses](https://zulip.com/development-community/#linking-to-github-issues-and-pull-requests)
-`#M2468` for an issue in the repository for the Zulip mobile app,
+`#M2468` for an issue in the repository for the OneHash Connect mobile app,
 `#D2468` and issue in the desktop app repository, etc.
 
 {start_tabs}
@@ -135,7 +135,7 @@ the precise behavior of URL templates.
 
 ### Linking to documentation pages
 
-This example pattern is a shorthand for linking to pages on Zulip's ReadTheDocs
+This example pattern is a shorthand for linking to pages on OneHash Connect's ReadTheDocs
 site.
 
 {start_tabs}

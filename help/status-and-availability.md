@@ -9,7 +9,7 @@ notice, the status emoji is shown next to your name in the sidebars, message
 feed, and compose box.
 
 Your **availability** is a colored dot (like <span class="indicator green
-solid"></span>) that indicates if you're currently active on Zulip, idle,
+solid"></span>) that indicates if you're currently active on OneHash Connect, idle,
 or offline. You can also [go invisible](#invisible-mode) to appear offline
 to other users.
 
@@ -101,14 +101,14 @@ With the compact option, only status emoji are shown.
 
 There are three availability states:
 
-* **Active** (<span class="indicator green solid"></span>): Zulip is
+* **Active** (<span class="indicator green solid"></span>): OneHash Connect is
   open and in focus on web, desktop or mobile, or was in the last 140
   seconds.
 
-* **Idle** (<span class="indicator orange"></span>): Zulip is open on
+* **Idle** (<span class="indicator orange"></span>): OneHash Connect is open on
   your computer (either desktop or web), but you are not active.
 
-* **Offline** (<span class="indicator grey"></span>): Zulip is not open
+* **Offline** (<span class="indicator grey"></span>): OneHash Connect is not open
   on your computer, or you have turned on invisible mode.
 
 You can see when someone offline was last active by hovering over their
@@ -116,10 +116,10 @@ name in the left or right sidebar.
 
 ### Invisible mode
 
-Zulip supports the privacy option of never updating the availability
+OneHash Connect supports the privacy option of never updating the availability
 information for your account. The result is that you will always
 appear to other users as **Offline**, regardless of your activity in
-Zulip.
+OneHash Connect.
 
 With this setting, your "Last active" time displayed to other users in
 the UI will be frozen as the approximate time you enabled this setting.

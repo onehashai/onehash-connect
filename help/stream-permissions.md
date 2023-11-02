@@ -1,7 +1,7 @@
 # Stream privacy settings
 
 Streams are similar to chat rooms, IRC channels, or email lists in that they
-determine who receives a message. Zulip supports a few types of streams:
+determine who receives a message. OneHash Connect supports a few types of streams:
 
 * **Public** (<i class="zulip-icon zulip-icon-hashtag"></i>):
   Members can join and view the complete message history.

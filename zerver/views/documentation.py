@@ -176,21 +176,21 @@ class MarkdownDirectoryView(ApiURLView):
             context["doc_root_title"] = "Help center"
             sidebar_article = self.get_path("include/sidebar_index")
             sidebar_index = sidebar_article.article_path
-            title_base = "Zulip help center"
+            title_base = "OneHash Connect help center"
         elif self.policies_view:
             context["page_is_policy_center"] = True
             context["doc_root"] = "/policies/"
             context["doc_root_title"] = "Terms and policies"
             sidebar_article = self.get_path("sidebar_index")
             sidebar_index = sidebar_article.article_path
-            title_base = "Zulip terms and policies"
+            title_base = "OneHash Connect terms and policies"
         elif self.api_doc_view:
             context["page_is_api_center"] = True
             context["doc_root"] = "/api/"
             context["doc_root_title"] = "API documentation"
             sidebar_article = self.get_path("sidebar_index")
             sidebar_index = sidebar_article.article_path
-            title_base = "Zulip API documentation"
+            title_base = "OneHash Connect API documentation"
         else:
             raise AssertionError("Invalid documentation view type")
 

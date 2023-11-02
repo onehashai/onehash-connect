@@ -1,11 +1,11 @@
 # Move content to another topic
 
-Zulip makes it possible to move messages between topics. This is
+OneHash Connect makes it possible to move messages between topics. This is
 useful for keeping messages organized when there is a digression, or
 the discussion shifts from the original topic. You can also [rename a
 topic](/help/rename-a-topic).
 
-When messages are moved, Zulip's [permanent links to messages in
+When messages are moved, OneHash Connect's [permanent links to messages in
 context](/help/link-to-a-message-or-conversation#get-a-link-to-a-specific-message)
 will automatically redirect to the new location of the message. [Muted
 topics](/help/mute-a-topic) are automatically migrated when an entire

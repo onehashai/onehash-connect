@@ -1,1 +1,1 @@
-Zulip supports Markdown formatting for tables.
+OneHash Connect supports Markdown formatting for tables.

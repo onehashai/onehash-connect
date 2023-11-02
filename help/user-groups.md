@@ -25,7 +25,7 @@ trying to send a message to a group of people, you'll want to either
 1. Click on the group name or description to edit.
 
 1. Add or remove users (including yourself). Click outside the box
-   to save.  Zulip will notify everyone who is added or removed.
+   to save.  OneHash Connect will notify everyone who is added or removed.
 
 !!! warn ""
     **Note**: If you remove yourself from a user group, you
@@ -55,7 +55,7 @@ trying to send a message to a group of people, you'll want to either
 
 {!admin-only.md!}
 
-By default, [all members](/help/roles-and-permissions) in a Zulip
+By default, [all members](/help/roles-and-permissions) in a OneHash Connect
 organization can create user groups and manage user groups that they
 are a member of. However, you can restrict that ability to specific
 [roles](/help/roles-and-permissions).
@@ -78,5 +78,5 @@ they belong. Guests cannot modify or create user groups.
 
 * [Mention a user or group](/help/mention-a-user-or-group)
 * [Create user groups](/help/create-user-groups)
-* [Setting up your organization](/help/getting-your-organization-started-with-zulip)
+* [Setting up your organization](/help/getting-your-organization-started-with-connect)
 * [Roles and permissions](/help/roles-and-permissions)

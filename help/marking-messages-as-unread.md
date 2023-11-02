@@ -1,6 +1,6 @@
 # Marking messages as unread
 
-Zulip lets you manually mark messages as unread. Specifically, Zulip offers a
+OneHash Connect lets you manually mark messages as unread. Specifically, OneHash Connect offers a
 **Mark as unread from here** option, which lets you mark the selected message
 and all newer messages in your current view as unread.
 

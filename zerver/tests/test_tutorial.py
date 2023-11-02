@@ -154,7 +154,7 @@ class TutorialTests(ZulipTestCase):
                 "Here are a few messages I understand: "
                 "`apps`, `profile`, `theme`, "
                 "`streams`, `topics`, `message formatting`, `keyboard shortcuts`.\n\n"
-                "Check out our [Getting started guide](/help/getting-started-with-zulip), "
+                "Check out our [Getting started guide](/help/getting-started-with-connect), "
                 "or browse the [Help center](/help/) to learn more!"
             )
             self.assertEqual(most_recent_message(user).content, expected_response)

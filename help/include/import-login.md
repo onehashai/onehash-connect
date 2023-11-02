@@ -1,7 +1,7 @@
 ## Logging in
 
 Once the import completes, all your users will have accounts in your
-new Zulip organization, but those accounts won't have passwords yet
+new OneHash Connect organization, but those accounts won't have passwords yet
 (since for very good security reasons, passwords are not exported).
 Your users will need to either authenticate using something like
 Google auth, or start by resetting their passwords.

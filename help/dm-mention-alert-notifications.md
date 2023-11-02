@@ -54,7 +54,7 @@ mentions](/help/restrict-wildcard-mentions) in large streams.
 
 ## Alert words
 
-Zulip lets you to specify **alert words or phrases** that send you a desktop
+OneHash Connect lets you to specify **alert words or phrases** that send you a desktop
 notification whenever the alert word is included in a message. Alert words are
 case-insensitive.
 

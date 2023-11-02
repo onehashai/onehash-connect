@@ -1,7 +1,7 @@
 # Import from Gitter (beta)
 
-You can import your current workspace into a Zulip organization. It's a great way
-to preserve your workspace history when you migrate to Zulip, and to
+You can import your current workspace into a OneHash Connect organization. It's a great way
+to preserve your workspace history when you migrate to OneHash Connect, and to
 make the transition easy for the members of your organization.
 
 The import will include your organization's:
@@ -13,20 +13,20 @@ The import will include your organization's:
 
 ## Import process overview
 
-To import your Gitter organization into Zulip, you will need to take the
+To import your Gitter organization into OneHash Connect, you will need to take the
 following steps, which are described in more detail below:
 
 {start_tabs}
 
 1. [Export your Gitter data.](#export-your-gitter-data)
 
-1. [Import your Gitter data into Zulip.](#import-your-data-into-zulip)
+1. [Import your Gitter data into OneHash Connect.](#import-your-data-into-connect)
 
-1. [Get your organization started with Zulip!](#get-your-organization-started-with-zulip)
+1. [Get your organization started with OneHash Connect!](#get-your-organization-started-with-connect)
 
 {end_tabs}
 
-## Import your organization from Gitter into Zulip
+## Import your organization from Gitter into OneHash Connect
 
 ### Export your Gitter data
 
@@ -39,7 +39,7 @@ to export all public channel messages.
    rooms that you are a part of.
 
 1. Select the `gitter_data.json` file of the room which you want to
-   import into Zulip.
+   import into OneHash Connect.
 
 !!! warn ""
 
@@ -49,7 +49,7 @@ to export all public channel messages.
 
 {end_tabs}
 
-### Import your data into Zulip
+### Import your data into OneHash Connect
 
 {!import-your-data-into-zulip.md!}
 
@@ -60,7 +60,7 @@ to export all public channel messages.
 {!import-into-a-zulip-cloud-organization.md!}
 
 1. The **username** that will have the [owner role](/help/roles-and-permissions)
-   in your Zulip organization.
+   in your OneHash Connect organization.
 
 {!import-zulip-cloud-organization-warning.md!}
 
@@ -69,7 +69,7 @@ to export all public channel messages.
 {!import-into-a-self-hosted-zulip-server.md!}
 
 1. To import into an organization hosted on the root domain
-   (`EXTERNAL_HOST`) of the Zulip installation, run the following
+   (`EXTERNAL_HOST`) of the OneHash Connect installation, run the following
    commands.
 
     {!import-self-hosted-server-tips.md!}
@@ -93,39 +93,39 @@ to export all public channel messages.
     ```
 
 1. Follow [step 4](https://zulip.readthedocs.io/en/stable/production/install.html#step-4-configure-and-use)
-   of the guide for [installing a new Zulip
+   of the guide for [installing a new OneHash Connect
    server](https://zulip.readthedocs.io/en/stable/production/install.html).
 
 {end_tabs}
 
 #### Import details
 
-Whether you are using Zulip Cloud or self-hosting Zulip, here are a few notes to
+Whether you are using OneHash Connect Cloud or self-hosting OneHash Connect, here are a few notes to
 keep in mind about the import process:
 
 - [Gitter's export tool](https://github.com/minrk/archive-gitter) does not export
-  workspace settings, so you will need to [configure the settings for your Zulip
+  workspace settings, so you will need to [configure the settings for your OneHash Connect
   organization](/help/customize-organization-settings). This includes settings
   like [email visibility](/help/configure-email-visibility),
   [message editing permissions](/help/restrict-message-editing-and-deletion),
   and [how users can join your organization](/help/restrict-account-creation).
 
 - Gitter's export tool does not export user settings, so users in your organization
-  may want to [customize their account settings](/help/getting-started-with-zulip).
+  may want to [customize their account settings](/help/getting-started-with-connect).
 
 - The [Gitter API][gitter-api-user-data] doesn't contain data on which users are
   administrators of a Gitter channel.  As a result, all Gitter users are imported
-  into Zulip as [members](/help/roles-and-permissions).
+  into OneHash Connect as [members](/help/roles-and-permissions).
 
 - Gitter's export tool doesn't export email addresses, only GitHub usernames.
-  Zulip's import tool will set GitHub as the only authentication method enabled
+  OneHash Connect's import tool will set GitHub as the only authentication method enabled
   by default to avoid user confusion.
 
-- You can merge multiple Gitter channels into a single Zulip
+- You can merge multiple Gitter channels into a single OneHash Connect
   organization using [this
   tool](https://github.com/minrk/archive-gitter/pull/5).
 
-- Zulip's import tool doesn't translate Gitter's Markdown format into Zulip's
+- OneHash Connect's import tool doesn't translate Gitter's Markdown format into OneHash Connect's
   Markdown format (there are a few corner cases where the syntax is different).
   Additionally, Gitter's issue mention syntax isn't translated.
 
@@ -134,7 +134,7 @@ keep in mind about the import process:
 [grant-admin-access]: https://zulip.readthedocs.io/en/stable/production/management-commands.html#other-useful-manage-py-commands
 [gitter-api-user-data]: https://developer.gitter.im/docs/user-resource
 
-## Get your organization started with Zulip
+## Get your organization started with OneHash Connect
 
 Once the import process is completed, you will need to:
 
@@ -151,17 +151,17 @@ Once the import process is completed, you will need to:
     * If you [import into Zulip Cloud](#import-your-data-into-zulip), you will
     specify the user whose account will have the owner role when you request the
     import.
-    * If you self-host, you can follow the Zulip documentation on [making a user an
+    * If you self-host, you can follow the OneHash Connect documentation on [making a user an
     organization owner from the terminal][grant-admin-access] to mark the appropriate
     users as organization owners.
 
-3. All users from your previous workspace will have accounts in your new Zulip
+3. All users from your previous workspace will have accounts in your new OneHash Connect
    organization. However, you will need to let users know about their new
    accounts, and [how they will log in for the first time
    ](#how-users-will-log-in-for-the-first-time).
 
-4. Share the URL for your new Zulip organization, and (recommended) the [Getting
-   started with Zulip guide](/help/getting-started-with-zulip).
+4. Share the URL for your new OneHash Connect organization, and (recommended) the [Getting
+   started with Zulip guide](/help/getting-started-with-connect).
 
 5. Migrate any [integrations](/integrations/).
 
@@ -179,11 +179,11 @@ notifications](/help/email-notifications).
 !!! warn ""
 
     A user's email notifications will not work until they update the email
-    associated with their Zulip account.
+    associated with their OneHash Connect account.
 
 When user accounts are imported, users initially do not have passwords
 configured. Users can [reset their own passwords](/help/change-your-password) by
-following the instructions on your Zulip organization's login page.
+following the instructions on your OneHash Connect organization's login page.
 
 !!! tip ""
 
@@ -191,6 +191,6 @@ following the instructions on your Zulip organization's login page.
 
 ## Related articles
 
-* [Choosing between Zulip Cloud and self-hosting](/help/zulip-cloud-or-self-hosting)
-* [Setting up your organization](/help/getting-your-organization-started-with-zulip)
-* [Getting started with Zulip](/help/getting-started-with-zulip)
+* [Choosing between Connect Cloud and self-hosting](/help/connect-cloud-or-self-hosting)
+* [Setting up your organization](/help/getting-your-organization-started-with-connect)
+* [Getting started with Connect](/help/getting-started-with-connect)

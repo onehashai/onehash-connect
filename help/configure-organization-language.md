@@ -4,7 +4,7 @@
 
 {!translation-project-info.md!}
 
-Each user can use Zulip with [their preferred language][user-lang].
+Each user can use OneHash Connect with [their preferred language][user-lang].
 Additionally, if your organization has a primary language other than
 American English, you can set the language used for the organization's
 automated messages and invitation emails. This setting:
@@ -17,7 +17,7 @@ automated messages and invitation emails. This setting:
 * Determines the language used for outgoing
   [invitation emails](/help/invite-new-users).
 
-* Is used as the default language for new user accounts when Zulip
+* Is used as the default language for new user accounts when OneHash Connect
   cannot detect their language preferences from their browser,
   including all users [created via the Zulip API][api-create-user].
 

@@ -1,6 +1,6 @@
 # Unsubscribe from a stream
 
-You can always unsubscribe from any stream in Zulip.
+You can always unsubscribe from any stream in OneHash Connect.
 
 {start_tabs}
 

@@ -19,7 +19,7 @@ A few settings to highlight:
 
 For many other settings, e.g., [message][message-editing-permissions] and
 [topic][topic-editing-permissions] editing permissions, you can experience how
-Zulip works for your organization before deciding what settings are best for
+OneHash Connect works for your organization before deciding what settings are best for
 you.
 
 [message-editing-permissions]: /help/restrict-message-editing-and-deletion

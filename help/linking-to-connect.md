@@ -1,6 +1,6 @@
 # Linking to your organization
 
-You can link to your Zulip organization from the web with a Zulip
+You can link to your OneHash Connect organization from the web with a OneHash Connect
 [shields.io](https://github.com/badges/shields) badge:
 
 [![Zulip chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://chat.zulip.org)
@@ -8,8 +8,8 @@ You can link to your Zulip organization from the web with a Zulip
 Good places for the badge include your project's landing page, support
 pages, and/or GitHub homepage.
 
-To embed a Zulip badge, copy and paste the following, replacing
-`https://chat.zulip.org` with the URL of your Zulip organization:
+To embed a OneHash Connect badge, copy and paste the following, replacing
+`https://chat.zulip.org` with the URL of your OneHash Connect organization:
 
 Markdown
 ```
@@ -24,4 +24,4 @@ HTML
 ## Related articles
 
 * [Link to a message or conversation](/help/link-to-a-message-or-conversation)
-* [Linking to the Zulip website](/help/linking-to-zulip-website)
+* [Linking to the Connect website](/help/linking-to-connect-website)

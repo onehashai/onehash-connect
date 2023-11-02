@@ -44,7 +44,7 @@
 
 ### Use an emoticon
 
-You can configure Zulip to convert emoticons into emoji, so that, e.g., `:)`
+You can configure OneHash Connect to convert emoticons into emoji, so that, e.g., `:)`
 will be displayed as
 <img
     src="/static/generated/emoji/images-google-64/1f642.png"

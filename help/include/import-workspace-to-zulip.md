@@ -1,5 +1,5 @@
-You can import your current workspace into a Zulip organization. It's a great way
-to preserve your workspace history when you migrate to Zulip, and to
+You can import your current workspace into a OneHash Connect organization. It's a great way
+to preserve your workspace history when you migrate to OneHash Connect, and to
 make the transition easy for the members of your organization.
 
 The import will include your organization's:

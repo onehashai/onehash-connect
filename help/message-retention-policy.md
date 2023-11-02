@@ -2,14 +2,14 @@
 
 {!owner-only.md!}
 
-By default, Zulip stores messages indefinitely, allowing full-text
+By default, OneHash Connect stores messages indefinitely, allowing full-text
 search of your complete history.
 
-Zulip supports configuring both a global organization-level message
+OneHash Connect supports configuring both a global organization-level message
 retention policy, as well as retention policies for individual
 streams.  These policies control how many days a message is stored
 before being automatically deleted (the default being forever).
-Zulip's system supports:
+OneHash Connect's system supports:
 
 * Setting an organization-level retention policy, which applies to
   all direct messages and all streams without a specific policy.
@@ -19,8 +19,8 @@ Zulip's system supports:
   forever on specific streams, or just to have a different retention
   period.
 
-In Zulip Cloud, message retention policies are available on the Zulip
-Cloud Standard and Zulip Cloud Plus [plans](https://zulip.com/plans/),
+In OneHash Connect Cloud, message retention policies are available on the OneHash Connect
+Cloud Standard and OneHash Connect Cloud Plus [plans](https://zulip.com/plans/),
 as well as for the hundreds of communities with sponsored Cloud
 Standard hosting.
 
@@ -62,10 +62,10 @@ Standard hosting.
 
 * Deleted messages are preserved temporarily in a special archive.  So
 if you discover a misconfiguration accidentally deleted content you
-meant to preserve, contact Zulip support promptly for assistance with
+meant to preserve, contact OneHash Connect support promptly for assistance with
 restoration.  See the [deletion
 documentation](/help/delete-a-message#delete-a-message-completely) for
-more details on precisely how message deletion works in Zulip.
+more details on precisely how message deletion works in OneHash Connect.
 
 ## Related articles
 

@@ -1,6 +1,6 @@
 # View messages sent by a user
 
-Zulip offers a convenient feature to search all messages sent by any user
+OneHash Connect offers a convenient feature to search all messages sent by any user
 including yourself.
 
 ## View messages sent by a user

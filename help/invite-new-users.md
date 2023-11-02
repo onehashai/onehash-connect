@@ -45,7 +45,7 @@ permission to invite users.
 
 !!! warn ""
     **Note**: As an anti-spam measure, the number of email invites you can send in a day is
-    limited on the Zulip Cloud Free plan. [Contact support](/help/contact-support)
+    limited on the OneHash Connect Cloud Free plan. [Contact support](/help/contact-support)
     if you hit the limit and want to invite more users.
 
 {end_tabs}
@@ -97,6 +97,6 @@ for invitations for the organization owners role.
 * [Configure default new user settings](/help/configure-default-new-user-settings)
 * [Configure organization language for automated messages and invitation emails][org-lang]
 * [Roles and permissions](/help/roles-and-permissions)
-* [Joining a Zulip organization](/help/join-a-zulip-organization)
+* [Joining a Connect organization](/help/join-a-connect-organization)
 
 [org-lang]: /help/configure-organization-language

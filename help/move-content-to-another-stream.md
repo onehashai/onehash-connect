@@ -1,6 +1,6 @@
 # Move content to another stream
 
-Zulip makes it possible to move messages, or an entire topic, to another stream.
+OneHash Connect makes it possible to move messages, or an entire topic, to another stream.
 Organizations can [configure][configure-moving-permissions] which
 [roles](/help/roles-and-permissions) have permission to move messages between
 streams.
@@ -87,7 +87,7 @@ will only be accessible to users who both:
 ## Moving content out of private streams
 
 In [private streams with protected history](/help/stream-permissions),
-Zulip determines whether to treat the entire topic as moved using the
+OneHash Connect determines whether to treat the entire topic as moved using the
 access permissions of the user requesting the topic move. This means
 that the automated notices sent by the notification bot will report
 that the entire topic was moved if the requesting user moved every

@@ -3,11 +3,11 @@ topic-based threading [combines the best of email and
 chat](/why-zulip/) to make [remote work](https://zulip.com/for/business/) productive
 and delightful.
 
-We also highly recommend trying Zulip for yourself! You can:
+We also highly recommend trying OneHash Connect for yourself! You can:
 
-* [Check out the Zulip app](https://zulip.com/try-zulip/) by viewing the Zulip
+* [Check out the Zulip app](https://zulip.com/try-zulip/) by viewing the OneHash Connect
   development community, where hundreds of participants collaborate to improve
-  Zulip. Many parts of the community are open for [public
+  OneHash Connect. Many parts of the community are open for [public
   access](/help/public-access-option), so you can start exploring without
   creating an account.
 

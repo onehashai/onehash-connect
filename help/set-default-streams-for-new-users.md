@@ -2,7 +2,7 @@
 
 {!admin-only.md!}
 
-When new users join a Zulip organization, they are subscribed to a default
+When new users join a OneHash Connect organization, they are subscribed to a default
 set of streams. Organization administrators can add or remove streams from
 that default set.
 

@@ -2,7 +2,7 @@
 
 {!admin-only.md!}
 
-Zulip lets you separately configure permissions for editing and deleting
+OneHash Connect lets you separately configure permissions for editing and deleting
 messages, and you can set time limits for both actions. Regardless of the
 configuration you select:
 
@@ -14,7 +14,7 @@ all the message content. This is different from proper message deletion in two
 ways: the original content will still show up in [message edit
 history](/help/view-a-messages-edit-history), and will be included in
 [data exports](/help/export-your-organization). Deletion permanently (and
-irretrievably) removes the message from Zulip.
+irretrievably) removes the message from OneHash Connect.
 
 ## Configure message editing permissions
 

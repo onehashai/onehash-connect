@@ -3,7 +3,7 @@ received, which combines stream messages and direct messages. It's a great way
 to see new messages as they come in.
 
 You can configure **All messages** to be the [home
-view](/help/configure-home-view#configure-home-view) for the Zulip web app.
+view](/help/configure-home-view#configure-home-view) for the OneHash Connect web app.
 
 {start_tabs}
 
