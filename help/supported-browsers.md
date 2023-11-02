@@ -1,8 +1,8 @@
 # Supported browsers
 
 In addition to the [mobile and desktop apps](https://zulip.com/apps/),
-Zulip works great in all major modern web browsers. We recommend
-pinning the Zulip tab in your favorite browser, so that it's always
+OneHash Connect works great in all major modern web browsers. We recommend
+pinning the OneHash Connect tab in your favorite browser, so that it's always
 easy to find.
 
 For the best user experience, the latest stable versions of the
@@ -15,7 +15,7 @@ browsers below are recommended.
 
 ## Multi protocol chat apps
 
-Zulip is supported by most browser-based multi protocol desktop chat apps like
+OneHash Connect is supported by most browser-based multi protocol desktop chat apps like
 [Rambox](https://rambox.pro) and [Ferdium](https://ferdium.org/).
 
 !!! tip ""

@@ -1,14 +1,14 @@
 # Searching for messages
 
-It's easy to find the right conversation with Zulip's powerful full-text search.
+It's easy to find the right conversation with OneHash Connect's powerful full-text search.
 You can search for messages using keywords and filters via the search bar at the
 top of the app. There is a convenient [**search filters reference**](#search-filters-reference)
-in the Zulip app that you can use whenever you need a reminder of the search
+in the OneHash Connect app that you can use whenever you need a reminder of the search
 filters below.
 
 ## Keyword search
 
-Zulip lets you search messages and topics by keyword. For example:
+OneHash Connect lets you search messages and topics by keyword. For example:
 
 * `new logo`: Search for messages with both `new` and `logo` in the message or
   its topic.
@@ -18,9 +18,9 @@ Zulip lets you search messages and topics by keyword. For example:
 Some details to keep in mind:
 
 - Keywords are case-insensitive, so `wave` will also match `Wave`.
-- Zulip will find messages containing similar keywords (keywords with the same
+- OneHash Connect will find messages containing similar keywords (keywords with the same
   stem), so, e.g., `wave` will match `waves` and `waving`.
-- Zulip search ignores very common words like `a`, `the`, and about 100 others.
+- OneHash Connect search ignores very common words like `a`, `the`, and about 100 others.
 - [Emoji](/help/emoji-and-emoticons) in messages (but not [emoji
   reactions](/help/emoji-reactions)) are included in searches, so if you search
   for `octopus`, your results will include messages with the `:octopus:` emoji (
@@ -29,7 +29,7 @@ Some details to keep in mind:
 
 ## Search filters
 
-Zulip also offers a wide array of search filters, which can be used on their
+OneHash Connect also offers a wide array of search filters, which can be used on their
 own, or in combination with keywords. For example:
 
 * `stream:design`: Navigate to **#design**.
@@ -40,13 +40,13 @@ own, or in combination with keywords. For example:
 
 !!! tip ""
 
-    As you start typing into the search box, Zulip will suggest search filters
+    As you start typing into the search box, OneHash Connect will suggest search filters
     you can use.
 
 ### Search by location
 
 Sometimes you know approximately where the message you are looking for was sent.
-Zulip offers the following filters based on the location of the message.
+OneHash Connect offers the following filters based on the location of the message.
 
 * `stream:design`: Search within the stream **#design**.
 * `stream:design topic:new+logo`: Search within the topic "new logo" in
@@ -102,7 +102,7 @@ Zulip offers the following filters based on the location of the message.
 
 ### Search by message ID
 
-Each message in Zulip has a unique ID, which is used for [linking to a specific
+Each message in OneHash Connect has a unique ID, which is used for [linking to a specific
 message](/help/link-to-a-message-or-conversation#link-to-zulip-from-anywhere).
 You can use the search bar to navigate to a message by its ID.
 
@@ -112,7 +112,7 @@ You can use the search bar to navigate to a message by its ID.
 
 ### Exclude filters
 
-All of Zulip's search filters can be negated to **exclude** messages matching
+All of OneHash Connect's search filters can be negated to **exclude** messages matching
 the specified rule. For example:
 
 - `stream:design -is:resolved -has:image`: Search messages in [unresolved
@@ -121,12 +121,12 @@ the specified rule. For example:
 
 ## Searching shared history
 
-Zulip's [stream permissions](/help/stream-permissions) model allows access to
+OneHash Connect's [stream permissions](/help/stream-permissions) model allows access to
 the full history of public streams and private streams with shared history,
 including messages sent before you joined the stream (or organization), or those
 sent to public streams you are not subscribed to.
 
-By default, Zulip searches messages in your history, i.e., the
+By default, OneHash Connect searches messages in your history, i.e., the
 messages you actually received.  This avoids cluttering search results
 with irrelevant messages from public streams you're not interested in.
 
@@ -144,13 +144,13 @@ access to in the selected stream(s).  For example:
 
 ## Linking to search results
 
-When you search Zulip, the URL shown in the address bar of the Zulip web app is a
+When you search OneHash Connect, the URL shown in the address bar of the OneHash Connect web app is a
 permanent link to your search. You can share this link with others, and they
 will see *their own* search results for your query.
 
 ## Search filters reference
 
-A summary of the search filters above is available in the Zulip app.
+A summary of the search filters above is available in the OneHash Connect app.
 
 {start_tabs}
 
@@ -162,4 +162,4 @@ A summary of the search filters above is available in the Zulip app.
 
 * [Configure multi-language search](/help/configure-multi-language-search)
 * [Link to a message or
-  conversation](/help/link-to-a-message-or-conversation#link-to-zulip-from-anywhere)
+  conversation](/help/link-to-a-message-or-conversation#link-to-connect-from-anywhere)

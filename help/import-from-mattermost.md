@@ -4,20 +4,20 @@
 
 ## Import process overview
 
-To import your Mattermost organization into Zulip, you will need to take the
+To import your Mattermost organization into OneHash Connect, you will need to take the
 following steps, which are described in more detail below:
 
 {start_tabs}
 
 1. [Export your Mattermost data](#export-your-mattermost-data).
 
-1. [Import your Mattermost data into Zulip](#import-your-data-into-zulip).
+1. [Import your Mattermost data into Zulip](#import-your-data-into-connect).
 
-1. [Get your organization started with Zulip](#get-your-organization-started-with-zulip)!
+1. [Get your organization started with Zulip](#get-your-organization-started-with-connect)!
 
 {end_tabs}
 
-## Import your organization from Mattermost into Zulip
+## Import your organization from Mattermost into OneHash Connect
 
 ### Export your Mattermost data
 
@@ -164,7 +164,7 @@ Replace `<username>` and `<server_ip>` with the appropriate values below.
     ```
 {end_tabs}
 
-### Import your data into Zulip
+### Import your data into OneHash Connect
 
 {!import-your-data-into-zulip.md!}
 
@@ -181,7 +181,7 @@ Replace `<username>` and `<server_ip>` with the appropriate values below.
 {!import-into-a-self-hosted-zulip-server.md!}
 
 1. To import into an organization hosted on the root domain
-   (`EXTERNAL_HOST`) of the Zulip installation, run the following commands,
+   (`EXTERNAL_HOST`) of the OneHash Connect installation, run the following commands,
    replacing `<team-name>` with the name of the Mattermost team you want to import.
 
     {!import-self-hosted-server-tips.md!}
@@ -213,7 +213,7 @@ Replace `<username>` and `<server_ip>` with the appropriate values below.
 {!import-into-a-self-hosted-zulip-server.md!}
 
 1. To import into an organization hosted on the root domain
-   (`EXTERNAL_HOST`) of the Zulip installation, run the following commands,
+   (`EXTERNAL_HOST`) of the OneHash Connect installation, run the following commands,
    replacing `<team-name>` with the name of the Mattermost team you want to import.
 
     {!import-self-hosted-server-tips.md!}
@@ -248,7 +248,7 @@ Replace `<username>` and `<server_ip>` with the appropriate values below.
 
 #### Import details
 
-Whether you are using Zulip Cloud or self-hosting Zulip, here are a few notes to
+Whether you are using OneHash Connect Cloud or self-hosting OneHash Connect, here are a few notes to
 keep in mind about the import process:
 
 - Mattermost does not export workspace settings, so you will need to [configure
@@ -258,10 +258,10 @@ keep in mind about the import process:
   [message editing permissions](/help/restrict-message-editing-and-deletion),
   and [how users can join your organization](/help/restrict-account-creation).
 
-- Mattermost's user roles are mapped to Zulip's [user
+- Mattermost's user roles are mapped to OneHash Connect's [user
   roles](/help/roles-and-permissions) in the following way:
 
-| Mattermost role         | Zulip role    |
+| Mattermost role         | OneHash Connect role    |
 |-------------------------|---------------|
 | Team administrator      | Owner         |
 | Member                  | Member        |
@@ -276,7 +276,7 @@ keep in mind about the import process:
 - Messages in threads are imported, but they are not explicitly marked as
   being in a thread.
 
-## Get your organization started with Zulip
+## Get your organization started with OneHash Connect
 
 {!import-get-your-organization-started.md!}
 
@@ -286,6 +286,6 @@ keep in mind about the import process:
 
 ## Related articles
 
-* [Choosing between Zulip Cloud and self-hosting](/help/zulip-cloud-or-self-hosting)
-* [Setting up your organization](/help/getting-your-organization-started-with-zulip)
-* [Getting started with Zulip](/help/getting-started-with-zulip)
+* [Choosing between Connect Cloud and self-hosting](/help/connect-cloud-or-self-hosting)
+* [Setting up your organization](/help/getting-your-organization-started-with-connect)
+* [Getting started with Connect](/help/getting-started-with-connect)

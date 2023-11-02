@@ -4,6 +4,6 @@
 
 ## Related articles
 
-* [Setting up your organization](/help/getting-your-organization-started-with-zulip)
+* [Setting up your organization](/help/getting-your-organization-started-with-connect)
 * [Invite users to join](/help/invite-users-to-join)
-* [Getting started with Zulip](/help/getting-started-with-zulip)
+* [Getting started with Connect](/help/getting-started-with-connect)

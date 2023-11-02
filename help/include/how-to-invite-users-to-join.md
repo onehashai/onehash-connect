@@ -2,7 +2,7 @@
 {tab|require-invitations}
 
 1. Configure [allowed authentication
-   methods](/help/configure-authentication-methods). By default, Zulip allows
+   methods](/help/configure-authentication-methods). By default, OneHash Connect allows
    logging in via email/password as well as various social authentication
    providers like Google, GitHub, GitLab, and Apple. Users can [log in with any
    allowed authentication method][logging-in], regardless of how they signed up.
@@ -18,7 +18,7 @@
    for your organization.
 
 1. Share a link to your registration page, which is
-   https://your-domain.zulipchat.com for Zulip Cloud organizations.
+   https://your-domain.zulipchat.com for OneHash Connect Cloud organizations.
 
 {end_tabs}
 

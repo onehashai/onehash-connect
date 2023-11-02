@@ -2,7 +2,7 @@
 
 Bots allow you to
 
-* Send content into and out of Zulip.
+* Send content into and out of OneHash Connect.
 * Send content to and from another product.
 * Automate tasks a human user could do.
 
@@ -11,7 +11,7 @@ A bot that sends content to or from another product is often called an
 
 ## Pre-made bots
 
-Zulip natively supports integrations with over one hundred products, and with
+OneHash Connect natively supports integrations with over one hundred products, and with
 almost a thousand more through Zapier and IFTTT. If you're looking to add an
 integration with an existing product, see our
 [list of integrations](/integrations/), along with those of
@@ -26,11 +26,11 @@ Each bot has a **name**, **profile picture**, **email**, **bot type** and **API 
 are the most visible attributes of a bot.
 
 * The **email** is not used for anything, and will likely be removed in a
-future version of Zulip.
+future version of OneHash Connect.
 
 * The **bot type** determines what the bot can and can't do (see below).
 
-* The **API key** is how the bot identifies itself to Zulip. Anyone with the
+* The **API key** is how the bot identifies itself to OneHash Connect. Anyone with the
   bot's API key can impersonate the bot.
 
 ## Bot type
@@ -40,7 +40,7 @@ The **bot type** determines what the bot can do.
 Bot type | Permissions | Common uses
 ---|---|---
 Generic | Like a normal user account | Automating tasks, bots that listen to all messages on a stream
-Incoming webhook | Limited to only sending messages into Zulip | Automated notifications into Zulip
+Incoming webhook | Limited to only sending messages into OneHash Connect | Automated notifications into OneHash Connect
 Outgoing webhook | Generic bot that also receives new messages via HTTP post requests | Third party integrations, most custom bots
 
 It's generally best to pick the most restricted bot type that is sufficient
@@ -60,24 +60,24 @@ A few more details:
   history, a bot can only access messages sent after it subscribed
   to the stream.
 
-* **Generic**: A generic bot is like a normal Zulip user account that
+* **Generic**: A generic bot is like a normal OneHash Connect user account that
   cannot log in via a browser.  Note that if you truly want to
-  impersonate yourself (e.g. write messages that come from your Zulip
+  impersonate yourself (e.g. write messages that come from your OneHash Connect
   account), you'll need to use your **personal API key**.
 
 * **Outgoing webhook**: The bot can read direct messages where the bot is a
   participant, and stream messages where the bot is [mentioned](/help/mention-a-user-or-group). When the
   bot is DM'd or mentioned, it POSTs the message content to a URL of your
-  choice. The POST request format can be in a Zulip format or a
+  choice. The POST request format can be in a OneHash Connect format or a
   Slack-compatible format.
 
-    This is the preferred bot type for interactive bots built on top of Zulip
+    This is the preferred bot type for interactive bots built on top of OneHash Connect
     Botserver.
 
 ## Adding bots
 
 By default, anyone other than guests can [add a bot](/help/add-a-bot-or-integration) to a
-Zulip organization, but administrators can
+OneHash Connect organization, but administrators can
 [restrict bot creation](/help/restrict-bot-creation). Any bot that is added
 is visible and available for anyone to use.
 

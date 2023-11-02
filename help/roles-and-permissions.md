@@ -1,6 +1,6 @@
 # Roles and permissions
 
-There are several possible roles in a Zulip organization.
+There are several possible roles in a OneHash Connect organization.
 
 * **Organization owner**: Can manage users, public streams,
   organization settings, and billing.
@@ -45,4 +45,4 @@ this means "organization owners and administrators" can do that thing.
 
 * [Stream permissions](/help/stream-permissions)
 * [Inviting new users](/help/invite-new-users)
-* [Zulip Cloud billing](/help/zulip-cloud-billing)
+* [Connect Cloud billing](/help/connect-cloud-billing)

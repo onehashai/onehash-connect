@@ -1,6 +1,6 @@
 # View and browse images
 
-When someone pastes or attaches an image to a message, Zulip shows a small
+When someone pastes or attaches an image to a message, OneHash Connect shows a small
 preview. Click on the image preview to open the **image viewer**.
 
 In the image viewer, you can:

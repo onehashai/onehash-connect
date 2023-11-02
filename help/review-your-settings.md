@@ -1,8 +1,8 @@
 # Review your settings
 
-We recommend reviewing all of your settings when you start using Zulip, and
+We recommend reviewing all of your settings when you start using OneHash Connect, and
 then once again a few weeks later once you've gotten a better feel for how
-you use Zulip.
+you use OneHash Connect.
 
 ## Review your settings
 

@@ -787,11 +787,11 @@ def send_account_registered_email(user: UserProfile, realm_creation: bool = Fals
     )
 
     account_registered_context["getting_organization_started_link"] = (
-        realm_url + "/help/getting-your-organization-started-with-zulip"
+        realm_url + "/help/getting-your-organization-started-with-connect"
     )
 
     account_registered_context["getting_user_started_link"] = (
-        realm_url + "/help/getting-started-with-zulip"
+        realm_url + "/help/getting-started-with-connect"
     )
 
     # Imported here to avoid import cycles.

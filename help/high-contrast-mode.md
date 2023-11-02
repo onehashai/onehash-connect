@@ -1,6 +1,6 @@
 # High contrast mode
 
-By default, some visual elements in Zulip (such as date/time stamps, certain
+By default, some visual elements in OneHash Connect (such as date/time stamps, certain
 buttons, links and unread counts) are intentionally light. **High contrast mode**
 increases the contrast of these elements to meet the AA level of the
 W3C's Web Content Accessibility Guidelines.
@@ -11,4 +11,4 @@ W3C's Web Content Accessibility Guidelines.
 
 ## Related articles
 
-* [Accessibility in Zulip](https://zulip.readthedocs.io/en/stable/subsystems/accessibility.html)
+* [Accessibility in Connect](https://zulip.readthedocs.io/en/stable/subsystems/accessibility.html)

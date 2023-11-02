@@ -1,6 +1,6 @@
 # Configure how links open in mobile apps
 
-You can configure whether website links will open directly in the Zulip app, or
+You can configure whether website links will open directly in the OneHash Connect app, or
 in your device's default browser.
 
 ## Configure whether to open links within the app

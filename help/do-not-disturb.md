@@ -1,9 +1,9 @@
 # Do Not Disturb
 
-The Zulip desktop app offers a **Do Not Disturb (DND)** mode. Turning on **Do Not
+The OneHash Connect desktop app offers a **Do Not Disturb (DND)** mode. Turning on **Do Not
 Disturb** mode disables [desktop notifications](/help/desktop-notifications)
 across all the organizations you have
-[added](/help/logging-in#log-in-for-the-first-time) to the Zulip desktop app.
+[added](/help/logging-in#log-in-for-the-first-time) to the OneHash Connect desktop app.
 This can be convenient for avoiding interruptions during a meeting, or when you need
 time to focus on your work.
 
@@ -13,7 +13,7 @@ time to focus on your work.
     Other types of notifications will not be affected, including [mobile
     notifications](/help/mobile-notifications), [email
     notifications](/help/email-notifications), and [desktop
-    notifications](/help/desktop-notifications) in the Zulip web app.
+    notifications](/help/desktop-notifications) in the OneHash Connect web app.
 
 ## Toggle Do Not Disturb
 
@@ -23,7 +23,7 @@ time to focus on your work.
 
 1. Click the **bell** (<i class="fa fa-bell"></i>) or **bell with a slash** (<i
    class="fa fa-bell-slash"></i>) icon in the **organizations sidebar** on the
-   left. You can also select **Toggle Do Not Disturb** from the **Zulip** menu in
+   left. You can also select **Toggle Do Not Disturb** from the **OneHash Connect** menu in
    the top menu bar.
 
 {!desktop-toggle-sidebar-tip.md!}

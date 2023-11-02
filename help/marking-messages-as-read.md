@@ -1,15 +1,15 @@
 # Marking messages as read
 
-Zulip automatically keeps track of which messages you have and haven't read.
+OneHash Connect automatically keeps track of which messages you have and haven't read.
 Unread messages have a line along the left side, which fades when the message
 gets marked as read.
 
-Zulip offers tools to manually mark one or more messages as read, and you can
+OneHash Connect offers tools to manually mark one or more messages as read, and you can
 configure whether messages are marked as read automatically when you scroll.
 
 ## Configure whether messages are automatically marked as read
 
-You may want to configure whether or not the Zulip app will automatically
+You may want to configure whether or not the OneHash Connect app will automatically
 mark messages as read. For example, it can be useful to set the mobile app to
 never mark messages as read if you often want to follow up on messages when you
 are at your computer. You will still be able to

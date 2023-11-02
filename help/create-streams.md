@@ -14,8 +14,8 @@ For more details about stream settings, see [Create a stream](/help/create-a-str
 
 ## Related articles
 
-* [Setting up your organization](/help/getting-your-organization-started-with-zulip)
+* [Setting up your organization](/help/getting-your-organization-started-with-connect)
 * [Create a stream](/help/create-a-stream#stream-options)
 * [Stream permissions](/help/stream-permissions)
 * [Set default streams for new users](/help/set-default-streams-for-new-users)
-* [Getting started with Zulip](/help/getting-started-with-zulip)
+* [Getting started with Connect](/help/getting-started-with-connect)

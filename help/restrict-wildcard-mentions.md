@@ -8,7 +8,7 @@ mentions](/help/dm-mention-alert-notifications#wildcard-mentions) in
 large streams (defined for this purpose as streams with more than 15
 subscribers).
 
-Zulip allows anyone to use wildcard mentions in streams with at most
+OneHash Connect allows anyone to use wildcard mentions in streams with at most
 15 subscribers. The default allows only organization administrators to
 use wildcard mentions in large streams.
 

@@ -17,7 +17,7 @@
 
 !!! warn ""
 
-    In Zulip, you can compose a message to a different place than the one you
+    In OneHash Connect, you can compose a message to a different place than the one you
     are viewing. In this situation, the message feed will fade to indicate
     what's going on.
 
@@ -36,7 +36,7 @@
 
 !!! warn ""
 
-    In Zulip, you can compose a message to a different place than the one you
+    In OneHash Connect, you can compose a message to a different place than the one you
     are viewing. In this situation, the message feed will fade to indicate
     what's going on.
 

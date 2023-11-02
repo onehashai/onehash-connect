@@ -1,6 +1,6 @@
 # Change your name
 
-By default, everyone can change their name in Zulip. You can write your name
+By default, everyone can change their name in OneHash Connect. You can write your name
 in any language you'd like.
 
 Organization administrators can [change anyone's name](/help/change-a-users-name), and

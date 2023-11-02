@@ -1,6 +1,6 @@
 # Message actions
 
-There are many ways to interact with a Zulip message.
+There are many ways to interact with a OneHash Connect message.
 
 ![Streams and topics](/static/images/help/message-actions.png)
 

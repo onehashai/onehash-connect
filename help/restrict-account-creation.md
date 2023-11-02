@@ -2,14 +2,14 @@
 
 {!owner-only.md!}
 
-Each Zulip account is associated with an email address. If your organization
+Each OneHash Connect account is associated with an email address. If your organization
 allows multiple authentication methods, it doesn't matter which one is used to
 create an account. All authentication methods will work for all users in your
 organization, provided that they are associated with the account email. To log
 in with email, users are required to verify their email account by clicking on a
 validation link.
 
-Zulip provides a number of configuration options to control who can create a new
+OneHash Connect provides a number of configuration options to control who can create a new
 account and how users access their accounts:
 
 * You can [require an invitation](#set-whether-invitations-are-required-to-join)
@@ -17,7 +17,7 @@ account and how users access their accounts:
   join](#set-whether-invitations-are-required-to-join) without an invitation.
 
 * You can [restrict the ability to invite new users](#change-who-can-send-invitations) to
- join your Zulip organzation to specific [roles](/help/roles-and-permissions).
+ join your OneHash Connect organzation to specific [roles](/help/roles-and-permissions).
 
 Regardless of whether invitations are required, you can:
 

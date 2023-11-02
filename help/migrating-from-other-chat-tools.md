@@ -4,9 +4,9 @@
 
 ## Related articles
 
-* [Zulip Cloud or self-hosting?](/help/zulip-cloud-or-self-hosting)
-* [Trying out Zulip](/help/trying-out-zulip)
-* [Self-hosting Zulip](/self-hosting/)
-* [Installing a Zulip server](https://zulip.readthedocs.io/en/stable/production/install.html)
-* [Setting up your organization](/help/getting-your-organization-started-with-zulip)
-* [Getting started with Zulip](/help/getting-started-with-zulip)
+* [Connect Cloud or self-hosting?](/help/connect-cloud-or-self-hosting)
+* [Trying out Connect](/help/trying-out-connect)
+* [Self-hosting Connect](/self-hosting/)
+* [Installing a Connect server](https://zulip.readthedocs.io/en/stable/production/install.html)
+* [Setting up your organization](/help/getting-your-organization-started-with-connect)
+* [Getting started with Connect](/help/getting-started-with-connect)

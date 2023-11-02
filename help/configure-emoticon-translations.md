@@ -13,7 +13,7 @@ or
     alt="slight_frown"
     class="emoji-small"
 />
-by Zulip.
+by OneHash Connect.
 
 ## Configure emoticon translations
 

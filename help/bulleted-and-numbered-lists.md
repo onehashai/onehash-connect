@@ -1,6 +1,6 @@
 # Bulleted and numbered lists
 
-Zulip supports Markdown formatting for bulleted and numbered lists.
+OneHash Connect supports Markdown formatting for bulleted and numbered lists.
 
 {!format-lists.md!}
 

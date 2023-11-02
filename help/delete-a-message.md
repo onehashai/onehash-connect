@@ -1,6 +1,6 @@
 # Delete a message
 
-Zulip lets you delete the content of your messages or delete messages completely
+OneHash Connect lets you delete the content of your messages or delete messages completely
 if these actions are allowed in your organization. Only server administrators
 can restore deleted messages.
 
@@ -14,7 +14,7 @@ users' messages completely, but cannot edit a message to delete its content.
 Editing a message to delete its content will cause the message to be displayed
 as **(deleted)**.  The original sender and timestamp of the message will still
 be displayed, and the original content of the message is still accessible via
-Zulip's [edit history](/help/view-a-messages-edit-history) feature.  This can be
+OneHash Connect's [edit history](/help/view-a-messages-edit-history) feature.  This can be
 the best option for avoiding confusion if other users have already responded to
 your message.
 
@@ -46,7 +46,7 @@ your message.
 
 In some cases, such as when a message accidentally shares secret information, or
 contains spam or abuse, it makes sense to delete a message completely. Deleted
-messages will immediately disappear from the UI in all official Zulip clients.
+messages will immediately disappear from the UI in all official OneHash Connect clients.
 
 Any uploaded files referenced only by deleted messages will be immediately
 inaccessible. Note that an uploaded file shared in multiple messages will be
@@ -84,7 +84,7 @@ For protection against accidental or immediately regretted
 deletions, messages deleted directly or via a [message retention
 policy](/help/message-retention-policy) are archived for 30 days in a
 format that can be restored by a server administrator.  After that
-time, they are permanently and irrecoverably deleted from the Zulip
+time, they are permanently and irrecoverably deleted from the OneHash Connect
 server.  Server administrators can adjust the archival time using
 the `ARCHIVED_DATA_VACUUMING_DELAY_DAYS` setting.
 

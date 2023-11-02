@@ -2,7 +2,7 @@
 
 You can customize whether [stream messages](/help/stream-notifications),
 [direct messages](/help/dm-mention-alert-notifications) and
-[mentions][notifications-wildcard-mentions] trigger notifications in Zulip's
+[mentions][notifications-wildcard-mentions] trigger notifications in OneHash Connect's
 [Android](https://zulip.com/apps/ios) and [iOS](https://zulip.com/apps/ios)
 apps.
 
@@ -21,11 +21,11 @@ apps.
 
 ## Mobile notifications while online
 
-You can customize whether or not Zulip will send mobile push
-notifications while you are actively using one of the Zulip apps.
+You can customize whether or not OneHash Connect will send mobile push
+notifications while you are actively using one of the OneHash Connect apps.
 
 !!! tip ""
-    When testing mobile notifications, make sure Zulip is
+    When testing mobile notifications, make sure OneHash Connect is
     configured to send mobile notifications even when you're online.
 
 {start_tabs}
@@ -42,12 +42,12 @@ notifications while you are actively using one of the Zulip apps.
 ## Troubleshooting mobile notifications
 
 Some Android vendors have added extra device-level settings that can impact the
-delivery of mobile notifications to apps like Zulip. If you're having issues
-with Zulip notifications on your Android phone, we recommend Signal's excellent
+delivery of mobile notifications to apps like OneHash Connect. If you're having issues
+with OneHash Connect notifications on your Android phone, we recommend Signal's excellent
 [troubleshooting guide](https://support.signal.org/hc/en-us/articles/360007318711-Troubleshooting-Notifications#android_notifications_troubleshooting),
 which explains the notification settings for many popular Android vendors.
 
-### Contacting Zulip support
+### Contacting OneHash Connect support
 
 If you are still having trouble with your push notifications, you can send an
 email to [Zulip support](/help/contact-support). Please be sure to include the
@@ -65,8 +65,8 @@ troubleshooting data provided by the mobile app.
 
 1. Tap **Troubleshooting**.
 
-1. Use the **Copy to clipboard** button or the **Email support@zulip.com**
-   button to email the troubleshooting data to the Zulip support team.
+1. Use the **Copy to clipboard** button or the **Email support@onehash.ai**
+   button to email the troubleshooting data to the OneHash Connect support team.
 
 {end_tabs}
 

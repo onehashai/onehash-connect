@@ -4,8 +4,8 @@
 
 Organization administrators can configure the default values of
 personal preference settings for new users joining the
-organization. This can help seamlessly customize the Zulip experience
-to match how the organization in question is using Zulip.
+organization. This can help seamlessly customize the OneHash Connect experience
+to match how the organization in question is using OneHash Connect.
 
 Existing users' preferences cannot be modified by administrators, and
 users will be able to customize their own settings once they
@@ -45,8 +45,8 @@ preference settings, including the following:
 ## Configure default language for new users
 
 Your organization's [language](/help/configure-organization-language) will be
-the default language for new users when Zulip cannot detect their language
-preferences from their browser, including all users [created via the Zulip
+the default language for new users when OneHash Connect cannot detect their language
+preferences from their browser, including all users [created via the OneHash Connect
 API](/api/create-user).
 
 {start_tabs}
@@ -62,7 +62,7 @@ API](/api/create-user).
 
 ## Related articles
 
-* [Setting up your organization](/help/getting-your-organization-started-with-zulip)
+* [Setting up your organization](/help/getting-your-organization-started-with-connect)
 * [Customize settings for new users](/help/customize-settings-for-new-users)
 * [Set default streams for new users](/help/set-default-streams-for-new-users)
 * [Invite users to join](/help/invite-users-to-join)

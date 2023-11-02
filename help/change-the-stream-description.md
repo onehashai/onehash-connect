@@ -5,9 +5,9 @@
 Stream descriptions can be used to explain the purpose of a stream and link to
 usage guidelines, resources, or related streams.
 
-Stream descriptions support Zulip's standard [Markdown
+Stream descriptions support OneHash Connect's standard [Markdown
 formatting][markdown-formatting], with the exception that image previews are
-disabled. Use Markdown formatting to include a link to a website, Zulip
+disabled. Use Markdown formatting to include a link to a website, OneHash Connect
 [message][message-link], or [topic][topic-link] in the stream description:
 `[link text](URL)`.
 

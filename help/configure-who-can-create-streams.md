@@ -2,7 +2,7 @@
 
 {!admin-only.md!}
 
-Zulip allows you to separately control [permissions](/help/roles-and-permissions)
+OneHash Connect allows you to separately control [permissions](/help/roles-and-permissions)
 for creating [web-public](/help/public-access-option), public and private
 streams.
 

@@ -1,7 +1,7 @@
 # Import from Rocket.Chat
 
-You can import your current workspace into a Zulip organization. It's a great
-way to preserve your workspace history when you migrate to Zulip, and to make
+You can import your current workspace into a OneHash Connect organization. It's a great
+way to preserve your workspace history when you migrate to OneHash Connect, and to make
 the transition easy for the members of your organization.
 
 The import will include your organization's:
@@ -14,24 +14,24 @@ The import will include your organization's:
 
 ## Import process overview
 
-To import your Rocket.Chat organization into Zulip, you will need to take the
+To import your Rocket.Chat organization into OneHash Connect, you will need to take the
 following steps, which are described in more detail below:
 
 {start_tabs}
 
 1. [Export your Rocket.Chat data](#export-your-rocketchat-data).
 
-1. [Import your Rocket.Chat data into Zulip](#import-your-data-into-zulip).
+1. [Import your Rocket.Chat data into OneHash Connect](#import-your-data-into-connect).
 
-1. [Get your organization started with Zulip](#get-your-organization-started-with-zulip)!
+1. [Get your organization started with OneHash Connect](#get-your-organization-started-with-connect)!
 
 {end_tabs}
 
-## Import your organization from Rocket.Chat into Zulip
+## Import your organization from Rocket.Chat into OneHash Connect
 
 ### Export your Rocket.Chat data
 
-Rocket.Chat does not provide an official data export feature, so the Zulip
+Rocket.Chat does not provide an official data export feature, so the OneHash Connect
 import tool works by importing data from a Rocket.Chat database dump.
 
 If you're self-hosting your Rocket.Chat instance, you can create a
@@ -45,7 +45,7 @@ to request a database dump by contacting their
 In either case, you should end up with a directory containing many
 `.bson` files.
 
-### Import your data into Zulip
+### Import your data into OneHash Connect
 
 {!import-your-data-into-zulip.md!}
 
@@ -66,7 +66,7 @@ be your **exported data** file in the instructions below.
 {!import-into-a-self-hosted-zulip-server.md!}
 
 1. To import into an organization hosted on the root domain
-   (`EXTERNAL_HOST`) of the Zulip installation, run the following
+   (`EXTERNAL_HOST`) of the OneHash Connect installation, run the following
    commands.
 
     {!import-self-hosted-server-tips.md!}
@@ -97,23 +97,23 @@ be your **exported data** file in the instructions below.
 
 #### Import details
 
-Whether you are using Zulip Cloud or self-hosting Zulip, here are a few notes to
+Whether you are using OneHash Connect Cloud or self-hosting OneHash Connect, here are a few notes to
 keep in mind about the import process:
 
 - Rocket.Chat does not export workspace settings, so you will need to [configure
-  the settings for your Zulip organization](/help/customize-organization-settings).
+  the settings for your OneHash Connect organization](/help/customize-organization-settings).
   This includes settings like [email
   visibility](/help/configure-email-visibility),
   [message editing permissions](/help/restrict-message-editing-and-deletion),
   and [how users can join your organization](/help/restrict-account-creation).
 
 - Rocket.Chat does not export user settings, so users in your organization may
-  want to [customize their account settings](/help/getting-started-with-zulip).
+  want to [customize their account settings](/help/getting-started-with-connect).
 
-- Rocket.Chat user roles are mapped to Zulip's [user
+- Rocket.Chat user roles are mapped to OneHash Connect's [user
   roles](/help/roles-and-permissions) in the following way:
 
-| Rocket.Chat role | Zulip role |
+| Rocket.Chat role | OneHash Connect role |
 |------------------|------------|
 | Admin            | Owner      |
 | User             | Member     |
@@ -125,22 +125,22 @@ keep in mind about the import process:
 
 - Starred messages are not imported.
 
-- Messages longer than Zulip's limit of 10,000 characters are not
+- Messages longer than OneHash Connect's limit of 10,000 characters are not
   imported.
 
 - Messages from Rocket.Chat Discussions are imported as topics
-  inside the Zulip stream corresponding to the parent channel of the
+  inside the OneHash Connect stream corresponding to the parent channel of the
   Rocket.Chat Discussion.
 
 - Messages from Rocket.Chat Discussions having direct channels
   (i.e. direct messages) as their parent are imported as normal
-  direct messages in Zulip.
+  direct messages in OneHash Connect.
 
 - While Rocket.Chat Threads are in general imported as separate
   topics, Rocket.Chat Threads within Rocket.Chat Discussions are
   imported as normal messages within the topic containing that
   Discussion, and Threads in Direct Messages are imported as normal
-  Zulip direct messages.
+  OneHash Connect direct messages.
 
 Additionally, because Rocket.Chat does not provide a documented or
 stable data export API, the import tool may require small changes from
@@ -148,7 +148,7 @@ time to time to account for changes in the Rocket.Chat database
 format.  Please [contact us](/help/contact-support) if you encounter
 any problems using this tool.
 
-## Get your organization started with Zulip
+## Get your organization started with OneHash Connect
 
 {!import-get-your-organization-started.md!}
 
@@ -158,6 +158,6 @@ any problems using this tool.
 
 ## Related articles
 
-* [Choosing between Zulip Cloud and self-hosting](/help/zulip-cloud-or-self-hosting)
-* [Setting up your organization](/help/getting-your-organization-started-with-zulip)
-* [Getting started with Zulip](/help/getting-started-with-zulip)
+* [Choosing between Connect Cloud and self-hosting](/help/connect-cloud-or-self-hosting)
+* [Setting up your organization](/help/getting-your-organization-started-with-connect)
+* [Getting started with Connect](/help/getting-started-with-connect)

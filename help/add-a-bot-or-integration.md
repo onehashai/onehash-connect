@@ -1,6 +1,6 @@
 # Add a bot or integration
 
-By default, anyone other than guests can add a bot to a Zulip organization.
+By default, anyone other than guests can add a bot to a OneHash Connect organization.
 A bot that sends content to or from another product is often called an
 **integration**.
 
@@ -38,7 +38,7 @@ is visible and available for anyone to use.
     as the **bot type**.
 
 Depending on the type of bot you're creating, you may need to download its
-`.zuliprc` configuration file. For that, click the **download**
+`.connectrc` configuration file. For that, click the **download**
 (<i class="fa fa-download"></i>) icon under the bot's name.
 
 ## Related articles

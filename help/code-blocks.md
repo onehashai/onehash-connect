@@ -9,7 +9,7 @@
 ## Language tagging
 
 Tagging a code block with a language enables syntax highlighting and
-(if configured) [code playgrounds](#code-playgrounds). Zulip supports syntax
+(if configured) [code playgrounds](#code-playgrounds). OneHash Connect supports syntax
 highlighting for hundreds of languages.
 
 A code block can be tagged by typing the language name after the fence
@@ -48,7 +48,7 @@ blocks without any syntax highlighting (E.g. to paste an error message).
 Code playgrounds are interactive in-browser development environments, such as
 [replit](https://replit.com), that are designed to make it convenient to edit
 and debug code. Code playgrounds can be configured for any programming language.
-Zulip code blocks that are tagged with the language will have a button visible
+OneHash Connect code blocks that are tagged with the language will have a button visible
 on hover that allows you to open the code block in the code playground site.
 
 ### Add a custom code playground
@@ -79,7 +79,7 @@ in the specified code playground.
 !!! tip ""
 
     Code playgrounds use [RFC 6570](https://www.rfc-editor.org/rfc/rfc6570.html)
-    compliant URL templates to describe how links should be generated. Zulip's
+    compliant URL templates to describe how links should be generated. OneHash Connect's
     rendering engine will pass the URL-encoded code from the code block as the
     `code` parameter, denoted as `{code}` in this URL template, in order to
     generate the URL. You can refer to parts of the documentation on URL

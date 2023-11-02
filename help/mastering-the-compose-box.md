@@ -2,7 +2,7 @@
 
 ## Composing to a different conversation
 
-When composing a message, Zulip lets you view a different
+When composing a message, OneHash Connect lets you view a different
 [conversation](/help/recent-conversations) from the one you are composing to.
 For example, you can start a new topic without changing your narrow, send a
 direct message about the topic you're viewing, or look up a related discussion.
@@ -43,7 +43,7 @@ will be sent.
 
 ### Go to conversation
 
-Zulip lets you narrow the message view to the
+OneHash Connect lets you narrow the message view to the
 [conversation](/help/recent-conversations) you're currently composing to.
 
 {start_tabs}
@@ -67,8 +67,8 @@ By default, the <kbd>Enter</kbd> key adds a new line to your message,
 and <kbd>Ctrl</kbd> + <kbd>Enter</kbd> sends your message.
 
 This is convenient for typing multi-line messages, which are more common in
-Zulip than in most other chat products. However, you can also configure
-Zulip so that the <kbd>Enter</kbd> key sends your message.
+OneHash Connect than in most other chat products. However, you can also configure
+OneHash Connect so that the <kbd>Enter</kbd> key sends your message.
 
 !!! tip ""
 

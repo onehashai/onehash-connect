@@ -2,7 +2,7 @@
 
 We're here to help! This page will guide you to the best way to reach us.
 
-* For **support requests** regarding your Zulip Cloud organization or
+* For **support requests** regarding your OneHash Connect Cloud organization or
   self-hosted server, [email Zulip support](mailto:support@zulip.com).
     * Response time: Usually 1-3 business days, or within one business day for
   paid customers.
@@ -26,13 +26,13 @@ We're here to help! This page will guide you to the best way to reach us.
 
 * Phone support is available only for **Enterprise support customers**.
 
-Your feedback helps us make Zulip better for everyone! Please reach out if you
-have questions, suggestions, or just want to brainstorm how to make Zulip work
+Your feedback helps us make OneHash Connect better for everyone! Please reach out if you
+have questions, suggestions, or just want to brainstorm how to make OneHash Connect work
 for your organization.
 
 [development-community]: https://zulip.com/development-community/
 
 ## Related articles
 
-* [Zulip Cloud billing](/help/zulip-cloud-billing)
-* [View Zulip version](/help/view-zulip-version)
+* [Connect Cloud billing](/help/connect-cloud-billing)
+* [View Connect version](/help/view-connect-version)

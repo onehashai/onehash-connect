@@ -2,14 +2,14 @@
 
 !!! warn ""
 
-    These instructions are specific to the hosted Zulip Cloud service.
+    These instructions are specific to the hosted OneHash Connect Cloud service.
     If you're running your own server, you may be looking for our
     documentation on [server export and import][export-and-import] or
     [server backups][production-backups].
 
-Zulip has high quality export tools that can be used to migrate from the hosted
-Zulip Cloud service to your own servers. Two types of data exports are available
-to all Zulip Cloud organizations:
+OneHash Connect has high quality export tools that can be used to migrate from the hosted
+OneHash Connect Cloud service to your own servers. Two types of data exports are available
+to all OneHash Connect Cloud organizations:
 
 * [**Export of public data**](#export-of-public-data): Complete data for your
    organization *other than* [private stream](/help/stream-permissions) messages
@@ -78,7 +78,7 @@ subscriptions exported, but will have no personalized message history.
 1. Email [support@zulip.com](mailto:support@zulip.com) with your
    organization's `zulipchat.com` URL, asking for a **full export with
    member consent**. Please send the email from the same address
-   that you use to sign in to Zulip, so that Zulip Support can verify
+   that you use to sign in to OneHash Connect, so that OneHash Connect Support can verify
    that you are an owner of the organization.
 
 1. You will receive an email with instructions on how to collect member consent.
@@ -108,7 +108,7 @@ subscriptions exported, but will have no personalized message history.
 1. Email [support@zulip.com](mailto:support@zulip.com) with your
    organization's `zulipchat.com` URL, asking for a **full export without
    member consent**. Please send the email from the same address
-   that you use to sign in to Zulip, so that Zulip Support can verify
+   that you use to sign in to OneHash Connect, so that OneHash Connect Support can verify
    that you are an owner of the organization.
 
 1. Once your authority to request the export has been verified, you will receive
@@ -125,7 +125,7 @@ subscriptions exported, but will have no personalized message history.
 
 This type of export is recommended if you plan to work with the exported data
 directly (e.g., reading messages or processing them with a script), rather than
-importing the export into a new Zulip organization.
+importing the export into a new OneHash Connect organization.
 
 {!export-without-consent-requirements.md!}
 
@@ -133,7 +133,7 @@ importing the export into a new Zulip organization.
 
 1. Email [support@zulip.com](mailto:support@zulip.com) asking for a **compliance
    export**. Please send the email from the same address that you use to sign in
-   to Zulip, so that Zulip Support can verify that you are an owner of the
+   to OneHash Connect, so that OneHash Connect Support can verify that you are an owner of the
    organization. You will need to specify:
 
       1. The `zulipchat.com` URL for your organization
@@ -162,7 +162,7 @@ importing the export into a new Zulip organization.
 
 * [Change organization URL](/help/change-organization-url)
 * [Deactivate your organization](/help/deactivate-your-organization)
-* [Import organization into a self-hosted Zulip server][import-only]
+* [Import organization into a self-hosted Connect server][import-only]
 * [Compliance exports for self-hosted organizations][compliance-exports-self-hosted]
 
 [production-backups]: https://zulip.readthedocs.io/en/stable/production/export-and-import.html#backups

@@ -8,6 +8,6 @@
 
 ## Related articles
 
-* [Getting started with Zulip](/help/getting-started-with-zulip)
+* [Getting started with Connect](/help/getting-started-with-connect)
 * [Finding a conversation to read](/help/finding-a-topic-to-read)
 * [Reading strategies](/help/reading-strategies)

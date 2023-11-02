@@ -7,8 +7,8 @@
   pertaining to the marketing team, `#help/<team name>` for
   `<team name>`'s internal support stream, etc.
 
-* A `#zulip help` stream can be useful for providing internal Zulip
-  support and answering questions about Zulip.
+* A `#connect help` stream can be useful for providing internal OneHash Connect
+  support and answering questions about OneHash Connect.
 
 * For open source projects or other volunteer organizations, consider
   adding default streams like `#announce` for announcements, `#new

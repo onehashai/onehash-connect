@@ -1,6 +1,6 @@
 # Resolve a topic
 
-Zulip's [topics](/help/streams-and-topics) are very
+OneHash Connect's [topics](/help/streams-and-topics) are very
 helpful for customer support, answering questions, investigating
 issues and production errors, as well as other workflows.
 Resolving topics makes it easy to track the status of each question,
@@ -92,7 +92,7 @@ topics](/help/restrict-moving-messages).
 ## Details
 
 * Resolving a topic works by moving the messages to a new topic.
-* Like with all topic editing, Zulip clients update instantly, so
+* Like with all topic editing, OneHash Connect clients update instantly, so
   human users will likely only send messages to the resolved topic.
 * [Integrations](/integrations/) will usually send new messages to the
   original topic (`example topic`) after a topic is resolved. This is

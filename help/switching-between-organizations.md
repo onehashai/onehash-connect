@@ -10,4 +10,4 @@ This article assumes you've [logged in](/help/logging-in) to each organization a
 * [Logging out](logging-out)
 * [Deactivate your account](deactivate-your-account)
 * [Create your organization profile](create-your-organization-profile)
-* [Joining a Zulip organization](/help/join-a-zulip-organization)
+* [Joining a Connect organization](/help/join-a-connect-organization)

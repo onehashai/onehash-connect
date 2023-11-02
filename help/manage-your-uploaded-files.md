@@ -1,6 +1,6 @@
 # Manage your uploaded files
 
-Zulip lets you view, sort, filter, download, and delete any files that you have
+OneHash Connect lets you view, sort, filter, download, and delete any files that you have
 uploaded.
 
 ## View a file

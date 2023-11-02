@@ -4,14 +4,14 @@ You can quote a previous message, either replying within a topic or to
 start a new topic.
 
 The first line of the reply contains a [permanent link][link-to-message]
-to the quoted message. Zulip automatically turns mentions in the quoted text
+to the quoted message. OneHash Connect automatically turns mentions in the quoted text
 into [silent mentions](/help/mention-a-user-or-group#silently-mention-a-user)
 to avoid unnecessarily mentioning someone twice.
 
 !!! tip ""
 
     You can use [quote blocks](/help/format-a-quote)
-    when quoting emails or other non-Zulip content.
+    when quoting emails or other non-OneHash Connect content.
 
 ## Quote and reply
 

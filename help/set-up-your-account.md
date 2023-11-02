@@ -4,5 +4,5 @@
 
 ## Related articles
 
-* [Getting started with Zulip](/help/getting-started-with-zulip)
+* [Getting started with Connect](/help/getting-started-with-connect)
 * [Review your settings](/help/review-your-settings)

@@ -2,7 +2,7 @@
 
 {!owner-only.md!}
 
-In large Zulip organizations where
+In large OneHash Connect organizations where
 [anyone can join](/help/restrict-account-creation#set-whether-invitations-are-required-to-join), it can
 be useful to restrict what new members can do, to make it easier to cope
 with spammers and confused users.
@@ -12,7 +12,7 @@ past a certain **waiting period** threshold. After that they are **full members*
 You can configure how long the waiting period is, as well as which actions require
 being a full member.
 
-For some features, Zulip supports restricting access to only full members. These
+For some features, OneHash Connect supports restricting access to only full members. These
 features include [creating streams](/help/configure-who-can-create-streams),
 [inviting users to the organization](/help/invite-new-users),
 [adding custom emoji](/help/custom-emoji#change-who-can-add-custom-emoji),

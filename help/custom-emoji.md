@@ -1,7 +1,7 @@
 # Custom emoji
 
 Custom emoji can be used by all users in an organization (including
-bots).  They are supported everywhere that Zulip supports emoji,
+bots).  They are supported everywhere that OneHash Connect supports emoji,
 including [emoji reactions][emoji-reactions],
 [messages][emoji-messages], [stream descriptions][emoji-streams] and
 [user statuses][emoji-status].
@@ -20,7 +20,7 @@ including [emoji reactions][emoji-reactions],
 1. Under **Add a new emoji**, enter an **emoji name**.
 
 1. Click **Upload image or GIF** and add a file in the PNG, JPG, or
-   GIF file format. Zulip will automatically scale the image down to
+   GIF file format. OneHash Connect will automatically scale the image down to
    25x25 pixels.
 
 1. Click **Add emoji**.

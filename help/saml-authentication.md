@@ -2,8 +2,8 @@
 
 {!admin-only.md!}
 
-Zulip supports using SAML authentication for single sign-on, both for Zulip
-Cloud and self-hosted Zulip servers. SAML Single Logout is also supported.
+OneHash Connect supports using SAML authentication for single sign-on, both for OneHash Connect
+Cloud and self-hosted OneHash Connect servers. SAML Single Logout is also supported.
 
 This page describes how to configure SAML authentication with several common providers:
 
@@ -15,7 +15,7 @@ This page describes how to configure SAML authentication with several common pro
 
 Other SAML providers are supported as well.
 
-If you are [self-hosting](/self-hosting/) Zulip, please follow the detailed setup instructions in
+If you are [self-hosting](/self-hosting/) OneHash Connect, please follow the detailed setup instructions in
 the [SAML configuration for self-hosting][saml-readthedocs]. The documentation
 on this page may be a useful reference for how to set up specific SAML
 providers.
@@ -42,7 +42,7 @@ providers.
          * `last_name` to `user.lastName`
 
 1. Assign the appropriate accounts in the **Assignments** tab. These are the users
-   that will be able to log in to your Zulip organization.
+   that will be able to log in to your OneHash Connect organization.
 
 1. {!send-us-info.md!}
 
@@ -61,7 +61,7 @@ providers.
 
 1. Search for the **SAML Custom Connector (Advanced)** app and select it.
 
-1. Set a name and logo and click **Save**. This doesn't affect anything in Zulip,
+1. Set a name and logo and click **Save**. This doesn't affect anything in OneHash Connect,
    but will be shown on your OneLogin **Applications** page.
 
 1. In the **Configuration** section, specify the following fields. Leave the
@@ -95,7 +95,7 @@ providers.
 1. From your AzureAD Dashboard, navigate to **Enterprise applications**,
    click **New application**, followed by **Create your own application**.
 
-1. Enter a name (e.g., `Zulip Cloud`) for the new AzureAD application,
+1. Enter a name (e.g., `OneHash Connect Cloud`) for the new AzureAD application,
    choose **Integrate any other application you don't find in the
    gallery (Non-gallery)**, and click **Create**.
 
@@ -115,7 +115,7 @@ providers.
 
 1. Check the **User Attributes & Claims** configuration, which should already be
    set to the following. If the configuration is different, please
-   indicate this when contacting [support@zulip.com](mailto:support@zulip.com)
+   indicate this when contacting [support@onehash.ai](mailto:support@onehash.ai)
    (see next step).
 
       * **givenname**: `user.givenname`
@@ -141,7 +141,7 @@ providers.
 
 1. Make sure your Keycloak server is up and running.
 
-1. In Keycloak, register a new Client for your Zulip organization:
+1. In Keycloak, register a new Client for your OneHash Connect organization:
     * **Client-ID**: `https://zulipchat.com`
     * **Client Protocol**: `saml`
     * **Client SAML Endpoint**: *(empty)*
@@ -217,6 +217,6 @@ providers.
 
 * [SAML configuration for self-hosting][saml-readthedocs]
 * [SCIM provisioning](/help/scim)
-* [Getting your organization started with Zulip](/help/getting-your-organization-started-with-zulip)
+* [Getting your organization started with Connect](/help/getting-your-organization-started-with-connect)
 
 [saml-readthedocs]: https://zulip.readthedocs.io/en/stable/production/authentication-methods.html#saml

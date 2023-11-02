@@ -3,14 +3,14 @@
 [//]: # (All screenshots here require line-height: 22px and font-size: 16px in .message-content.)
 [//]: # (Requires some additional fiddling for the LaTeX picture, inline code span, and maybe a few others.)
 
-Zulip uses Markdown to allow you to easily format your messages. Even if you've
+OneHash Connect uses Markdown to allow you to easily format your messages. Even if you've
 never heard of Markdown, you are probably familiar with basic Markdown
 formatting, such as using `*` at the start of a line in a bulleted list, or
 around text to indicate emphasis.
 
-This page provides an overview of all the formatting available in Zulip. There
+This page provides an overview of all the formatting available in OneHash Connect. There
 is a convenient [**message formatting
-reference**](#message-formatting-reference) in the Zulip app that you can use
+reference**](#message-formatting-reference) in the OneHash Connect app that you can use
 whenever you need a reminder of the formatting syntax below.
 
 * [Text emphasis](#text-emphasis)
@@ -74,7 +74,7 @@ whenever you need a reminder of the formatting syntax below.
 !!! tip ""
 
     There is a handy option to [quote and reply](/help/quote-and-reply) to a
-    message in Zulip.
+    message in OneHash Connect.
 
 ## Spoilers
 
@@ -126,7 +126,7 @@ whenever you need a reminder of the formatting syntax below.
 
 ## Message formatting reference
 
-A summary of the formatting syntax above is available in the Zulip app.
+A summary of the formatting syntax above is available in the OneHash Connect app.
 
 {start_tabs}
 

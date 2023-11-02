@@ -1,13 +1,13 @@
 ## Guides
-* [Getting started with Zulip](/help/getting-started-with-zulip)
-* [Setting up your organization](/help/getting-your-organization-started-with-zulip)
+* [Getting started with Connect](/help/getting-started-with-connect)
+* [Setting up your organization](/help/getting-your-organization-started-with-connect)
 * [Moderating open organizations](/help/moderating-open-organizations)
-* [Setting up Zulip for a class](/help/setting-up-zulip-for-a-class)
-* [Using Zulip for a class](/help/using-zulip-for-a-class)
-* [Using Zulip via email](/help/using-zulip-via-email)
+* [Setting up Connect for a class](/help/setting-up-connect-for-a-class)
+* [Using Connect for a class](/help/using-connect-for-a-class)
+* [Using Connect via email](/help/using-connect-via-email)
 
 ## Getting started
-* [Joining an organization](/help/join-a-zulip-organization)
+* [Joining an organization](/help/join-a-connect-organization)
 * [Set up your account](/help/set-up-your-account)
 * [Streams and topics](/help/streams-and-topics)
 * [Finding a conversation to read](/help/finding-a-topic-to-read)
@@ -19,8 +19,8 @@
 * [Keyboard shortcuts](/help/keyboard-shortcuts)
 
 ## Setting up your organization
-* [Trying out Zulip](/help/trying-out-zulip)
-* [Zulip Cloud or self-hosting?](/help/zulip-cloud-or-self-hosting)
+* [Trying out Connect](/help/trying-out-connect)
+* [Connect Cloud or self-hosting?](/help/connect-cloud-or-self-hosting)
 * [Migrating from other chat tools](/help/migrating-from-other-chat-tools)
 * [Create your organization profile](/help/create-your-organization-profile)
 * [Customize organization settings](/help/customize-organization-settings)
@@ -155,7 +155,7 @@
 * [Connect through a proxy](/help/connect-through-a-proxy)
 * [Use a custom certificate](/help/custom-certificates)
 
-# Zulip administration
+# Connect administration
 
 ## Organization basics
 * [Review your organization's settings](/help/review-your-organization-settings)
@@ -172,7 +172,7 @@
 * [Change organization URL](/help/change-organization-url)
 * [Deactivate your organization](/help/deactivate-your-organization)
 * [Usage statistics](/help/analytics)
-* [Linking to your organization](/help/linking-to-zulip)
+* [Linking to your organization](/help/linking-to-connect)
 * [GDPR compliance](/help/gdpr-compliance)
 
 ## Users
@@ -232,8 +232,8 @@
 * [View all bots in your organization](/help/view-all-bots-in-your-organization)
 
 ## Support
-* [View Zulip version](/help/view-zulip-version)
-* [Zulip Cloud billing](/help/zulip-cloud-billing)
-* [Support the Zulip project](/help/support-zulip-project)
-* [Linking to the Zulip website](/help/linking-to-zulip-website)
+* [View Connect version](/help/view-connect-version)
+* [Connect Cloud billing](/help/connect-cloud-billing)
+* [Support the Connect project](/help/support-connect-project)
+* [Linking to the Connect website](/help/linking-to-connect-website)
 * [Contact support](/help/contact-support)

@@ -2,8 +2,8 @@
 
 {tab|web}
 
-You can log in to multiple Zulip organizations by opening multiple tabs, and
-logging into one Zulip organization in each tab. To switch Zulip organizations,
+You can log in to multiple OneHash Connect organizations by opening multiple tabs, and
+logging into one OneHash Connect organization in each tab. To switch OneHash Connect organizations,
 just switch tabs.
 
 {tab|desktop}
@@ -19,6 +19,6 @@ an organization from the **Window** menu in the top menu bar.
 
 1. Tap **Switch account**.
 
-1. Tap on the desired Zulip organization.
+1. Tap on the desired OneHash Connect organization.
 
 {end_tabs}

@@ -42,7 +42,7 @@ tasks you need to go back to or documents you reference often.
 
 ## Toggle starred messages counter
 
-By default, Zulip displays the number of starred messages in the left
+By default, OneHash Connect displays the number of starred messages in the left
 sidebar; this allows you to use them as an inbox of messages you'd
 like to come back to. If you are using starred messages for something
 else and would prefer not to see the count in your left sidebar, you

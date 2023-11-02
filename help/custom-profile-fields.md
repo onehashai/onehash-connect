@@ -9,7 +9,7 @@ of residence, birthday, manager, Twitter handle, and more.
 Custom profile fields are always optional, and do not appear in users'
 profiles until they fill them out.
 
-Zulip supports synchronizing custom profile fields from an external
+OneHash Connect supports synchronizing custom profile fields from an external
 user database such as LDAP or SAML. See the [authentication
 methods][authentication-production] documentation for details.
 

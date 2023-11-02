@@ -5,12 +5,12 @@
     **Note:** The ability to create demo organizations is an upcoming
     feature. It is not available yet.
 
-If you would like to try out Zulip without having to make any
+If you would like to try out OneHash Connect without having to make any
 decisions (like how to name your organization or whether to import
-data from an existing chat tool), you can create a Zulip demo
+data from an existing chat tool), you can create a OneHash Connect demo
 organization.
 
-Demo organizations differ from a regular Zulip organization in a few
+Demo organizations differ from a regular OneHash Connect organization in a few
 ways:
 
 * A demo organization will be automatically deleted 30 days after
@@ -19,10 +19,10 @@ ways:
   if you'd prefer to keep its history.
 * You do not need to choose a URL or when creating a demo organization;
   one will be generated automatically for you.
-* A demo organization cannot be directly upgraded to a paid Zulip
+* A demo organization cannot be directly upgraded to a paid OneHash Connect
   Cloud plan without first converting to a regular organization.
 
-Other than those limitations, they work exactly like a normal Zulip
+Other than those limitations, they work exactly like a normal OneHash Connect
 organization; you can invite additional users, connect the mobile
 apps, etc.
 
@@ -65,7 +65,7 @@ and set a password for their account.
 {!owner-only.md!}
 
 If you'd like to keep your demo organization user and message history,
-you can convert it to a permanent Zulip organization. You'll need to
+you can convert it to a permanent OneHash Connect organization. You'll need to
 choose a new subdomain for your new permanent organization URL.
 
 Also, as part of the process of converting a demo organization to a
@@ -89,13 +89,13 @@ permanent organization:
 !!! warn ""
 
     **Note:** You will be logged out when the demo organization is
-    successfully converted to a permanent Zulip organization and be
+    successfully converted to a permanent OneHash Connect organization and be
     redirected to new organization URL log-in page.
 
 {end_tabs}
 
 ## Related articles
 
-* [Getting started with Zulip](/help/getting-started-with-zulip)
-* [Setting up your organization](/help/getting-your-organization-started-with-zulip)
+* [Getting started with Connect](/help/getting-started-with-connect)
+* [Setting up your organization](/help/getting-your-organization-started-with-connect)
 * [Invite users to join](/help/invite-users-to-join)

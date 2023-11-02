@@ -397,7 +397,7 @@ class HelpTest(ZulipTestCase):
         self.assertEqual(result.status_code, 200)
         self.assertIn('Go to <a href="/#settings/preferences">Preferences</a>', str(result.content))
         # Check that the sidebar was rendered properly.
-        self.assertIn("Getting started with Zulip", str(result.content))
+        self.assertIn("Getting started with OneHash Connect", str(result.content))
 
         with self.settings(ROOT_DOMAIN_LANDING_PAGE=True):
             result = self.client_get("/help/change-the-time-format", subdomain="")

@@ -1,4 +1,4 @@
-Zulip lets you mute topics and streams to avoid receiving notifications for messages
+OneHash Connect lets you mute topics and streams to avoid receiving notifications for messages
 you are not interested in. Muting a stream effectively mutes all topics in
 that stream. You can also manually **mute** a topic in an unmuted stream, or
 **unmute** a topic in a muted stream.
@@ -21,5 +21,5 @@ Muting has the following effects:
 
 !!! warn ""
 
-    **Note**: Some parts of the Zulip experience may start to degrade
+    **Note**: Some parts of the OneHash Connect experience may start to degrade
     if you receive more than a few hundred muted messages a day.

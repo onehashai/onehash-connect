@@ -46,7 +46,7 @@ than archiving them.
 If you are self-hosting, you can unarchive an archived stream using the
 `unarchive_stream` [management command][management-command]. This will restore
 it as a private stream with shared history, and subscribe all organization
-owners to it. If you are using Zulip Cloud, you can [contact us](/help/contact-support)
+owners to it. If you are using OneHash Connect Cloud, you can [contact us](/help/contact-support)
 for help.
 
 [management-command]:
@@ -59,4 +59,4 @@ https://zulip.readthedocs.io/en/latest/production/management-commands.html#other
 * [Delete a topic](/help/delete-a-topic)
 * [Message retention policy](/help/message-retention-policy)
 * [Stream permissions](/help/stream-permissions)
-* [Zulip Cloud or self-hosting?](/help/zulip-cloud-or-self-hosting)
+* [Connect Cloud or self-hosting?](/help/connect-cloud-or-self-hosting)

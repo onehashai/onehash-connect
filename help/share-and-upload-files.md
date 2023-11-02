@@ -1,10 +1,10 @@
 # Share and upload files
 
-Zulip supports attaching multiple files to messages, including images,
+OneHash Connect supports attaching multiple files to messages, including images,
 documents, sound, and video. You can edit the names of the files others see
 after you upload them.
 
-Zulip will automatically generate a **thumbnail** for each file when you send
+OneHash Connect will automatically generate a **thumbnail** for each file when you send
 the message, if it can. Image thumbnails will be shown directly in the message,
 and you can click on a thumbnail to [view the full image](/help/view-and-browse-images).
 
@@ -17,7 +17,7 @@ and you can click on a thumbnail to [view the full image](/help/view-and-browse-
 {!start-composing.md!}
 
 1. Drag and drop files, or copy and paste one or more files into the compose
-   box. Zulip will upload the files, and insert named links using
+   box. OneHash Connect will upload the files, and insert named links using
    [Markdown formatting](/help/format-your-message-using-markdown#links):
    `[Link text](URL)`.
 
@@ -33,7 +33,7 @@ and you can click on a thumbnail to [view the full image](/help/view-and-browse-
 {!start-composing.md!}
 
 1. Click the **paperclip** (<i class="fa fa-paperclip"></i>) icon at
-   the bottom of the compose box to select one or more files. Zulip will upload
+   the bottom of the compose box to select one or more files. OneHash Connect will upload
    the files, and insert named links using
    [Markdown formatting](/help/format-your-message-using-markdown#links):
    `[Link text](URL)`.
@@ -53,7 +53,7 @@ and you can click on a thumbnail to [view the full image](/help/view-and-browse-
    **paperclip** (<img src="/static/images/help/mobile-paperclip-icon.svg" alt="paperclip" class="mobile-icon"/>),
    **image** (<img src="/static/images/help/mobile-image-icon.svg" alt="image" class="mobile-icon"/>),
    or **camera** (<img src="/static/images/help/mobile-camera-icon.svg" alt="camera" class="mobile-icon"/>)
-   button at the bottom of the app to select one or more files. Zulip will
+   button at the bottom of the app to select one or more files. OneHash Connect will
    upload the files, and insert named links using
    [Markdown formatting](/help/format-your-message-using-markdown#links):
    `[Link text](URL)`.
@@ -68,13 +68,13 @@ and you can click on a thumbnail to [view the full image](/help/view-and-browse-
 
 ## Sharing files
 
-You can share files from other apps on Zulip.
+You can share files from other apps on OneHash Connect.
 
 {start_tabs}
 
 {tab|android}
 
-1. Select one or more files and tap the **Zulip**
+1. Select one or more files and tap the **OneHash Connect**
    (<img src="/static/images/logo/zulip-icon-circle.svg" alt="logo" class="mobile-icon"/>)
    logo.
 
@@ -101,10 +101,10 @@ You can share files from other apps on Zulip.
 
 ## Troubleshooting info
 
-Zulip does not generate thumbnails for messages with more than ten
+OneHash Connect does not generate thumbnails for messages with more than ten
 attachments.
 
-The maximum file size for attachments is 25MB in most Zulip installations.
+The maximum file size for attachments is 25MB in most OneHash Connect installations.
 This limit can be changed by the server administrator.
 
 ## Related articles

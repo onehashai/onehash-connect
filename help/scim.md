@@ -4,15 +4,15 @@
 
 SCIM (System for Cross-domain Identity Management) is a standard
 protocol used by Single Sign-On (SSO) services and identity providers
-to provision/deprovision user accounts and groups. Zulip supports SCIM
-integration, both in Zulip Cloud and for [self-hosted](/self-hosting/)
-Zulip servers.  This page describes how to configure SCIM provisioning
-for Zulip.
+to provision/deprovision user accounts and groups. OneHash Connect supports SCIM
+integration, both in OneHash Connect Cloud and for [self-hosted](/self-hosting/)
+OneHash Connect servers.  This page describes how to configure SCIM provisioning
+for OneHash Connect.
 
-Zulip's SCIM integration has the following limitations:
+OneHash Connect's SCIM integration has the following limitations:
 
 * Provisioning Groups is not yet implemented.
-* While Zulip's SCIM integration is generic, it has only been
+* While OneHash Connect's SCIM integration is generic, it has only been
   fully tested and documented with Okta's SCIM provider, and it is
   possible minor adjustments may be required. [Zulip
   support](/help/contact-support) is happy to help customers configure
@@ -20,9 +20,9 @@ Zulip's SCIM integration has the following limitations:
   self-service documentation on this page.
 
 !!! warn ""
-    Zulip Cloud customers who wish to use SCIM integration must upgrade to
-    the Zulip Cloud Plus plan. Contact
-    [support@zulip.com](mailto:support@zulip.com) for plan benefits and pricing.
+    OneHash Connect Cloud customers who wish to use SCIM integration must upgrade to
+    the OneHash Connect Cloud Plus plan. Contact
+    [support@onehash.ai](mailto:support@onehash.ai) for plan benefits and pricing.
 
 ## Configure SCIM
 
@@ -32,7 +32,7 @@ Zulip's SCIM integration has the following limitations:
 
 {!upgrade-to-plus-if-needed.md!}
 
-1.  Contact [support@zulip.com](mailto:support@zulip.com) to request the
+1.  Contact [support@onehash.ai](mailto:support@onehash.ai) to request the
     **Bearer token** that Okta will use to authenticate to your SCIM API.
 
 1. In your Okta Dashboard, go to **Applications**, and select
@@ -41,11 +41,11 @@ Zulip's SCIM integration has the following limitations:
 1. Search for **SCIM** and select **SCIM 2.0 Test App (Header Auth)**.
 
 1. Click **Add** and choose your **Application label**. For example, you can
-   name it "Zulip SCIM".
+   name it "OneHash Connect SCIM".
 
 1. Continue to **Sign-On Options**. Leave the **SAML** options as they are.
    This type of Okta application doesn't actually support SAML authentication,
-   and you'll need to set up a separate Okta app to activate SAML for your Zulip
+   and you'll need to set up a separate Okta app to activate SAML for your OneHash Connect
    organization.
 
 1. In **Credentials Details**, specify the following fields:
@@ -55,10 +55,10 @@ Zulip's SCIM integration has the following limitations:
 1. In the **Provisioning** tab, click **Configure API Integration**, check the
    **Enable API integration** checkbox, and specify the following fields:
      * **Base URL**: `yourorganization.zulipchat.com/scim/v2`
-     * **API token**: `Bearer token` (given to you by Zulip support)
+     * **API token**: `Bearer token` (given to you by OneHash Connect support)
 
     When you proceed to the next step, Okta will verify that these details are
-    correct by making a SCIM request to the Zulip server.
+    correct by making a SCIM request to the OneHash Connect server.
 
 1. Enable the following **Provisioning to App** settings:
      * **Create Users**
@@ -84,13 +84,13 @@ Zulip's SCIM integration has the following limitations:
     section.
     The valid values are: **owner**, **administrator**, **moderator**, **member**, **guest**.
 
-1. Now that the integration is ready to manage Zulip user accounts, **assign**
+1. Now that the integration is ready to manage OneHash Connect user accounts, **assign**
    users to the SCIM app.
      * When you assign a user, Okta will check if the account exists in your
-       Zulip organization. If it doesn't, the account will be created.
+       OneHash Connect organization. If it doesn't, the account will be created.
      * Changes to the user's email or name in Okta will automatically cause the
-       Zulip account to be updated accordingly.
-     * Unassigning a user from the app will deactivate their Zulip account.
+       OneHash Connect account to be updated accordingly.
+     * Unassigning a user from the app will deactivate their OneHash Connect account.
 
 {end_tabs}
 
@@ -101,4 +101,4 @@ Zulip's SCIM integration has the following limitations:
 ## Related articles
 
 * [SAML authentication](/help/saml-authentication)
-* [Getting your organization started with Zulip](/help/getting-your-organization-started-with-zulip)
+* [Getting your organization started with Connect](/help/getting-your-organization-started-with-connect)

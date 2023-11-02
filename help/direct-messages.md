@@ -61,7 +61,7 @@ and do not appear in your list of streams.
 
 ## Access a DM or group DM
 
-If using Zulip in a browser or desktop, there are several ways to access an existing DM or group DM.
+If using OneHash Connect in a browser or desktop, there are several ways to access an existing DM or group DM.
 
 * Click on **Direct messages** near the top of the left sidebar to access
   recent conversations.

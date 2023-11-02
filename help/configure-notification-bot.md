@@ -1,6 +1,6 @@
 # Notification bot
 
-The Zulip notification bot automatically generates messages for
+The OneHash Connect notification bot automatically generates messages for
 various organization level events, including:
 
 * Stream settings changes such as [name](/help/rename-a-stream),
@@ -36,7 +36,7 @@ a user will use [their preferred language](/help/change-your-language).
 
 ### New stream announcements
 
-You can configure where the Zulip notification bot
+You can configure where the OneHash Connect notification bot
 [announces][new-stream-options] new public streams, or disable the new
 stream announcement messages entirely. The topic for these messages
 is "new streams".
@@ -54,7 +54,7 @@ is "new streams".
 
 ### New user announcements
 
-You can configure where the Zulip notification bot announces new users,
+You can configure where the OneHash Connect notification bot announces new users,
 or disable the new user announcement messages entirely. The topic for
 these messages is "signups".
 

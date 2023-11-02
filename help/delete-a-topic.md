@@ -43,7 +43,7 @@ whereas [archiving a stream](/help/archive-a-stream) does not.
 
 Note that deleting all of the individual messages within a particular
 topic also deletes that topic. Structurally, topics are simply an
-attribute of messages in Zulip.
+attribute of messages in OneHash Connect.
 
 ## Related articles
 

@@ -1,8 +1,8 @@
 # Import your settings
 
-When you create a Zulip account using an email address already associated with
-an account in another Zulip organization, on Zulip Cloud or the same self-hosted
-Zulip installation, you can import your user settings from an existing account.
+When you create a OneHash Connect account using an email address already associated with
+an account in another OneHash Connect organization, on OneHash Connect Cloud or the same self-hosted
+OneHash Connect installation, you can import your user settings from an existing account.
 It's a convenient way to preserve the user settings that you've already customized.
 
 !!! tip ""
@@ -22,7 +22,7 @@ The import will include your:
 
 {start_tabs}
 
-1. Follow the instructions for [joining a Zulip organization](/help/join-a-zulip-organization).
+1. Follow the instructions for [joining a Connect organization](/help/join-a-connect-organization).
 
 1. From the dropdown list under **Import settings from an existing Zulip account**,
    select the account from which you would like to import your settings.
@@ -35,5 +35,5 @@ The import will include your:
 
 ## Related articles
 
-* [Joining a Zulip organization](/help/join-a-zulip-organization)
+* [Joining a Connect organization](/help/join-a-connect-organization)
 * [Review your settings](/help/review-your-settings)

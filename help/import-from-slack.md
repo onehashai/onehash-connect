@@ -4,14 +4,14 @@
 
 ## Import process overview
 
-To import your Slack organization into Zulip, you will need to take the
+To import your Slack organization into OneHash Connect, you will need to take the
 following steps, which are described in more detail below:
 
 {start_tabs}
 
 1. [Export your Slack data](#export-your-slack-data).
 
-2. [Import your Slack data into Zulip](#import-your-data-into-zulip).
+2. [Import your Slack data into OneHash Connect](#import-your-data-into-connect).
 
 3. [Clean up](#clean-up-after-the-slack-export) after the Slack export.
 
@@ -19,7 +19,7 @@ following steps, which are described in more detail below:
 
 {end_tabs}
 
-## Import your organization from Slack into Zulip
+## Import your organization from Slack into OneHash Connect
 
 ### Export your Slack data
 
@@ -77,7 +77,7 @@ in order to export direct message data.
 
 {end_tabs}
 
-### Import your data into Zulip
+### Import your data into OneHash Connect
 
 {!import-your-data-into-zulip.md!}
 
@@ -97,7 +97,7 @@ in order to export direct message data.
 {!import-into-a-self-hosted-zulip-server.md!}
 
 1. To import into an organization hosted on the root domain
-   (`EXTERNAL_HOST`) of the Zulip installation, run the following
+   (`EXTERNAL_HOST`) of the OneHash Connect installation, run the following
    commands, replacing `<token>` with your Slack **Bot User OAuth Token**.
 
     {!import-self-hosted-server-tips.md!}
@@ -128,7 +128,7 @@ in order to export direct message data.
 
 #### Import details
 
-Whether you are using Zulip Cloud or self-hosting Zulip, here are few notes to keep
+Whether you are using OneHash Connect Cloud or self-hosting OneHash Connect, here are few notes to keep
 in mind about the import process:
 
 - Slack does not export workspace settings, so you will need to [configure
@@ -139,12 +139,12 @@ in mind about the import process:
   and [how users can join your organization](/help/restrict-account-creation).
 
 - Slack does not export user settings, so users in your organization may want to
-  [customize their account settings](/help/getting-started-with-zulip).
+  [customize their account settings](/help/getting-started-with-connect).
 
-- Slack's user roles are mapped to Zulip's [user
+- Slack's user roles are mapped to OneHash Connect's [user
   roles](/help/roles-and-permissions) in the following way:
 
-| Slack role              | Zulip role    |
+| Slack role              | OneHash Connect role    |
 |-------------------------|---------------|
 | Workspace Primary Owner | Owner         |
 | Workspace Owner         | Owner         |
@@ -161,18 +161,18 @@ in mind about the import process:
 
 ## Clean up after the Slack export
 
-Once your organization has been successfully imported in to Zulip, you should
+Once your organization has been successfully imported in to OneHash Connect, you should
 delete [the Slack app](https://api.slack.com/apps) that you created in order to
 [export your Slack data](#export-your-slack-data).  This will prevent the OAuth
 token from being used to access your Slack workspace in the future.
 
-## Get your organization started with Zulip
+## Get your organization started with OneHash Connect
 
 {!import-get-your-organization-started.md!}
 
 !!! tip ""
 
-    Zulip's [Slack-compatible incoming webhook](/integrations/doc/slack_incoming)
+    OneHash Connect's [Slack-compatible incoming webhook](/integrations/doc/slack_incoming)
     makes it easy to migrate integrations.
 
 ## Decide how users will log in
@@ -181,7 +181,7 @@ token from being used to access your Slack workspace in the future.
 
 ## Related articles
 
-* [Choosing between Zulip Cloud and self-hosting](/help/zulip-cloud-or-self-hosting)
-* [Setting up your organization](/help/getting-your-organization-started-with-zulip)
+* [Choosing between Connect Cloud and self-hosting](/help/connect-cloud-or-self-hosting)
+* [Setting up your organization](/help/getting-your-organization-started-with-connect)
 * [Slack-compatible incoming webhook](/integrations/doc/slack_incoming)
-* [Getting started with Zulip](/help/getting-started-with-zulip)
+* [Getting started with Connect](/help/getting-started-with-connect)

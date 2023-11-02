@@ -1,6 +1,6 @@
 # Open the compose box
 
-The Zulip compose box starts off closed by default, leaving more vertical
+The OneHash Connect compose box starts off closed by default, leaving more vertical
 space for the message feed. There are a number of ways to open the compose box.
 
 ## Using the mouse
@@ -26,14 +26,14 @@ arrow if the box is empty.
 
 !!! tip ""
 
-    Zulip offers handy one-character
+    OneHash Connect offers handy one-character
     [keyboard shortcuts](/help/keyboard-shortcuts) for
     [reading messages](/help/reading-strategies). With the compose
     box closed, there is no need to use the <kbd>Ctrl</kbd> key all the time.
 
 ## Related articles
 
-* [Getting started with Zulip](/help/getting-started-with-zulip)
+* [Getting started with Connect](/help/getting-started-with-connect)
 * [Starting a new topic](/help/starting-a-new-topic)
 * [Starting a new direct message](/help/starting-a-new-direct-message)
 * [Replying to messages](/help/replying-to-messages)

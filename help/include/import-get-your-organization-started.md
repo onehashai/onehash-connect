@@ -8,13 +8,13 @@ Once the import process is completed, you will need to:
     permissions](/help/restrict-message-editing-and-deletion),
     and [how users can join your organization](/help/restrict-account-creation).
 
-2. All users from your previous workspace will have accounts in your new Zulip
+2. All users from your previous workspace will have accounts in your new OneHash Connect
    organization. However, you will need to let users know about their new
    accounts, and [decide how they will log
    in](/help/import-from-slack#decide-how-users-will-log-in) for the first time.
 
-3. Share the URL for your new Zulip organization, and (recommended) the [Getting
-   started with Zulip guide](/help/getting-started-with-zulip).
+3. Share the URL for your new OneHash Connect organization, and (recommended) the [Getting
+   started with Zulip guide](/help/getting-started-with-connect).
 
 4. Migrate any [integrations](/integrations/).
 

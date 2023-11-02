@@ -9,7 +9,7 @@ users at once, [notifying](/help/dm-mention-alert-notifications) them about a me
 
 ## Related articles
 
-* [Setting up your organization](/help/getting-your-organization-started-with-zulip)
+* [Setting up your organization](/help/getting-your-organization-started-with-connect)
 * [User groups](/help/user-groups)
 * [Invite users to join](/help/invite-users-to-join)
-* [Getting started with Zulip](/help/getting-started-with-zulip)
+* [Getting started with Connect](/help/getting-started-with-connect)

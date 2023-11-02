@@ -2,7 +2,7 @@
 
 {!admin-only.md!}
 
-Zulip lets you configure which [roles](/help/roles-and-permissions) can edit
+OneHash Connect lets you configure which [roles](/help/roles-and-permissions) can edit
 message topics and move topics between streams. In general, allowing all
 organization members to edit message topics is highly recommended because:
 
