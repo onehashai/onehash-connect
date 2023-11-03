@@ -14,7 +14,7 @@ Once the import process is completed, you will need to:
    in](/help/import-from-slack#decide-how-users-will-log-in) for the first time.
 
 3. Share the URL for your new OneHash Connect organization, and (recommended) the [Getting
-   started with Zulip guide](/help/getting-started-with-connect).
+   started with Conect guide](/help/getting-started-with-connect).
 
 4. Migrate any [integrations](/integrations/).
 

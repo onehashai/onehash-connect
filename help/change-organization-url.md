@@ -13,17 +13,17 @@ mention](/help/mention-a-user-or-group#mention-everyone-on-a-stream)
 in an announcement stream to notify users that they need to update
 their clients.
 
-If you're using OneHash Connect Cloud (E.g. `https://example.zulipchat.com`),
+If you're using OneHash Connect Cloud (E.g. `https://example.connect.onehash.ai`),
 you can request a change by emailing support@zulip.com. Custom domains
-(i.e. those that do not have the form `example.zulipchat.com`) have a
+(i.e. those that do not have the form `example.connect.onehash.ai`) have a
 maintenance cost for our operational team and thus are only available
 for paid plans.
 
 ## Self-hosting
 
 If you're self-hosting, you can change the root domain of your OneHash Connect
-server by changing the `EXTERNAL_HOST` [setting][zulip-settings].  If
-you're [hosting multiple organizations][zulip-multiple-organizations]
+server by changing the `EXTERNAL_HOST` [setting][connect-settings].  If
+you're [hosting multiple organizations][connect-multiple-organizations]
 and want to change the subdomain for one of them, you can do this
 using the `change_realm_subdomain` [management command][management-commands].
 
@@ -31,6 +31,6 @@ In addition to configuring OneHash Connect as detailed here, you also need to
 generate [SSL certificates][ssl-certificates] for your new domain.
 
 [ssl-certificates]: https://zulip.readthedocs.io/en/stable/production/ssl-certificates.html
-[zulip-settings]: https://zulip.readthedocs.io/en/stable/production/settings.html
-[zulip-multiple-organizations]: https://zulip.readthedocs.io/en/stable/production/multiple-organizations.html
+[connect-settings]: https://zulip.readthedocs.io/en/stable/production/settings.html
+[connect-multiple-organizations]: https://zulip.readthedocs.io/en/stable/production/multiple-organizations.html
 [management-commands]: https://zulip.readthedocs.io/en/stable/production/management-commands.html#other-useful-manage-py-commands

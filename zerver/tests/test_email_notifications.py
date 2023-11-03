@@ -278,7 +278,7 @@ class TestFollowupEmails(ZulipTestCase):
         self.assertEqual(email_data["context"]["is_realm_admin"], True)
         self.assertEqual(
             email_data["context"]["getting_organization_started_link"],
-            "http://zulip.testserver/help/getting-your-organization-started-with-zulip",
+            "http://zulip.testserver/help/getting-your-organization-started-with-connect",
         )
         self.assertEqual(
             email_data["context"]["getting_user_started_link"],

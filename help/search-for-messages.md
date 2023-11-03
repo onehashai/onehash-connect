@@ -103,7 +103,7 @@ OneHash Connect offers the following filters based on the location of the messag
 ### Search by message ID
 
 Each message in OneHash Connect has a unique ID, which is used for [linking to a specific
-message](/help/link-to-a-message-or-conversation#link-to-zulip-from-anywhere).
+message](/help/link-to-a-message-or-conversation#link-to-connect-from-anywhere).
 You can use the search bar to navigate to a message by its ID.
 
 * `near:12345`: Show messages around the message with ID `12345`.

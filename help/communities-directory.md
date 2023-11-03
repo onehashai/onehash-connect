@@ -20,13 +20,13 @@ directory does not guarantee that it will be listed.
 ### Self-hosted OneHash Connect communities
 
 OneHash Connect plans to develop support for self-hosted OneHash Connect communities that
-have registered their servers with the [Zulip mobile push
+have registered their servers with the [Connect mobile push
 notification service][push-notifications] to sign-up for the OneHash Connect
 communities directory.
 
 Until that feature is developed, if you administer a self-hosted OneHash Connect
 community and would like to be listed in the directory, please contact
-[Zulip support](mailto:support@zulip.com). Changing the setting in your
+[Connect support](mailto:support@oneash.ai). Changing the setting in your
 OneHash Connect organization will not send any information to the OneHash Connect project
 at this time, even if you use the OneHash Connect mobile push notifications
 service.

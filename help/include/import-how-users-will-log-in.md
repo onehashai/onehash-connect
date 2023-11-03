@@ -18,7 +18,7 @@ You can send password reset emails to all users in your organization, which
 will allow them to set an initial password.
 
 If you imported your organization into OneHash Connect Cloud, simply e-mail
-[support@zulip.com](mailto:support@zulip.com) to request this.
+[support@onehash.ai](mailto:support@onehash.ai) to request this.
 
 !!! warn ""
 

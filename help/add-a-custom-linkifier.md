@@ -5,13 +5,13 @@
 Linkifiers make it easy to refer to issues or tickets in third
 party issue trackers, like GitHub, Salesforce, Zendesk, and others.
 For instance, you can add a linkifier that automatically turns `#2468`
-into a link to `https://github.com/zulip/zulip/issues/2468`.
+into a link to `https://github.com/onehashai/onehash-connect/issues/2468`.
 
 If the pattern appears in a topic, OneHash Connect adds an **Open**
 (<i class="fa fa-external-link-square"></i>) button to the right of the
 topic in the message recipient bar that links to the appropriate URL.
 
-If you have any trouble creating the linkifiers you want, please [contact Zulip
+If you have any trouble creating the linkifiers you want, please [contact Connect
 support](/help/contact-support) with details on what you're trying to do.
 
 ## Add a custom linkifier
@@ -57,9 +57,9 @@ Salesforce, Zendesk, and others.
 {start_tabs}
 
 * Pattern: `#(?P<id>[0-9]+)`
-* URL template: `https://github.com/zulip/zulip/issues/{id}`
+* URL template: `https://github.com/onehashai/onehash-connect/issues/{id}`
 * Original text: `#2468`
-* Automatically links to: `https://github.com/zulip/zulip/issues/2468`
+* Automatically links to: `https://github.com/onehashai/onehash-connect/issues/2468`
 
 {end_tabs}
 
@@ -75,9 +75,9 @@ variants. For example, the OneHash Connect development community
 {start_tabs}
 
 * Pattern: `#M(?P<id>[0-9]+)`
-* URL template: `https://github.com/zulip/zulip-mobile/issues/{id}`
+* URL template: `https://github.com/onehashai/onehash-connect/issues/{id}`
 * Original text: `#M2468`
-* Automatically links to: `https://github.com/zulip/zulip-mobile/issues/2468`
+* Automatically links to: `https://github.com/onehashai/onehash-connect/issues/2468`
 
 {end_tabs}
 
@@ -90,8 +90,8 @@ linkfier pattern turns `org/repo#ID` into an issue or pull request link.
 
 * Pattern: `(?P<org>[a-zA-Z0-9_-]+)/(?P<repo>[a-zA-Z0-9_-]+)#(?P<id>[0-9]+)`
 * URL template: `https://github.com/{org}/{repo}/issues/{id}`
-* Original text: `zulip/zulip#2468`
-* Automatically links to: `https://github.com/zulip/zulip/issues/2468`
+* Original text: `connect/connect#2468`
+* Automatically links to: `https://github.com/onehashai/onehash-connect/issues/2468`
 
 {end_tabs}
 
@@ -103,9 +103,9 @@ characters long, such as a Git commit ID.
 {start_tabs}
 
 * Pattern: `(?P<id>[0-9a-f]{7,40})`
-* URL template: `https://github.com/zulip/zulip/commit/{id}`
+* URL template: `https://github.com/onehashai/onehash-connect/commit/{id}`
 * Original text: `abdc123`
-* Automatically links to: `https://github.com/zulip/zulip/commit/abcd123`
+* Automatically links to: `https://github.com/onehashai/onehash-connect/commit/abcd123`
 
 {end_tabs}
 
@@ -175,8 +175,8 @@ This example pattern allows linking to Google searches.
 ### Overlapping patterns
 
 In this example, a general linkifier is configured to make GitHub
-repository references like `zulip-desktop#123` link to issues in that
-repository within the `zulip` GitHub organization. A more specific
+repository references like `connect-desktop#123` link to issues in that
+repository within the `connect` GitHub organization. A more specific
 linkifier overrides that linkifier for a specific repository of
 interest (`django/django`) that is in a different organization.
 
@@ -188,15 +188,15 @@ interest (`django/django`) that is in a different organization.
 
 * General linkifier
     * Pattern: `(?P<repo>[a-zA-Z0-9_-]+)#(?P<id>[0-9]+)`
-    * URL template: `https://github.com/zulip/{repo}/pull/{id}`
+    * URL template: `https://github.com/onehashai/{repo}/pull/{id}`
 
 * Example matching both linkifiers; specific linkifier takes precedence:
     * Original text: `django#123`
     * Automatically links to: `https://github.com/django/django/pull/123`
 
 * Example matching only the general linkifier:
-    * Original text: `zulip-desktop#123`
-    * Automatically links to: `https://github.com/zulip/zulip-desktop/pull/123`
+    * Original text: `onehash-desktop#123`
+    * Automatically links to: `https://github.com/onehashai/onehash-connect`
 
 {end_tabs}
 

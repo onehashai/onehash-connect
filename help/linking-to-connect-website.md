@@ -11,11 +11,11 @@ website (e.g., **Sponsors** or **Acknowledgements**).
 
 {start_tabs}
 
-1. Select a [Zulip
-   logo](https://github.com/zulip/zulip/tree/main/static/images/logo),
-   preferably a **round Zulip icon** (available in `.png` and `.svg` formats).
+1. Select a [Connect
+   logo](https://github.com/onehashai/onehash-connect),
+   preferably a **round OneHash icon** (available in `.png` and `.svg` formats).
 
-1. Link to <https://zulip.com/>.
+1. Link to <https://www.onehash.ai/>.
 
 2. If appropriate, add a brief description:
 

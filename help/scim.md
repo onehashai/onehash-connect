@@ -14,7 +14,7 @@ OneHash Connect's SCIM integration has the following limitations:
 * Provisioning Groups is not yet implemented.
 * While OneHash Connect's SCIM integration is generic, it has only been
   fully tested and documented with Okta's SCIM provider, and it is
-  possible minor adjustments may be required. [Zulip
+  possible minor adjustments may be required. [Connect
   support](/help/contact-support) is happy to help customers configure
   this integration with SCIM providers that do not yet have detailed
   self-service documentation on this page.
@@ -54,7 +54,7 @@ OneHash Connect's SCIM integration has the following limitations:
 
 1. In the **Provisioning** tab, click **Configure API Integration**, check the
    **Enable API integration** checkbox, and specify the following fields:
-     * **Base URL**: `yourorganization.zulipchat.com/scim/v2`
+     * **Base URL**: `yourorganization.connect.onehash.ai/scim/v2`
      * **API token**: `Bearer token` (given to you by OneHash Connect support)
 
     When you proceed to the next step, Okta will verify that these details are

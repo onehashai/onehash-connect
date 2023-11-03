@@ -3,9 +3,9 @@
 Welcome to OneHash Connect! This page guides you through getting started using
 OneHash Connect. If you are setting up a new organization, you may also want to
 check out our [guide for setting up a new OneHash Connect
-organization](/help/getting-your-organization-started-with-zulip).
+organization](/help/getting-your-organization-started-with-connect).
 
-Mastering Zulip can take a bit of time, but once you get the hang of
+Mastering Connect can take a bit of time, but once you get the hang of
 it, you'll never want to use a different team chat app!
 
 ## Set up your account
@@ -66,4 +66,4 @@ it, you'll never want to use a different team chat app!
 
 ## Related articles
 
-* [Setting up your organization](/help/getting-your-organization-started-with-zulip)
+* [Setting up your organization](/help/getting-your-organization-started-with-connect)

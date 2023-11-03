@@ -66,7 +66,7 @@ The list of supported emoticons is available
 
 ### Paste an emoji
 
-You can paste an emoji copied from outside of Zulip directly into the compose
+You can paste an emoji copied from outside of Connect directly into the compose
 box.
 
 ## Examples
@@ -76,7 +76,7 @@ box.
 ## Change your emoji set
 
 Your emoji set determines how you see emoji. It has no effect on the emoji
-you send. Zulip emoji are compatible with screen readers and other accessibility tools.
+you send. Connect emoji are compatible with screen readers and other accessibility tools.
 
 {start_tabs}
 
@@ -90,7 +90,7 @@ you send. Zulip emoji are compatible with screen readers and other accessibility
 !!! warn ""
 
     **Google blobs** is an old style of Google emoji that has not been maintained
-    by Google since 2017, when they switched to a more modern style. Zulip allows
+    by Google since 2017, when they switched to a more modern style. Connect allows
     you to still use blob emoji, but any new emoji that have been released since
     2017 will be displayed in the modern **Google** style.
 

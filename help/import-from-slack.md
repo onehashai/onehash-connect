@@ -15,7 +15,7 @@ following steps, which are described in more detail below:
 
 3. [Clean up](#clean-up-after-the-slack-export) after the Slack export.
 
-4. [Get your organization started with Zulip](#get-your-organization-started-with-zulip)!
+4. [Get your organization started with Connect](#get-your-organization-started-with-zulip)!
 
 {end_tabs}
 
@@ -121,7 +121,7 @@ in order to export direct message data.
     ```
 
 1. Follow [step 4](https://zulip.readthedocs.io/en/stable/production/install.html#step-4-configure-and-use)
-   of the guide for [installing a new Zulip
+   of the guide for [installing a new Connect
    server](https://zulip.readthedocs.io/en/stable/production/install.html).
 
 {end_tabs}
@@ -132,7 +132,7 @@ Whether you are using OneHash Connect Cloud or self-hosting OneHash Connect, her
 in mind about the import process:
 
 - Slack does not export workspace settings, so you will need to [configure
-  the settings for your Zulip organization](/help/customize-organization-settings).
+  the settings for your Connect organization](/help/customize-organization-settings).
   This includes settings like [email
   visibility](/help/configure-email-visibility),
   [message editing permissions](/help/restrict-message-editing-and-deletion),

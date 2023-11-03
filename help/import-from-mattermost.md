@@ -11,9 +11,9 @@ following steps, which are described in more detail below:
 
 1. [Export your Mattermost data](#export-your-mattermost-data).
 
-1. [Import your Mattermost data into Zulip](#import-your-data-into-connect).
+1. [Import your Mattermost data into Connect](#import-your-data-into-connect).
 
-1. [Get your organization started with Zulip](#get-your-organization-started-with-connect)!
+1. [Get your organization started with Connect](#get-your-organization-started-with-connect)!
 
 {end_tabs}
 
@@ -170,7 +170,7 @@ Replace `<username>` and `<server_ip>` with the appropriate values below.
 
 {start_tabs}
 
-{tab|zulip-cloud}
+{tab|connect-cloud}
 
 {!import-into-a-zulip-cloud-organization.md!}
 
@@ -205,7 +205,7 @@ Replace `<username>` and `<server_ip>` with the appropriate values below.
     ```
 
 1. Follow [step 4](https://zulip.readthedocs.io/en/stable/production/install.html#step-4-configure-and-use)
-   of the guide for [installing a new Zulip
+   of the guide for [installing a new Connect
    server](https://zulip.readthedocs.io/en/stable/production/install.html).
 
 {tab|mm-self-hosting-cloud-export}
@@ -241,7 +241,7 @@ Replace `<username>` and `<server_ip>` with the appropriate values below.
     ```
 
 1. Follow [step 4](https://zulip.readthedocs.io/en/stable/production/install.html#step-4-configure-and-use)
-   of the guide for [installing a new Zulip
+   of the guide for [installing a new Connect
    server](https://zulip.readthedocs.io/en/stable/production/install.html).
 
 {end_tabs}
@@ -252,7 +252,7 @@ Whether you are using OneHash Connect Cloud or self-hosting OneHash Connect, her
 keep in mind about the import process:
 
 - Mattermost does not export workspace settings, so you will need to [configure
-  the settings for your Zulip organization](/help/customize-organization-settings).
+  the settings for your Connect organization](/help/customize-organization-settings).
   This includes settings like [email
   visibility](/help/configure-email-visibility),
   [message editing permissions](/help/restrict-message-editing-and-deletion),

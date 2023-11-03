@@ -1,6 +1,6 @@
 # OneHash Connect Cloud billing
 
-This page answers some frequently asked questions about [Zulip Cloud plans and
+This page answers some frequently asked questions about [Connect Cloud plans and
 pricing](https://zulip.com/plans/). If you have any other questions, please don't hesitate to
 reach out at support@onehash.ai.
 

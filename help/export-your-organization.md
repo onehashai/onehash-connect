@@ -21,7 +21,7 @@ to all OneHash Connect Cloud organizations:
   messages](/help/direct-messages) of members who opt in to have their data
   exported.
 
-Two additional types of data exports are available to **corporate** [Zulip Cloud
+Two additional types of data exports are available to **corporate** [Connect Cloud
 Standard][standard] customers:
 
 [standard]: https://zulip.com/plans/
@@ -48,7 +48,7 @@ Standard][standard] customers:
 1. After a few minutes, you'll be able to download the export as a `.tar.gz`
 file from that page.
 
-1. Import the tarball using [Zulip's logical data import tool][import-only].
+1. Import the tarball using [Connect's logical data import tool][import-only].
 
 !!! warn ""
 
@@ -75,15 +75,15 @@ subscriptions exported, but will have no personalized message history.
 
 {start_tabs}
 
-1. Email [support@zulip.com](mailto:support@zulip.com) with your
-   organization's `zulipchat.com` URL, asking for a **full export with
+1. Email [support@onehash.ai](mailto:support@onehash.ai) with your
+   organization's `connect.onehash.ai` URL, asking for a **full export with
    member consent**. Please send the email from the same address
    that you use to sign in to OneHash Connect, so that OneHash Connect Support can verify
    that you are an owner of the organization.
 
 1. You will receive an email with instructions on how to collect member consent.
    Follow the instructions, and notify
-   [support@zulip.com](mailto:support@zulip.com) when the process has been
+   [support@onehash.ai](mailto:support@onehash.ai) when the process has been
    completed.
 
 1. You will receive an archive in the `.tar.gz` format containing all public
@@ -91,7 +91,7 @@ subscriptions exported, but will have no personalized message history.
    stream](/help/stream-permissions) messages and [direct
    messages](/help/direct-messages) for users who gave consent.
 
-1. Import the tarball using [Zulip's logical data import tool][import-only].
+1. Import the tarball using [Connect's logical data import tool][import-only].
 
 {end_tabs}
 
@@ -105,8 +105,8 @@ subscriptions exported, but will have no personalized message history.
 
 {start_tabs}
 
-1. Email [support@zulip.com](mailto:support@zulip.com) with your
-   organization's `zulipchat.com` URL, asking for a **full export without
+1. Email [support@onehash.ai](mailto:support@onehash.ai) with your
+   organization's `connect.onehash.ai` URL, asking for a **full export without
    member consent**. Please send the email from the same address
    that you use to sign in to OneHash Connect, so that OneHash Connect Support can verify
    that you are an owner of the organization.
@@ -115,7 +115,7 @@ subscriptions exported, but will have no personalized message history.
    an archive in the `.tar.gz` format containing all the information for your
    organization.
 
-1. Import the tarball using [Zulip's logical data import tool][import-only].
+1. Import the tarball using [Connect's logical data import tool][import-only].
 
 {end_tabs}
 
@@ -131,12 +131,12 @@ importing the export into a new OneHash Connect organization.
 
 {start_tabs}
 
-1. Email [support@zulip.com](mailto:support@zulip.com) asking for a **compliance
+1. Email [support@onehash.ai](mailto:support@onehash.ai) asking for a **compliance
    export**. Please send the email from the same address that you use to sign in
    to OneHash Connect, so that OneHash Connect Support can verify that you are an owner of the
    organization. You will need to specify:
 
-      1. The `zulipchat.com` URL for your organization
+      1. The `connect.onehash.ai` URL for your organization
 
       2. What limits you would like on the export.  Currently, compliance
          exports can apply any combination of the following filters:

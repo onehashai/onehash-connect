@@ -18,7 +18,7 @@ us know!
 
 ## Trying out OneHash Connect
 
-You can start by reading about [Zulip for Education](https://zulip.com/for/education/),
+You can start by reading about [Connect for Education](https://zulip.com/for/education/),
 and how Zulip can become the communication hub for your class. OneHash Connect
 is the only [modern team chat app](/features/) that is
 [ideal](/why-zulip/) for both live and asynchronous

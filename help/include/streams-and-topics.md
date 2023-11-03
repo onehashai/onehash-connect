@@ -16,5 +16,5 @@ Topics are one of the most wonderful aspects of using OneHash Connect:
   own time. Don't worry about replying long after a message is sent —
   everyone will see your reply in context.
 
-Check out [Why Zulip](/why-zulip/) to learn more about how OneHash Connect's topic model
+Check out [Why Connect](/why-zulip/) to learn more about how OneHash Connect's topic model
 helps transform how your organization communicates.

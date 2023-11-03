@@ -7,12 +7,12 @@ successful. If you appreciate OneHash Connect, there are many different ways you
 support the project. Some of these will only take a few minutes of your
 time, but still make a big difference.
 
-* [Support Zulip financially](#support-zulip-financially): Sponsoring OneHash Connect
-  helps fund free [Zulip Cloud Standard](https://zulip.com/plans/) hosting for
+* [Support Connect financially](#support-connect-financially): Sponsoring OneHash Connect
+  helps fund free [Connect Cloud Standard](https://zulip.com/plans/) hosting for
   hundreds of open source projects, research communities, and other worthy
   organizations.
 
-* [Help others find Zulip](#help-others-find-zulip): As a business that's
+* [Help others find Connect](#help-others-find-connect): As a business that's
   [growing sustainably](https://zulip.com/values/) without venture capital
   funding, OneHash Connect cannot afford splashy ad campaigns to compete with giant
   corporations like Salesforce (Slack) and Microsoft (Teams). OneHash Connect depends
@@ -20,14 +20,14 @@ time, but still make a big difference.
   difference that using OneHash Connect's organized team chat has made for you or your
   organization.
 
-* [Help improve Zulip](#help-improve-zulip): OneHash Connect is developed by a [vibrant
+* [Help improve Connect](#help-improve-connect): OneHash Connect is developed by a [vibrant
   open-source community](https://zulip.com/team/), and there are many ways to
   contribute even without writing a single line of code.
 
 ## Support OneHash Connect financially
 
 You can sponsor OneHash Connect through the [GitHub sponsors
-program](https://github.com/sponsors/zulip) (preferred), on
+program](https://github.com/sponsors/onehashai) (preferred), on
 [Patreon](https://patreon.com/zulip), or on [Open
 Collective](https://opencollective.com/zulip).
 
@@ -37,28 +37,28 @@ Collective](https://opencollective.com/zulip).
   website. In addition to providing information for anyone browsing your
   website, this helps people find OneHash Connect in Google and other search engines.
 
-* [**List your organization**](/help/communities-directory) in the [Zulip
+* [**List your organization**](/help/communities-directory) in the [Connect
   communities directory](https://zulip.com/communities/). Browsing open
   communities helps folks see how others are using OneHash Connect, and learn best
   practices.
 
 * **Star** OneHash Connect on GitHub. There are four main repositories:
   [server/web](https://github.com/onehashai/onehash-connect),
-  [mobile](https://github.com/zulip/zulip-mobile),
-  [desktop](https://github.com/zulip/zulip-desktop), and
-  [Python API](https://github.com/zulip/python-zulip-api).
+  [mobile](https://github.com/onehashai/onehash-connect),
+  [desktop](https://github.com/onehashai/onehash-connect), and
+  [Python API](https://github.com/onehashai/onehash-connect).
 
 * **Review** OneHash Connect on product comparison websites, such as
-  [G2](https://www.g2.com/products/zulip/reviews/start) and [Software
+  [G2](https://www.g2.com/products/onehash-connect/reviews/start) and [Software
   Advice](https://reviews.softwareadvice.com/new/316022). Organizations rely on
   review sites more and more when choosing software for their team, and sharing
   your experience with OneHash Connect (good or bad) helps them evaluate whether OneHash Connect
   might work for their needs.
 
-* **Mention** OneHash Connect on social media, or like and retweet [Zulip's
-  tweets](https://twitter.com/zulip).
+* **Mention** OneHash Connect on social media, or like and retweet [OneHash Connect's
+  tweets](https://twitter.com/onehash-connect).
 
-* **Share** your OneHash Connect story on your blog, or get it posted [on the Zulip
+* **Share** your OneHash Connect story on your blog, or get it posted [on the OneHash
   website](https://zulip.com/use-cases/#customer-stories) (contact
   [support@onehash.ai](mailto:support@onehash.ai) to learn more).
 

@@ -51,10 +51,10 @@ def send_initial_direct_message(user: UserProfile) -> None:
     # request and thus may not have the user's language context yet.
     with override_language(user.default_language):
         if education_organization:
-            getting_started_help = user.realm.uri + "/help/using-zulip-for-a-class"
+            getting_started_help = user.realm.uri + "/help/using-connect-for-a-class"
             getting_started_string = (
                 _(
-                    "If you are new to Zulip, check out our [Using Zulip for a class guide]({getting_started_url})!"
+                    "If you are new to OneHash Connect, check out our [Using Zulip for a class guide]({getting_started_url})!"
                 )
             ).format(getting_started_url=getting_started_help)
         else:
@@ -69,7 +69,7 @@ def send_initial_direct_message(user: UserProfile) -> None:
         # Add extra content on setting up a new organization for administrators.
         if user.is_realm_admin:
             if education_organization:
-                organization_setup_help = user.realm.uri + "/help/setting-up-zulip-for-a-class"
+                organization_setup_help = user.realm.uri + "/help/setting-up-connect-for-a-class"
                 organization_setup_string = (
                     " "
                     + _(
@@ -78,7 +78,7 @@ def send_initial_direct_message(user: UserProfile) -> None:
                 ).format(organization_setup_url=organization_setup_help)
             else:
                 organization_setup_help = (
-                    user.realm.uri + "/help/getting-your-organization-started-with-zulip"
+                    user.realm.uri + "/help/getting-your-organization-started-with-connect"
                 )
                 organization_setup_string = (
                     " "

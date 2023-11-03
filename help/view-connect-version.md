@@ -3,13 +3,13 @@
 ## OneHash Connect server and web app version
 
 If your organization self-hosts OneHash Connect, the server administrator will need to
-[upgrade Zulip][upgrade-zulip] in order for you to experience the latest
+[upgrade Connect][upgrade-connect] in order for you to experience the latest
 improvements. You can check which [version][changelog] of the OneHash Connect server and
 web app your organization is using.
 
 OneHash Connect Cloud organizations are always updated to the latest version of OneHash Connect.
 
-[upgrade-zulip]:
+[upgrade-connect]:
     https://zulip.readthedocs.io/en/stable/production/upgrade.html
 [changelog]: https://zulip.readthedocs.io/en/latest/overview/changelog.html
 
@@ -29,7 +29,7 @@ OneHash Connect Cloud organizations are always updated to the latest version of 
 
 {tab|v4}
 
-{relative|gear|about-zulip}
+{relative|gear|about-connect}
 
 1. View the version number under **OneHash Connect Server**.
 
@@ -42,7 +42,7 @@ OneHash Connect Cloud organizations are always updated to the latest version of 
 
 ## OneHash Connect desktop app version
 
-The [Zulip desktop app](/apps/) has an independent version from the server and
+The [Connect desktop app](/apps/) has an independent version from the server and
 web app.
 
 ### View OneHash Connect desktop app version
