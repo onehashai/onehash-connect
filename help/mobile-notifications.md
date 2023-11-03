@@ -50,7 +50,7 @@ which explains the notification settings for many popular Android vendors.
 ### Contacting OneHash Connect support
 
 If you are still having trouble with your push notifications, you can send an
-email to [Zulip support](/help/contact-support). Please be sure to include the
+email to [Connect support](/help/contact-support). Please be sure to include the
 troubleshooting data provided by the mobile app.
 
 {start_tabs}

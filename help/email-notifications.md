@@ -38,7 +38,7 @@ helps in a few ways:
   separate emails, so that you can [respond directly from your
   email][reply-from-email]).
 
-[reply-from-email]: /help/using-zulip-via-email
+[reply-from-email]: /help/using-connect-via-email
 
 To configure the delay for message notification emails:
 

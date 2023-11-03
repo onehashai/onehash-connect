@@ -1,7 +1,7 @@
 ### What you type
 
 ```
-:octopus: :heart: :zulip: :)
+:octopus: :heart: :onehash: :)
 ```
 
 ### What it looks like

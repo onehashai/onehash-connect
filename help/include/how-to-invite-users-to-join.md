@@ -18,7 +18,7 @@
    for your organization.
 
 1. Share a link to your registration page, which is
-   https://your-domain.zulipchat.com for OneHash Connect Cloud organizations.
+   https://your-domain.connect.onehash.ai for OneHash Connect Cloud organizations.
 
 {end_tabs}
 

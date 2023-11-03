@@ -24,7 +24,7 @@ The import will include your:
 
 1. Follow the instructions for [joining a Connect organization](/help/join-a-connect-organization).
 
-1. From the dropdown list under **Import settings from an existing Zulip account**,
+1. From the dropdown list under **Import settings from an existing OneHash Connect account**,
    select the account from which you would like to import your settings.
 
 1. Complete the registration form, and click **Sign up**.

@@ -55,7 +55,7 @@ to export all public channel messages.
 
 {start_tabs}
 
-{tab|zulip-cloud}
+{tab|connect-cloud}
 
 {!import-into-a-zulip-cloud-organization.md!}
 
@@ -148,7 +148,7 @@ Once the import process is completed, you will need to:
 
 2. [Configure user roles](/help/change-a-users-role). Only organization owners
    and administrators can do this.
-    * If you [import into Zulip Cloud](#import-your-data-into-zulip), you will
+    * If you [import into Connect Cloud](#import-your-data-into-zulip), you will
     specify the user whose account will have the owner role when you request the
     import.
     * If you self-host, you can follow the OneHash Connect documentation on [making a user an
@@ -161,7 +161,7 @@ Once the import process is completed, you will need to:
    ](#how-users-will-log-in-for-the-first-time).
 
 4. Share the URL for your new OneHash Connect organization, and (recommended) the [Getting
-   started with Zulip guide](/help/getting-started-with-connect).
+   started with Connect guide](/help/getting-started-with-connect).
 
 5. Migrate any [integrations](/integrations/).
 
@@ -172,7 +172,7 @@ Once the import process is completed, you will need to:
 When you create your organization, users will immediately be able to log in
 without a password using GitHub as the [authentication method
 ](/help/configure-authentication-methods). Once they log
-in, users whose accounts have been imported will need to [change their Zulip
+in, users whose accounts have been imported will need to [change their Connect
 email address](/help/change-your-email-address) in order to receive [email
 notifications](/help/email-notifications).
 

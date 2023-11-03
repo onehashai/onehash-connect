@@ -99,7 +99,7 @@ detailed below.
 
 * The **Organization settings** and **Stream settings** menus are not
   available to logged out visitors. However, organization settings data is
-  required for OneHash Connect to load, and may thus be [accessed via the Zulip API][info-via-api].
+  required for OneHash Connect to load, and may thus be [accessed via the Connect API][info-via-api].
 * Logged out visitors cannot view [usage statistics](/help/analytics).
 
 [info-via-api]: /help/public-access-option#information-that-can-be-accessed-via-api-when-web-public-streams-are-enabled
@@ -157,12 +157,12 @@ these anti-abuse features.
 
 As a reminder, OneHash Connect Cloud organizations are expected to
 [moderate content](/help/moderating-open-organizations) to ensure compliance
-with [Zulip's Rules of Use](https://zulip.com/policies/rules).
+with [OneHash Connect's Rules of Use](https://zulip.com/policies/rules).
 
 ## Caveats
 
 * Web-public streams do not yet support search engine indexing. You
-  can use [zulip-archive](https://github.com/zulip/zulip-archive) to
+  can use [connect-archive](https://github.com/onehashai/onehash-connect) to
   create an archive of a OneHash Connect organization that can be indexed by
   search engines.
 * The web-public view is not yet integrated with OneHash Connect's live-update

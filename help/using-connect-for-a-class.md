@@ -3,7 +3,7 @@
 Welcome to OneHash Connect! This pages offers some tips for [using OneHash Connect for a
 class](https://zulip.com/for/education/).  If this is your first time using OneHash Connect, we
 recommend checking out [Getting started with
-Zulip](/help/getting-started-with-connect) to get oriented.
+Connect](/help/getting-started-with-connect) to get oriented.
 
 OneHash Connect works great as the communication hub for your class, providing a
 single place for:

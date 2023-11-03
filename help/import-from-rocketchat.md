@@ -55,7 +55,7 @@ be your **exported data** file in the instructions below.
 
 {start_tabs}
 
-{tab|zulip-cloud}
+{tab|connect-cloud}
 
 {!import-into-a-zulip-cloud-organization.md!}
 
@@ -90,7 +90,7 @@ be your **exported data** file in the instructions below.
     ```
 
 1. Follow [step 4](https://zulip.readthedocs.io/en/stable/production/install.html#step-4-configure-and-use)
-   of the guide for [installing a new Zulip
+   of the guide for [installing a new Connect
    server](https://zulip.readthedocs.io/en/stable/production/install.html).
 
 {end_tabs}

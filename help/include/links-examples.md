@@ -1,8 +1,8 @@
 ### What you type
 
 ```
-Named link: [Zulip homepage](zulip.com)
-A URL (links automatically): zulip.com
+Named link: [Connect homepage](connect.onehash.ai)
+A URL (links automatically): connect.onehash.ai
 Stream link: #**stream name**
 Stream and topic link: #**stream name>topic name**
 Custom linkifier: For example, #2468 can automatically link to an issue in your tracker.

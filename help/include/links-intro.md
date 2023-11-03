@@ -1,4 +1,4 @@
-In OneHash Connect, you can insert a named link using Markdown formatting. In addition, Zulip
+In OneHash Connect, you can insert a named link using Markdown formatting. In addition, Connect
 automatically creates links for you when you enter:
 
 - A URL

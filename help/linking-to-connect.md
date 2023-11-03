@@ -3,7 +3,7 @@
 You can link to your OneHash Connect organization from the web with a OneHash Connect
 [shields.io](https://github.com/badges/shields) badge:
 
-[![Zulip chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://chat.zulip.org)
+[![Connect chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://chat.zulip.org)
 
 Good places for the badge include your project's landing page, support
 pages, and/or GitHub homepage.

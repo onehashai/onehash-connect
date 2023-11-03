@@ -9,7 +9,7 @@ importing, [contact us](/help/contact-support) for help.
    [1](https://zulip.readthedocs.io/en/stable/production/install.html#step-1-download-the-latest-release)
    and
    [2](https://zulip.readthedocs.io/en/stable/production/install.html#step-2-install-zulip)
-   of the guide for [installing a new Zulip
+   of the guide for [installing a new Connect
    server](https://zulip.readthedocs.io/en/stable/production/install.html).
 
 1. Copy the **exported data** file containing your workspace message

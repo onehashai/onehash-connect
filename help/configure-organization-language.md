@@ -10,7 +10,7 @@ American English, you can set the language used for the organization's
 automated messages and invitation emails. This setting:
 
 * Determines the language used for automated messages sent to streams
-  by the [Zulip notification bot](/help/configure-notification-bot).
+  by the [Connect notification bot](/help/configure-notification-bot).
   (Automated messages sent to a single user will use that user's
   preferred language).
 
@@ -19,7 +19,7 @@ automated messages and invitation emails. This setting:
 
 * Is used as the default language for new user accounts when OneHash Connect
   cannot detect their language preferences from their browser,
-  including all users [created via the Zulip API][api-create-user].
+  including all users [created via the Connect API][api-create-user].
 
 ## Configure the organization language
 

@@ -5,7 +5,7 @@ migrating your organization from other team chat tools (if needed),
 getting everything set up, and inviting others to join.
 
 If you are joining an existing organization, we recommend checking out
-our guide to [Getting started with Zulip][getting-started].
+our guide to [Getting started with Connect][getting-started].
 
 [getting-started]: /help/getting-started-with-connect
 
@@ -19,8 +19,8 @@ us know!
 
 ## Choosing between OneHash Connect Cloud and self-hosting
 
-Whether [signing up for Zulip Cloud](/new/) or [self-hosting
-Zulip](/self-hosting/) is the right choice for you depends on the
+Whether [signing up for Connect Cloud](/new/) or [self-hosting
+Connect](/self-hosting/) is the right choice for you depends on the
 needs of your organization.
 
 If you aren’t sure what you need, our high quality export and import
@@ -101,7 +101,7 @@ To get everyone off to a good start, you may wish to share the guide
 to [Getting started with OneHash Connect](/help/getting-started-with-connect).
 
 !!! tip ""
-    You can link to your OneHash Connect organization with a [nice badge](/help/linking-to-zulip).
+    You can link to your OneHash Connect organization with a [nice badge](/help/linking-to-connect).
 
 ## Create user groups
 

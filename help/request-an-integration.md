@@ -12,9 +12,9 @@ it](/help/contact-support)!
 
 Or if you're familiar with GitHub, you can [browse open integrations
 issues][integrations-issues], and if none exists, [open a new
-issue](https://github.com/zulip/zulip/issues/new).
+issue](https://github.com/onehashai/onehash-connect/issues/new).
 
-[integrations-issues]: https://github.com/zulip/zulip/issues?q=is%3Aopen+label%3A%22area%3A+integrations%22+is%3Aissue
+[integrations-issues]: https://github.com/onehashai/onehash-connect/issues?q=is%3Aopen+label%3A%22area%3A+integrations%22+is%3Aissue
 
 ## Related articles
 

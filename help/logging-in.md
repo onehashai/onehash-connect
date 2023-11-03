@@ -21,7 +21,7 @@ Here are some ways to find the URL for your OneHash Connect organization.
 
 {tab|logged-out}
 
-* If your organization is hosted on [Zulip Cloud](https://zulip.com/plans/), go
+* If your organization is hosted on [Connect Cloud](https://zulip.com/plans/), go
   to the [**Find your accounts**](https://zulip.com/accounts/find/) page and enter
   the email address that you signed up with. You will receive an email with the
   sign-in information for any OneHash Connect organization(s) associated with your email
@@ -31,8 +31,8 @@ Here are some ways to find the URL for your OneHash Connect organization.
   Your new account details`. This email provides your organization's log in URL.
 
 * If you have visited your organization's log in page in the past, try reviewing
-  your browser's history. Searching for `zulipchat.com` should find the right
-  page if your OneHash Connect organization is hosted on [Zulip
+  your browser's history. Searching for `connect.onehash.ai` should find the right
+  page if your OneHash Connect organization is hosted on [Connect
   Cloud](https://zulip.com/plans/).
 
 * You can ask your organization administrators for your OneHash Connect URL.
@@ -40,8 +40,8 @@ Here are some ways to find the URL for your OneHash Connect organization.
 {tab|logged-in}
 
 * If using OneHash Connect in the browser, your organization's OneHash Connect log in URL is the first part
-  of what you see in the URL bar (e.g., `<organization-name>.zulipchat.com` for
-  [Zulip Cloud](https://zulip.com/plans/) organizations).
+  of what you see in the URL bar (e.g., `<organization-name>.connect.onehash.ai` for
+  [Connect Cloud](https://zulip.com/plans/) organizations).
 
 * In the Desktop app, select **Copy OneHash Connect URL** from the **OneHash Connect** menu to
   copy the URL of the currently active organization. You can also access the
@@ -52,7 +52,7 @@ Here are some ways to find the URL for your OneHash Connect organization.
   the app, then tap **switch account** to see the URLs for all the organizations
   you are logged in to.
 
-* On [Zulip Cloud](https://zulip.com/plans/) and other OneHash Connect servers updated to
+* On [Connect Cloud](https://zulip.com/plans/) and other OneHash Connect servers updated to
   [OneHash Connect 6.0 or
   higher](https://zulip.readthedocs.io/en/stable/overview/changelog.html#zulip-6-x-series),
   click the **gear** (<i class="fa fa-cog"></i>) icon in the upper right

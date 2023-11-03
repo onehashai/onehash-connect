@@ -90,6 +90,6 @@ You can configure:
 * [Marking messages as read](/help/marking-messages-as-read)
 * [Marking messages as unread](/help/marking-messages-as-unread)
 
-[configure-personal-read-recipts]: /help/read-receipts#configure-whether-zulip-lets-others-see-when-youve-read-messages
+[configure-personal-read-recipts]: /help/read-receipts#configure-whether-connect-lets-others-see-when-youve-read-messages
 [configure-organization-read-recipts]:
     /help/read-receipts#configure-whether-read-receipts-are-enabled-in-your-organization

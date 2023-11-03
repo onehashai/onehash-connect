@@ -1,4 +1,4 @@
-# Trying out Zulip
+# Trying out Connect
 
 {!trying-out-zulip.md!}
 

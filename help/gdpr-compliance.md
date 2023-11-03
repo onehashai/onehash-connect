@@ -2,7 +2,7 @@
 
 This page covers how OneHash Connect interacts with the EU's landmark GDPR
 legislation; you can read the
-[Zulip Cloud privacy policy](https://zulip.com/policies/privacy) for our
+[Connect Cloud privacy policy](https://zulip.com/policies/privacy) for our
 general privacy policies.
 
 ## What is GDPR?
@@ -109,13 +109,13 @@ GDPR:
   panel to deactivate users, edit or delete their account details,
   etc.
 * For complying with access requests, you'll want to start with that
-  user's Zulip profile, which you can access from the right sidebar.
-* The [Zulip Cloud export](/help/export-your-organization) supports exporting
+  user's Connect profile, which you can access from the right sidebar.
+* The [Connect Cloud export](/help/export-your-organization) supports exporting
   all the data related to a OneHash Connect user or organization.
-* The [Zulip REST API](/api/rest) lets you
+* The [Connect REST API](/api/rest) lets you
   automate your processes for handling GDPR requests.
 
-Contact [support@zulip.com](mailto:support@zulip.com) for
+Contact [support@onehash.ai](mailto:support@onehash.ai) for
 any assistance related to this topic.
 
 ## GDPR compliance on-premises
@@ -140,7 +140,7 @@ may be useful:
 There's a lot more that goes into GDPR compliance, including securing
 your server infrastructure responsibly, internal policies around
 access, logging, and backups, etc.  If you need detailed guidance, we
-recommend contacting support@zulip.com; our paid support contracts
+recommend contacting support@onehash.ai; our paid support contracts
 include assistance with understanding GDPR compliance with OneHash Connect.
 
 [management-commands]: https://zulip.readthedocs.io/en/stable/production/management-commands.html
