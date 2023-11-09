@@ -48,7 +48,7 @@ const markdown_help_rows = [
         markdown: ":heart:",
     },
     {
-        markdown: "[Zulip website](https://zulip.org)",
+        markdown: "[OneHash website](https://www.onehash.ai)",
         usage_html: format_usage_html("Ctrl", "Shift", "L"),
     },
     {
@@ -115,19 +115,19 @@ This text won't be visible until the user clicks.
     {
         markdown: `\
 \`\`\`
-def zulip():
-    print "Zulip"
+def connect():
+    print "Connect"
 \`\`\``,
     },
     {
         markdown: `\
 \`\`\`python
-def zulip():
-    print "Zulip"
+def connect():
+    print "Connect"
 \`\`\``,
         output_html: `\
-<div class="codehilite"><pre><span class="k">def</span> <span class="nf">zulip</span><span class="p">():</span>
-    <span class="k">print</span> <span class="s">"Zulip"</span></pre></div>`,
+<div class="codehilite"><pre><span class="k">def</span> <span class="nf">connect</span><span class="p">():</span>
+    <span class="k">print</span> <span class="s">"Connect"</span></pre></div>`,
     },
     {
         markdown: "Some inline math $$ e^{i \\pi} + 1 = 0 $$",

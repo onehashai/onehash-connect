@@ -141,7 +141,7 @@ site.
 {start_tabs}
 
 * Pattern: `RTD/(?P<article>[a-zA-Z0-9_/.#-]+)`
-* URL template: `https://zulip.readthedocs.io/en/latest/{+article}`
+* URL template: `https://help.onehash.ai/en/`
 * Original text: `RTD/overview/changelog.html`
 * Automatically links to: `https://zulip.readthedocs.io/en/latest/overview/changelog.html`
 

@@ -1459,7 +1459,7 @@ class NormalActionsTest(BaseAction):
 
         check_message("events[0]", events[0])
         self.assertIn(
-            f'data-user-id="{new_user_profile.id}">test1_zulip.com</span> just signed up for Zulip',
+            f'data-user-id="{new_user_profile.id}">test1_zulip.com</span> just signed up for OneHash Connect',
             events[0]["message"]["content"],
         )
 
@@ -1485,7 +1485,7 @@ class NormalActionsTest(BaseAction):
 
         check_message("events[0]", events[0])
         self.assertIn(
-            f'data-user-id="{new_user_profile.id}">test1_zulip.com</span> just signed up for Zulip',
+            f'data-user-id="{new_user_profile.id}">test1_zulip.com</span> just signed up for OneHash Connect',
             events[0]["message"]["content"],
         )
 

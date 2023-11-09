@@ -285,7 +285,7 @@ class TestNotifyNewUser(ZulipTestCase):
         actual_stream = Stream.objects.get(id=message.recipient.type_id)
         self.assertEqual(actual_stream.name, Realm.INITIAL_PRIVATE_STREAM_NAME)
         self.assertIn(
-            f"@_**Cordelia, Lear's daughter|{new_user.id}** just signed up for Zulip.",
+            f"@_**Cordelia, Lear's daughter|{new_user.id}** just signed up for OneHash Connect.",
             message.content,
         )
 
@@ -322,7 +322,7 @@ class TestNotifyNewUser(ZulipTestCase):
             actual_stream = Stream.objects.get(id=message.recipient.type_id)
             self.assertEqual(actual_stream, realm.signup_notifications_stream)
             self.assertIn(
-                f"@_**new user {user_no}|{new_user.id}** just signed up for Zulip.",
+                f"@_**new user {user_no}|{new_user.id}** just signed up for OneHash Connect.",
                 message.content,
             )
             for string_present in strings_present:
