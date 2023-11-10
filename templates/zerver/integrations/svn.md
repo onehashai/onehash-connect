@@ -1,4 +1,4 @@
-It is easy to send Zulips on SVN commits, by configuring a
+It is easy to send Connect on SVN commits, by configuring a
 post-commit hook. To do this:
 
 1. {!create-stream.md!}
@@ -20,7 +20,7 @@ post-commit hook. To do this:
 1. The default stream used by this post-commit hook is `commits`; if
    you’d prefer a different stream, change it now in
    `zulip_svn_config.py`. Make sure that everyone interested in getting
-   these post-commit Zulips is subscribed to that stream!
+   these post-commit Connect is subscribed to that stream!
 
 {!congrats.md!}
 

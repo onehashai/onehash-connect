@@ -1,4 +1,4 @@
-Get Zulip notifications from Alertmanager!
+Get Connect notifications from Alertmanager!
 
 1. {!create-stream.md!}
 
@@ -13,7 +13,7 @@ Get Zulip notifications from Alertmanager!
 1. In your Alertmanager config, set up a new webhook receiver, like so:
 
     ```
-    - name: ops-zulip
+    - name: ops-connect
       webhook_configs:
         - url: "<the URL constructed above>"
     ```

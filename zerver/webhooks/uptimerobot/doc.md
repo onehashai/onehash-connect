@@ -1,4 +1,4 @@
-Receive Zulip notifications from UptimeRobot!
+Receive Connect notifications from UptimeRobot!
 
 1. {!create-stream.md!}
 
@@ -7,7 +7,7 @@ Receive Zulip notifications from UptimeRobot!
 1. On UptimeRobot, go to **My Settings** and select **Add Alert Contact**.
    Set **Alert Contact Type** to **webhook**.
 
-1. Set **Friendly Name** to a name of your choice, such as `Zulip`. Set **URL to notify** to the
+1. Set **Friendly Name** to a name of your choice, such as `Connect`. Set **URL to notify** to the
    URL constructed above. Under **POST Value (JSON Format)**, select **Send as JSON (application/json)**.
 
 1. Set **POST Value(JSON Format)** to:

@@ -1,4 +1,4 @@
-Get Zulip notifications for your Raygun events!
+Get Connect notifications for your Raygun events!
 
 1. {!create-stream.md!}
 

@@ -1,4 +1,4 @@
-Receive GoSquared notifications in Zulip!
+Receive GoSquared notifications in Connect!
 
 1. {!create-stream.md!}
 
@@ -9,7 +9,7 @@ Receive GoSquared notifications in Zulip!
    on **Add new**.
 
 1. Set **Webhook URL** to the URL constructed above. Set **Name** to
-   a name of your choice, such as `Zulip`. Click on **Save Integration**.
+   a name of your choice, such as `Connect`. Click on **Save Integration**.
 
 1. In your project's **Settings**, click on **Notifications**. Click on
    **Add new notification**. Under **Trigger**, you may configure when

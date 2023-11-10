@@ -1,4 +1,4 @@
-Get Zulip notifications for your Clubhouse Stories and Epics!
+Get Connect notifications for your Clubhouse Stories and Epics!
 
 1. {!create-stream.md!}
 

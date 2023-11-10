@@ -1,4 +1,4 @@
-Get Zulip notifications for your Librato/AppOptics alerts!
+Get Connect notifications for your Librato/AppOptics alerts!
 
 1. {!create-stream.md!}
 
@@ -9,7 +9,7 @@ Get Zulip notifications for your Librato/AppOptics alerts!
    on the left. Select **Notification Services**, and click on
    **Webhooks**.
 
-1. Set **Title** to a title of your choice, such as `Zulip`. Set **URL**
+1. Set **Title** to a title of your choice, such as `Connect`. Set **URL**
    to the URL constructed above, and click **Add**. When you create a
    new **Alert**, you can enable this webhook under the **Notification
    Services** tab.

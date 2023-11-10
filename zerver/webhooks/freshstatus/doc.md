@@ -1,4 +1,4 @@
-Receive Freshstatus notifications in Zulip!
+Receive Freshstatus notifications in Connect!
 
 1. {!create-stream.md!}
 
@@ -8,7 +8,7 @@ Receive Freshstatus notifications in Zulip!
    Go to **Webhooks** and click **Manage**. Click **New Webhook**
    to set up a new webhook.
 
-1. Set **Webhook Name** to any name of your choice, such as `Zulip`.
+1. Set **Webhook Name** to any name of your choice, such as `Connect`.
    Set **Description** to any suitable description.
 
 1. Under **Condition**, select the events you would like to be notified for.

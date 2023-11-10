@@ -1,4 +1,4 @@
-Get Zulip notifications for your [Harbor](https://goharbor.io/) projects!
+Get Connect notifications for your [Harbor](https://goharbor.io/) projects!
 
 Harbor's webhooks feature is available in version 1.9 and later.
 

@@ -1,4 +1,4 @@
-Receive Gogs notifications in Zulip!
+Receive Gogs notifications in Connect!
 
 1. {!create-stream.md!}
 

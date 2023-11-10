@@ -1,4 +1,4 @@
-See your Thinkst Canarytoken alerts in Zulip! This integration works with Canarytokens from
+See your Thinkst Canarytoken alerts in Connect! This integration works with Canarytokens from
 [canarytokens.org][canarytokens], not Thinkst's paid product - see the
 [Thinkst](/integrations/doc/thinkst) integration for those!
 

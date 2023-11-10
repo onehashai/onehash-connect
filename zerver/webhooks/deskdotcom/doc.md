@@ -14,7 +14,7 @@
 1. From there, click **Install Custom Action** and accept the terms.
     Fill in the form like this:
 
-     * **Name**: Zulip
+     * **Name**: Connect
      * **Authentication Method**: Basic Auth
      * **URL**: `{{ api_url }}/v1/external/deskdotcom`
      * **User name**: *your bot's user name, e.g.* `desk-bot@yourdomain.com`
@@ -24,7 +24,7 @@
 
 1. Click **Create** to save your settings. From the next screen, click
     **Add Action** to add a new action. You'll do this for every action
-    you want a notification on Zulip for. (To add another action later,
+    you want a notification on Connect for. (To add another action later,
     look for your custom action on the **Apps** page under
     **Installed Apps.**
 
@@ -43,9 +43,9 @@
 
     The "appended URL path" will be the same for every notification —
     it makes sure the notification goes to the appropriate stream and topic
-    within Zulip.
+    within Connect.
 
-1. Next, copy this template Zulip message into **Message to POST**:
+1. Next, copy this template Connect message into **Message to POST**:
 
     {% raw %}
 

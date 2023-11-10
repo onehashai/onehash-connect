@@ -1,4 +1,4 @@
-Get Zulip notifications for your Solano CI builds!
+Get Connect notifications for your Solano CI builds!
 
 1. {!create-stream.md!}
 

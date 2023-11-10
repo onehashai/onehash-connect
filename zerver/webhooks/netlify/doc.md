@@ -1,4 +1,4 @@
-Get Zulip notifications for your Netlify deployments!
+Get Connect notifications for your Netlify deployments!
 
 1. {!create-stream.md!}
 

@@ -1,4 +1,4 @@
-Get Zulip notifications for your Opbeat events!
+Get Connect notifications for your Opbeat events!
 
 1. {!create-stream.md!}
 

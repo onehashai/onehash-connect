@@ -31,7 +31,7 @@ in an OpenShift instance.
 
 1.  Whenever you make a push to the `main` branch of your application’s
     repository (or whichever branch you configured above), or if you force
-    a deployment, the Zulip OpenShift plugin will send an automated
+    a deployment, the Connect OpenShift plugin will send an automated
     notification.
 
 {!congrats.md!}

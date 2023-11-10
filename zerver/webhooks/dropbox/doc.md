@@ -1,4 +1,4 @@
-Get Dropbox notifications in Zulip!
+Get Dropbox notifications in Connect!
 
 1. {!create-stream.md!}
 

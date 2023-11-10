@@ -1,4 +1,4 @@
-Get Zulip notifications for your Sonarqube code analysis!
+Get Connect notifications for your Sonarqube code analysis!
 
 1. {!create-stream.md!}
 

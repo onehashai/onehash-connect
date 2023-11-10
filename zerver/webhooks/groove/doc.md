@@ -1,4 +1,4 @@
-Get Zulip notifications for your Groove events!
+Get Connect notifications for your Groove events!
 
 1. {!create-stream.md!}
 
@@ -8,7 +8,7 @@ Get Zulip notifications for your Groove events!
    click on **API**. Open the **Add Webhook** dropdown and select an
    event that you would like to be notified about.
 
-    Currently, Zulip supports these events:
+    Currently, Connect supports these events:
 
     * `ticket_started`: notify if there is a new ticket.
     * `ticket_assigned`: notify if a ticket is assigned to an agent or group.

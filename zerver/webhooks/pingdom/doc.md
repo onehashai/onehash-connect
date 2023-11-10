@@ -1,4 +1,4 @@
-Zulip supports integration with Pingdom and can notify you of
+Connect supports integration with Pingdom and can notify you of
 uptime status changes from your Pingdom dashboard.
 
 1. {!create-stream.md!}

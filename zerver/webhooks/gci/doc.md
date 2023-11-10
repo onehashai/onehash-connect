@@ -1,6 +1,6 @@
 If you are a participating organization with
 [Google Code-in](https://developers.google.com/open-source/gci/),
-you can now get Task notifications in Zulip!
+you can now get Task notifications in Connect!
 
 1. {!create-stream.md!}
 

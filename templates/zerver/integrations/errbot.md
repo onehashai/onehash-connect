@@ -1,16 +1,16 @@
-Run your favorite chatbot in Zulip!
+Run your favorite chatbot in Connect!
 
 1. [Install errbot](https://errbot.readthedocs.io/en/latest/user_guide/setup.html)
    and follow to instructions to set up a `config.py`.
 
-1. Check out our [Errbot integration package for Zulip](https://github.com/zulip/errbot-backend-zulip).
+1. Check out our [Errbot integration package for Connect](https://github.com/zulip/errbot-backend-zulip).
    Clone this repository somewhere convenient.
 
 1. Install the requirements listed in `errbot-backend-zulip/requirements.txt`.
 
 1. {!create-a-generic-bot.md!}
 
-1. Download your Zulip bot's `zuliprc` config file. You will need its content for the next step.
+1. Download your Connect bot's `zuliprc` config file. You will need its content for the next step.
 
 1. Edit your ErrBot's `config.py`. Use the following template for a minimal configuration:
 
@@ -44,4 +44,4 @@ Run your favorite chatbot in Zulip!
 
 ### Tips
 
-* Rooms in ErrBot are streams in Zulip.
+* Rooms in ErrBot are streams in Connect.

@@ -1,4 +1,4 @@
-Get Linear notifications in Zulip!
+Get Linear notifications in Connect!
 
 1. {!create-stream.md!}
 

@@ -1,4 +1,4 @@
-Receive Sonarr notifications in Zulip!
+Receive Sonarr notifications in Connect!
 
 1. {!create-stream.md!}
 
@@ -8,7 +8,7 @@ Receive Sonarr notifications in Zulip!
     Click the **+** icon.
 
 1. Select **Webhook** and set the name of the webhook to any name of your
-    choice (e.g **Zulip**). Select the scenarios you would like to receive
+    choice (e.g **Connect**). Select the scenarios you would like to receive
     notifications for. You may also enter tags if you would like to be
     notified about series with specific tags.
 

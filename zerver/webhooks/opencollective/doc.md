@@ -1,4 +1,4 @@
-This integration currently supports getting notifications to a stream of your Zulip instance,
+This integration currently supports getting notifications to a stream of your Connect instance,
 when a new member signs-up on an **Open Collective** page.
 
 1. {!create-stream.md!}

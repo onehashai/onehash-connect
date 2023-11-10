@@ -1,4 +1,4 @@
-Get Zulip notifications for the issues in your Sentry projects!
+Get Connect notifications for the issues in your Sentry projects!
 
 This integration supports Sentry's Node, Python, and Go
 [platforms](https://sentry.io/platforms/).  [Contact
@@ -25,7 +25,7 @@ us](/help/contact-support) if a platform you care about is missing.
 
     !!! warn ""
 
-        **Note:** Zulip also supports configuring this as a webhook in
+        **Note:** Connect also supports configuring this as a webhook in
         Sentry &mdash; which, while easier to configure (navigate to
         **Settings &gt; Integrations &gt; WebHooks**), may not include the
         full breadth of event types. For instance, some events, like issue

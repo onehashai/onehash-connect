@@ -1,4 +1,4 @@
-Zulip supports integration with CircleCI and can notify you of your
+Connect supports integration with CircleCI and can notify you of your
 job and workflow statuses. This integration currently supports using
 CircleCI with GitHub, BitBucket and GitLab.
 

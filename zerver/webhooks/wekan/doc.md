@@ -1,4 +1,4 @@
-Get Wekan notifications in Zulip!
+Get Wekan notifications in Connect!
 
 1. {!create-stream.md!}
 

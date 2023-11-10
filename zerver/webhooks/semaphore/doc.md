@@ -1,4 +1,4 @@
-Get Zulip notifications for your Semaphore builds!
+Get Connect notifications for your Semaphore builds!
 
 1. {!create-stream.md!}
 

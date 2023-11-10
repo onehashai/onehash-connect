@@ -1,4 +1,4 @@
-This beta Zulip integration supports for processing incoming webhook
+This beta Connect integration supports for processing incoming webhook
 messages written to work with Slack's [incoming webhook
 API](https://api.slack.com/messaging/webhooks).
 
@@ -10,8 +10,8 @@ API](https://api.slack.com/messaging/webhooks).
 
 {!congrats.md!}
 
-Where possible, we prefer to create native Zulip integrations that
-make optimal use of Zulip's topics and don't require translating
+Where possible, we prefer to create native Connect integrations that
+make optimal use of Connect's topics and don't require translating
 formatting, but this is a useful stopgap, especially for getting
 messages from third-party vendors that only offer a Slack integration
 (with no generic outgoing webhook API).

@@ -1,4 +1,4 @@
-Zulip supports integration with Phabricator and can notify you
+Connect supports integration with Phabricator and can notify you
 of the latest items in your Phabricator feed.
 
 1.  Follow the instructions

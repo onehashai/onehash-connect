@@ -1,4 +1,4 @@
-Get Zulip notifications for your Statuspage.io subscriptions!
+Get Connect notifications for your Statuspage.io subscriptions!
 
 1. {!create-stream.md!}
 

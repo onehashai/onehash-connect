@@ -1,4 +1,4 @@
-Get Zulip notifications for your Airbrake bug tracker!
+Get Connect notifications for your Airbrake bug tracker!
 
 1. {!create-stream.md!}
 
