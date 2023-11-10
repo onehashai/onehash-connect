@@ -1,4 +1,4 @@
-Get Zulip notifications for your Jira projects!
+Get Connect notifications for your Jira projects!
 
 These instructions apply to Atlassian Cloud's hosted Jira, and Jira Server version
 5.2 or greater. For older installs, you'll need our [Jira plugin](./jira-plugin).
@@ -11,7 +11,7 @@ These instructions apply to Atlassian Cloud's hosted Jira, and Jira Server versi
    On the left sidebar, scroll down, and under **Advanced**, click **WebHooks**.
    Click **+ Create a WebHook**.
 
-1. Set **Name** to a name of your choice, such as `Zulip`. Set **Status** to
+1. Set **Name** to a name of your choice, such as `Connect`. Set **Status** to
    **Enabled**, and set **URL** to the URL constructed above. Select the events
    you'd like to be notified about, and click **Create**. We
    support the following **Issue** and **Comment** events:

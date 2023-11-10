@@ -1,4 +1,4 @@
-Get Insping notifications in Zulip! Insping (stylized as !nsping) is a
+Get Insping notifications in Connect! Insping (stylized as !nsping) is a
 simple uptime and performance monitoring tool, which notifies you when
 a website or service is up and running or down.
 
@@ -12,7 +12,7 @@ a website or service is up and running or down.
 1. Set **Webhook URL** to the URL constructed above. Set **Organization**
    to the organization you would like to receive notifications for, and click
    **Create**. Optionally, click on **Test**, and click **Send Test Data**
-   to send a test message to your Zulip organization.
+   to send a test message to your Connect organization.
 
 {!congrats.md!}
 

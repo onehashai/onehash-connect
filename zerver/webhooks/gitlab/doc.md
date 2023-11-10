@@ -1,10 +1,10 @@
-Receive GitLab notifications in Zulip!
+Receive GitLab notifications in Connect!
 
 1. {!create-stream.md!}
 
 1. {!create-bot-construct-url.md!}
 
-    By default, the Zulip topics for merge requests will contain the
+    By default, the Connect topics for merge requests will contain the
     title of the GitLab merge request.  You can change the topic format to
     just contain the merge request ID by adding
     `&use_merge_request_title=false` at the end of the URL.
@@ -24,7 +24,7 @@ Receive GitLab notifications in Zulip!
 
 !!! tip ""
 
-    If your GitLab server and your Zulip server are on a local network
+    If your GitLab server and your Connect server are on a local network
     together, and you're running GitLab 10.5 or newer, you may need to enable
     GitLab's "Allow requests to the local network from hooks and
     services" setting (by default, recent GitLab versions refuse to post

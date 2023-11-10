@@ -1,10 +1,10 @@
-Zulip supports using BigBlueButton as its video call video call
+Connect supports using BigBlueButton as its video call video call
 provider. This is currently only possible on self-hosted Zulip
 installations.
 
 To use the [BigBlueButton](https://bigbluebutton.org/) video call
 integration, you'll need to have a BigBlueButton server and
-configure your zulip server to use that BigBlueButton server.
+configure your connect server to use that BigBlueButton server.
 
 ### Configure BigBlueButton server
 
@@ -16,7 +16,7 @@ configure your zulip server to use that BigBlueButton server.
    `https://bigbluebutton.example.com/bigbluebutton/` and can also be
    found using the `bbb-conf --secret` command.
 
-### Configure zulip server
+### Configure connect server
 
 1. In `/etc/zulip/zulip-secrets.conf`, set `big_blue_button_secret`
    as your BigBlueButton Server's shared secret.
@@ -31,5 +31,5 @@ configure your zulip server to use that BigBlueButton server.
 
 1. Select BigBlueButton as the organization's [video call provider](/help/start-a-call#changing-your-organizations-video-call-provider).
 
-1. Zulip's [call button](/help/start-a-call) will now create meetings
+1. Connect's [call button](/help/start-a-call) will now create meetings
    using BigBlueButton.

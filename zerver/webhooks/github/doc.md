@@ -1,4 +1,4 @@
-Get GitHub notifications in Zulip!
+Get GitHub notifications in Connect!
 
 1. {!create-stream.md!}
 

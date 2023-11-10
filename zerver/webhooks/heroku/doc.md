@@ -1,5 +1,5 @@
-Receive notifications in Zulip whenever a new version of an app
-is pushed to Heroku using the Zulip Heroku plugin!
+Receive notifications in Connect whenever a new version of an app
+is pushed to Heroku using the Connect Heroku plugin!
 
 1. {!create-stream.md!}
 
@@ -11,7 +11,7 @@ is pushed to Heroku using the Zulip Heroku plugin!
    the **Deploy Hooks** add-on you just added.
 
 1. Set **URL** to the URL constructed above. Click **Save and Send Test**
-   to send a test message to your Zulip organization.
+   to send a test message to your Connect organization.
 
 {!congrats.md!}
 

@@ -1,4 +1,4 @@
-New Relic can send messages to a Zulip stream for incidents.
+New Relic can send messages to a Connect stream for incidents.
 
 1. {!create-stream.md!}
 
@@ -9,7 +9,7 @@ New Relic can send messages to a Zulip stream for incidents.
 
 1. Navigate to **Notification channels**.
 
-1. Create a new notification channel. Select channel type of **Webhook**, choose a name (e.g. "Zulip"), enter the webhook url created earlier as **Base Url**.
+1. Create a new notification channel. Select channel type of **Webhook**, choose a name (e.g. "Connect"), enter the webhook url created earlier as **Base Url**.
 
 1. It should look like:
   ![](/static/images/integrations/newrelic/newrelic.png)

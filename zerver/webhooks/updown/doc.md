@@ -1,4 +1,4 @@
-See Updown reports in Zulip!
+See Updown reports in Connect!
 
 1. {!create-stream.md!}
 

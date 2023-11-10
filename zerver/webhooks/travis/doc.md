@@ -1,4 +1,4 @@
-See your Travis CI build notifications in Zulip!
+See your Travis CI build notifications in Connect!
 
 1. {!create-stream.md!}
 

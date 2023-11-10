@@ -1,4 +1,4 @@
-Get Zulip notifications from your Flock channels.
+Get Connect notifications from your Flock channels.
 
 1. {!create-stream.md!}
 
@@ -9,7 +9,7 @@ Get Zulip notifications from your Flock channels.
    Next to **Outgoing Webhook**, click on **Add**.
 
 1. Set **Send messages from a channel** to the channel you'd like to be notified about.
-   Set **Name that the webhook will post as** to a name of your choice, such as `Zulip`.
+   Set **Name that the webhook will post as** to a name of your choice, such as `Connect`.
    Set **Callback URL** to the URL created above, and click **Save Settings**.
 
 {!congrats.md!}

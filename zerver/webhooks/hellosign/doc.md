@@ -8,7 +8,7 @@ Configuring the HelloSign integration is easy!
    click on **API**.
 
 1. Set **Account Callback** to the URL constructed above. Click **Test**
-   to send a test notification to your Zulip organization.
+   to send a test notification to your Connect organization.
 
 {!congrats.md!}
 

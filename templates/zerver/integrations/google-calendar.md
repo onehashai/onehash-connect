@@ -1,5 +1,5 @@
-Get Google Calendar reminders in Zulip! This is a great way to see
-your reminders directly in your Zulip feed.
+Get Google Calendar reminders in Connect! This is a great way to see
+your reminders directly in your Connect feed.
 
 1.  {!download-python-bindings.md!}
 
@@ -16,7 +16,7 @@ your reminders directly in your Zulip feed.
     instructions on the
     [Google website](https://developers.google.com/api-client-library/python/start/installation).
 
-1.  In Zulip, go to your click on the cog in the top right corner, and
+1.  In Connect, go to your click on the cog in the top right corner, and
     then clicking on **Personal settings**.
 
 1.  Click on the tab that’s labeled **Account & privacy** and click on
@@ -31,7 +31,7 @@ your reminders directly in your Zulip feed.
         python /usr/local/share/zulip/integrations/google/get-google-credentials
 
 1.  It should open up a browser and ask you for certain permissions. Give
-    Zulip access, and move on to the next step. If it doesn’t open a
+    Connect access, and move on to the next step. If it doesn’t open a
     browser, follow the instructions in the terminal window.
 
 1.  Now, all that’s left to do is to run the `gcal-bot` script, in the

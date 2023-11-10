@@ -118,7 +118,10 @@
             {{/if}}
             <li class="divider" role="presentation"></li>
             <li role="presentation" class="hidden-for-spectators">
-                <a href="{{ apps_page_url }}" target="_blank" rel="noopener noreferrer" role="menuitem">
+                {{!-- <a href="{{ apps_page_url }}" target="_blank" rel="noopener noreferrer" role="menuitem">
+                    <i class="fa fa-desktop" aria-hidden="true"></i> {{t 'Desktop & mobile apps' }}
+                </a> --}}
+                  <a target="_blank" rel="noopener noreferrer" role="menuitem">
                     <i class="fa fa-desktop" aria-hidden="true"></i> {{t 'Desktop & mobile apps' }}
                 </a>
             </li>
@@ -141,8 +144,8 @@
             {{/if}}
             {{#if promote_sponsoring_zulip}}
             <li role="presentation" class="hidden-for-spectators">
-                <a href="https://zulip.com/help/support-zulip-project" target="_blank" rel="noopener noreferrer" role="menuitem">
-                    <i class="fa fa-heart" aria-hidden="true"></i> {{t 'Support Zulip' }}
+                <a target="_blank" rel="noopener noreferrer" role="menuitem">
+                    <i class="fa fa-heart" aria-hidden="true"></i> {{t 'Support Connect' }}
                 </a>
             </li>
             {{/if}}

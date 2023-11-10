@@ -4,7 +4,7 @@
    which `bin/hubot` starts a vanilla Hubot instance with
    the shell backend.
 
-1. In your Hubot's directory, install the Zulip adapter. Run:
+1. In your Hubot's directory, install the Connect adapter. Run:
    `npm install --save hubot-zulip`
 
 1. {!create-a-generic-bot.md!}

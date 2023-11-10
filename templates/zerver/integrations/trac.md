@@ -39,5 +39,5 @@
 ### Additional trac configuration
 
 After using the plugin for a while, you may want to customize which
-changes to tickets result in a Zulip notification using the
+changes to tickets result in a Connect notification using the
 `TRAC_NOTIFY_FIELDS` setting in `zulip_trac_config.py`.

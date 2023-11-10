@@ -1,4 +1,4 @@
-Get WordPress notifications in Zulip!
+Get WordPress notifications in Connect!
 
 If you're hosting your WordPress blog yourself (i.e., not on WordPress.com),
 first install the

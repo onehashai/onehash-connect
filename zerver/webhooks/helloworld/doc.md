@@ -1,16 +1,16 @@
-Learn how Zulip integrations work with this simple Hello World example!
+Learn how Connect integrations work with this simple Hello World example!
 
-This webhook is Zulip's official [example
+This webhook is OneHash Connect's official [example
 integration](/api/incoming-webhooks-walkthrough).
 
 1. The Hello World webhook will use the `test` stream, which is created
-    by default in the Zulip development environment. If you are running
-    Zulip in production, you should make sure that this stream exists.
+    by default in the Connect development environment. If you are running
+    Connect in production, you should make sure that this stream exists.
 
 1. {!create-bot-construct-url.md!}
 
 1. To trigger a notification using this example webhook, you can use
-    `send_webhook_fixture_message` from a [Zulip development
+    `send_webhook_fixture_message` from a [Connect development
     environment](https://zulip.readthedocs.io/en/latest/development/overview.html):
 
     ```

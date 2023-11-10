@@ -1,4 +1,4 @@
-Zulip supports integration with Codeship and can notify you of
+Connect supports integration with Codeship and can notify you of
 your build statuses.
 
 1. {!create-stream.md!}

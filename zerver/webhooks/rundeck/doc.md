@@ -1,4 +1,4 @@
-Receive Job Notifications in Zulip!
+Receive Job Notifications in Connect!
 
 1. {!create-stream.md!}
 

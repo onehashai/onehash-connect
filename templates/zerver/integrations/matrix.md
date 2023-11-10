@@ -1,4 +1,4 @@
-Exchange messages between [matrix.org](https://matrix.org) and Zulip! If
+Exchange messages between [matrix.org](https://matrix.org) and Connect! If
 you're looking to mirror an IRC channel in particular, we recommend our
 [direct IRC integration](/integrations/doc/irc).
 

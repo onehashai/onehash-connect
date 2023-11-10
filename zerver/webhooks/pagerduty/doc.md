@@ -1,4 +1,4 @@
-Get Zulip notifications for your PagerDuty services!
+Get Connect notifications for your PagerDuty services!
 
 1. {!create-stream.md!}
 

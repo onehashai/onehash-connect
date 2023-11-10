@@ -1,4 +1,4 @@
-Get Transifex notifications in Zulip!
+Get Transifex notifications in Connect!
 
 1. {!create-stream.md!}
 

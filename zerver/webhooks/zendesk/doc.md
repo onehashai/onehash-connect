@@ -17,7 +17,7 @@
 
 1. From there, click **URL target**. Fill in the form like this:
 
-    * **Title**: Zulip
+    * **Title**: Connect
     * **URL**: the URL we created above
     * **Method**: POST
     * **Attribute Name**: message
@@ -31,7 +31,7 @@
     target by selecting **Create target** and clicking **Submit**.
 
 1. From here, add a new trigger. You'll do this for every action you want
-    to create a Zulip notification for. Triggers are added by selecting
+    to create a Connect notification for. Triggers are added by selecting
     **Triggers** in the left menu and then clicking **add trigger** in the
     top right.
 
@@ -42,10 +42,10 @@
     in a descriptive title like "Announce ticket update". Under **Meet all of
     the following conditions** select **Ticket: is...** and then select
     **Updated**. In the **Perform these actions** section, select
-    **Notification: Notify target**, then select **Zulip**.
+    **Notification: Notify target**, then select **Connect**.
 
 1. Next we need to enter the message body into Message. You can use
-    Zulip Markdown and the Zendesk placeholders when creating your message.
+    Connect Markdown and the Zendesk placeholders when creating your message.
 
     You can copy this example template:
 

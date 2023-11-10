@@ -1,4 +1,4 @@
-Get RhodeCode notifications in Zulip!
+Get RhodeCode notifications in Connect!
 
 1. {!create-stream.md!}
 

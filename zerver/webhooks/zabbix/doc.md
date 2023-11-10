@@ -1,4 +1,4 @@
-Receive Zabbix notifications in Zulip!
+Receive Zabbix notifications in Connect!
 
 !!! warn ""
 
@@ -17,7 +17,7 @@ Receive Zabbix notifications in Zulip!
 1. Go back to your Zabbix web interface, and click **Administration**. Click on
    **Media Types**, and click **Create Media Type**.
 
-1. Set **Name** to a name of your choice, such as `Zulip`. Set **Type** to **Webhook**.
+1. Set **Name** to a name of your choice, such as `Connect`. Set **Type** to **Webhook**.
    Add the following **Parameters**:
 
     * Add `hostname` as the first parameter with the value `{HOST.NAME}`.
@@ -93,8 +93,8 @@ Receive Zabbix notifications in Zulip!
    Click on **Users**, and select the alias of the user you would like
    to use to set the notification. Click **Media**, and click **Add**.
 
-1. Set **Type** to **Zulip** or whatever you named your media type as.
-   Set **Send To** to `Zulip` or any text. This field needs something in,
+1. Set **Type** to **Connect** or whatever you named your media type as.
+   Set **Send To** to `Connect` or any text. This field needs something in,
    but isn't used. Tweak the severity and times when active for notifications
    as appropriate, and check the **Enabled** option. Click **Add**.
    Click **Update**.
@@ -102,14 +102,14 @@ Receive Zabbix notifications in Zulip!
 1. Go back to your Zabbix web interface, and click **Configuration**.
    Click **Actions**, and click **Create Action**.
 
-1. Set **Name** to a name of your choice, such as `Zulip`. Under
+1. Set **Name** to a name of your choice, such as `Connect`. Under
    **New Conditions**, add the conditions for triggering a notification.
    Check the **Enabled** option, and click **Operations**.
 
 1. Under **Operations** click **Add**, and then set **Operation Type** to
    `Send Message`. Under **Send to Users**, click **Add**, and select the user
    you added the alert to and click **Select**. Under **Send only to**,
-   select **Zulip** or the name of your media type. Click **Add**  twice.
+   select **Connect** or the name of your media type. Click **Add**  twice.
 
 {!congrats.md!}
 

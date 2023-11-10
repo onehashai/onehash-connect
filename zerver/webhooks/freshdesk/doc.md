@@ -1,4 +1,4 @@
-See customer support interactions in Zulip with our Freshdesk
+See customer support interactions in Connect with our Freshdesk
 integration!
 
 1. {!create-stream.md!}
@@ -10,7 +10,7 @@ integration!
 1. Go to your Freshdesk **Admin** page. Under **Helpdesk Productivity**,
    click on **Dispatch'r**. Click on **New rule**.
 
-1. Set **Rule Name** to a name of your choice, such as `Zulip`. There isn't a shortcut
+1. Set **Rule Name** to a name of your choice, such as `Connect`. There isn't a shortcut
    for "always generate a notification on ticket creation", so we'll have to
    fake it by picking two complementary conditions: when the source **is email**,
    and when the source **is not email**. Set up the **Conditions** for the
@@ -53,7 +53,7 @@ integration!
 1. Go to your Freshdesk **Admin** page. Under **Helpdesk Productivity**,
    click on **Observer**, and click on **New rule**.
 
-1. Set **Rule Name** to a name of your choice, such as `Zulip`.
+1. Set **Rule Name** to a name of your choice, such as `Connect`.
    Under **involves any of these events**, create new events as shown below:
 
     ![](/static/images/integrations/freshdesk/002.png)

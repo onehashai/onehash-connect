@@ -1,4 +1,4 @@
-Get Beeminder notifications in Zulip whenever you're going
+Get Beeminder notifications in Connect whenever you're going
 to derail from your goal!
 
 1. {!create-stream.md!}

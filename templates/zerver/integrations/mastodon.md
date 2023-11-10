@@ -1,8 +1,8 @@
 Fetch public posts (sometimes called “toots”) of individual accounts or
-federated hashtags from Mastodon in Zulip! While Zulip doesn't integrate
+federated hashtags from Mastodon in Connect! While Connect doesn't integrate
 directly with ActivityPub or the overall Fediverse, some ActivityPub servers,
 like [Mastodon](https://joinmastodon.org/), publish RSS feeds that can
-be followed in Zulip using the [Zapier][1] or [RSS][2] integrations.
+be followed in Connect using the [Zapier][1] or [RSS][2] integrations.
 
 !!! warn ""
 
@@ -18,9 +18,9 @@ be followed in Zulip using the [Zapier][1] or [RSS][2] integrations.
 
     !!! tip ""
 
-        For example, to follow Zulip's Mastodon account at
+        For example, to follow Connect's Mastodon account at
         `https://fosstodon.org/@zulip`, you would use
-        `https://fosstodon.org/@zulip.rss`. To follow the **#zulip** hashtag at
+        `https://fosstodon.org/@zulip.rss`. To follow the **#connect** hashtag at
         `https://fosstodon.org/tags/zulip`, you would use
         `https://fosstodon.org/tags/zulip.rss`.
 
@@ -29,7 +29,7 @@ be followed in Zulip using the [Zapier][1] or [RSS][2] integrations.
 
 {!congrats.md!}
 
-![Mastodon posts in Zulip via Zapier](/static/images/integrations/mastodon/001.png)
+![Mastodon posts in Connect via Zapier](/static/images/integrations/mastodon/001.png)
 
 [1]: ./zapier
 [2]: ./rss

@@ -1,4 +1,4 @@
-Get Zulip notifications for your TeamCity builds!
+Get Connect notifications for your TeamCity builds!
 
 1. {!create-stream.md!}
 
@@ -32,9 +32,9 @@ Get Zulip notifications for your TeamCity builds!
 
 **Personal Builds**
 
-When a user runs a personal build, if Zulip can map their TeamCity
-username to a Zulip user (by comparing it with the Zulip user's email
-address or full name), that Zulip user will receive a direct message
+When a user runs a personal build, if Connect can map their TeamCity
+username to a Connect user (by comparing it with the Connect user's email
+address or full name), that Connect user will receive a direct message
 with the result of their personal build.
 
 ![](/static/images/integrations/teamcity/002.png)

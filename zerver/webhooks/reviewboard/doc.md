@@ -1,4 +1,4 @@
-Get Review Board notifications in Zulip!
+Get Review Board notifications in Connect!
 
 1. {!create-stream.md!}
 

@@ -1,4 +1,4 @@
-Get Zulip notifications for your Notion database via Zapier!
+Get Connect notifications for your Notion database via Zapier!
 
 1. {!create-stream.md!}
 
@@ -23,10 +23,10 @@ Get Zulip notifications for your Notion database via Zapier!
    successful, you can proceed to the next step.
 
 1. Continue with step 7 of the [Zapier documentation][1] to
-   finish integrating Zulip with Notion.
+   finish integrating Connect with Notion.
 
 You can repeat the above process and create Zaps for different databases
 and/or different kinds of Notion events that you'd like to be notified
-about in Zulip.
+about in Connect.
 
 [1]: ./zapier

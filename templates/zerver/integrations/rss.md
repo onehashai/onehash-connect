@@ -1,10 +1,10 @@
-Get service alerts, news, and new blog posts right in Zulip with our
+Get service alerts, news, and new blog posts right in Connect with our
 RSS integration!
 
 !!! tip ""
 
     Note that [the Zapier integration][1] is usually a simpler way to
-    integrate RSS with Zulip.
+    integrate RSS with Connect.
 
 [1]: ./zapier
 

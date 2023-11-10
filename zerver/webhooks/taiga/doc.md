@@ -1,4 +1,4 @@
-Receive Zulip notifications for your Taiga projects!
+Receive Connect notifications for your Taiga projects!
 
 1. {!create-stream.md!}
 
@@ -11,7 +11,7 @@ Receive Zulip notifications for your Taiga projects!
    receive notifications for. Go to **Admin**, and click on  **Integrations**.
    Click on **Add a new webhook**.
 
-1. Set **Name** to a name of your choice, such as `Zulip`. Set **URL** to the
+1. Set **Name** to a name of your choice, such as `Connect`. Set **URL** to the
    URL constructed above, and set **Secret key** to the API key of the bot created
    above. Save the form.
 

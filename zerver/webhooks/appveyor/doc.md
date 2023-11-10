@@ -1,4 +1,4 @@
-Receive AppVeyor notifications in Zulip!
+Receive AppVeyor notifications in Connect!
 
 1. {!create-stream.md!}
 

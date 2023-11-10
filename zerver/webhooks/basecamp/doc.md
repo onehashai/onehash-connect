@@ -1,4 +1,4 @@
-Zulip supports integration with Basecamp and can notify you of
+Connect supports integration with Basecamp and can notify you of
 events in Basecamp.
 
 1. {!create-stream.md!}

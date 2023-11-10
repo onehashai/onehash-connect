@@ -1,4 +1,4 @@
-Zulip supports integration with Perforce as a [trigger][1]
+Connect supports integration with Perforce as a [trigger][1]
 that fires once a changelist is submitted and committed.
 
 [1]: https://www.perforce.com/manuals/p4sag/Content/P4SAG/chapter.scripting.html
@@ -30,12 +30,12 @@ that fires once a changelist is submitted and committed.
     of the depot root will be sent to `depot-commits`.
     If you'd prefer different behavior, such as all commits across your
     depot going to one stream, change it now in `zulip_perforce_config.py`.
-    Make sure that everyone interested in getting these post-commit Zulips
+    Make sure that everyone interested in getting these post-commit OneHash Connect
     is subscribed to the relevant streams!
 
-1.  By default, this hook will send a message to Zulip even if the
+1.  By default, this hook will send a message to Connect even if the
     destination stream does not yet exist. Messages to nonexistent
-    streams prompt the Zulip Notification Bot to inform the bot's
+    streams prompt the Connect Notification Bot to inform the bot's
     owner by direct message that they may wish to create the stream.
     If this behaviour is undesirable, for example with a large and busy
     Perforce server, change the `ZULIP_IGNORE_MISSING_STREAM`

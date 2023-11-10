@@ -1,5 +1,5 @@
 Receive user reviews from your tracked apps on AppFollow
-using the Zulip AppFollow integration!
+using the Connect AppFollow integration!
 
 1. {!create-stream.md!}
 

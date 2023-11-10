@@ -1,4 +1,4 @@
-See your Splunk Search alerts in Zulip!
+See your Splunk Search alerts in Connect!
 
 1. {!create-stream.md!}
 

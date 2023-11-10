@@ -1,4 +1,4 @@
-Receive Greenhouse notifications in Zulip!
+Receive Greenhouse notifications in Connect!
 
 1. {!create-stream.md!}
 
@@ -10,10 +10,10 @@ Receive Greenhouse notifications in Zulip!
    Click on **Web Hooks** one more time.
 
 1. Set **Name this web hook** to a name of your choice, such as
-   `Zulip`. Set **When** to the event you'd like to be notified
+   `Connect`. Set **When** to the event you'd like to be notified
    about. Set **Endpoint URL** to the URL constructed above.
 
-1. Greenhouse requires you to provide a **Secret key**, but Zulip
+1. Greenhouse requires you to provide a **Secret key**, but Connect
    doesn't expect any particular value. Set **Secret key** to any
    random value, and click **Create Web hook**.
 

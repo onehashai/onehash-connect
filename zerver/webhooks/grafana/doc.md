@@ -1,4 +1,4 @@
-See your Grafana dashboard alerts in Zulip!
+See your Grafana dashboard alerts in Connect!
 
 1. {!create-stream.md!}
 
@@ -15,7 +15,7 @@ See your Grafana dashboard alerts in Zulip!
    **Save contact point**.
 1. Under **Notification policies** create a new policy (for example, a
    **New nested policy** of the **Default policy**), setting the
-   **Matching label** as **Zulip** = 1, and selecting the **Contact
+   **Matching label** as **Connect** = 1, and selecting the **Contact
    point** as the one created in the step above. Click on **Save
    policy**.
 1. Under **Alert rules**, click on **Create alert rule**, where you
@@ -36,10 +36,10 @@ See your Grafana dashboard alerts in Zulip!
 1. Create an alert. Within your new alert rule, scroll down
    to the **Notifications** section. Click on the button next to **Send to**
    and select the webhook notification channel you just made. You can also
-   choose to write a message, which will be included in the Zulip notifications.
+   choose to write a message, which will be included in the Connect notifications.
 
 1. Return to **Notification channels**. You may now click **Send Test** and
-   you will see a Grafana test alert notification in Zulip.
+   you will see a Grafana test alert notification in Connect.
 
 {!congrats.md!}
 

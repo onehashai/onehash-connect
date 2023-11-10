@@ -1,4 +1,4 @@
-Zulip supports integration with Delighted and can notify you
+Connect supports integration with Delighted and can notify you
 about updates in feedback responses organized by Delighted.
 
 1. {!create-stream.md!}

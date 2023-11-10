@@ -1,4 +1,4 @@
-Get Zulip notifications when you `hg push`!
+Get Connect notifications when you `hg push`!
 
 1. {!create-stream.md!}
 
@@ -14,7 +14,7 @@ hook if it installs in a different location on this system:
         [hooks]
         changegroup = python:zulip_changegroup.hook
 
-        [zulip]
+        [connect]
         email = "hg-bot@example.com"
         api_key = "0123456789abcdefg"
         stream = "commits"
@@ -22,12 +22,12 @@ hook if it installs in a different location on this system:
 
 1.  Add the directory where the `zulip_changegroup.py` script was
 installed to the environment variable `PYTHONPATH`.  For example, if
-you installed the Zulip Python bindings at the system level, it'd be:
+you installed the Connect Python bindings at the system level, it'd be:
 
         export PYTHONPATH=/usr/local/share/zulip/integrations/hg:$PYTHONPATH
 
 That’s all it takes for the basic setup! On the next `hg push`, you’ll
-get a Zulip update for the changeset.
+get a Connect update for the changeset.
 
 ### More configuration options
 
@@ -39,11 +39,11 @@ The Mercurial integration also supports:
 #### Web repository links
 
 If you’ve set up your repository to be [browsable via the web][1],
-add a `web_url` configuration option to the `zulip` section of your
-default `.hg/hgrc` to get changelog and revision links in your Zulip
+add a `web_url` configuration option to the `connect` section of your
+default `.hg/hgrc` to get changelog and revision links in your Connect
 notifications:
 
-    [zulip]
+    [connect]
     email = "hg-bot@example.com"
     api_key = "0123456789abcdefg"
     stream = "commits"
@@ -54,14 +54,14 @@ notifications:
 
 #### Branch whitelists and blacklists
 
-By default, this integration will send Zulip notifications for
+By default, this integration will send Connect notifications for
 changegroup events for all branches. If you’d prefer to only receive
-Zulip notifications for specified branches, add a `branches`
-configuration option to the `zulip` section of your default `.hg/hgrc`,
+Connect notifications for specified branches, add a `branches`
+configuration option to the `connect` section of your default `.hg/hgrc`,
 containing a comma-separated list of the branches that should produce
 notifications:
 
-    [zulip]
+    [connect]
     email = "hg-bot@example.com"
     api_key = "0123456789abcdefg"
     stream = "commits"
@@ -69,17 +69,17 @@ notifications:
 
 You can also exclude branches that you don’t want to cause
 notifications. To do so, add an `ignore_branches` configuration option
-to the `zulip` section of your default `.hg/hgrc`, containing a
+to the `connect` section of your default `.hg/hgrc`, containing a
 comma-separated list of the branches that should be ignored:
 
-    [zulip]
+    [connect]
     email = "hg-bot@example.com"
     api_key = "0123456789abcdefg"
     stream = "commits"
     ignore_branches = "noisy,even-more-noisy"
 
 When team members push new changesets with `hg push`, you’ll get a
-Zulip notification.
+Connect notification.
 
 {!congrats.md!}
 

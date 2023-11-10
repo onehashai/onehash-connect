@@ -19,7 +19,7 @@
 1.  Copy `integrations/nagios/zulip_nagios.cfg` to `/etc/nagios4/conf.d`
     on your Nagios server.
 
-1.  Finally, add `zulip` to the `members` list for one or more of the
+1.  Finally, add `connect` to the `members` list for one or more of the
     contact groups in the `CONTACT GROUPS` section of
     `/etc/nagios4/conf.d/contacts.cfg`, doing something like:
 
@@ -27,7 +27,7 @@
     define contactgroup {
         contactgroup_name       admins
         alias                   Nagios Administrators
-        members                 monitoring, zulip
+        members                 monitoring, connect
     }
     ```
 
@@ -56,8 +56,8 @@ on your Nagios instance.
 ### Troubleshooting
 
 You can confirm whether you’ve correctly configured Nagios to run the
-Zulip plugin by looking for `SERVICE NOTIFICATION` lines mentioning
-zulip in `/var/log/nagios4/nagios.log`. You can confirm whether you’ve
-configured the Zulip plugin code correctly by running
+Connect plugin by looking for `SERVICE NOTIFICATION` lines mentioning
+connect in `/var/log/nagios4/nagios.log`. You can confirm whether you’ve
+configured the Connect plugin code correctly by running
 `/usr/local/share/zulip/integrations/nagios/nagios-notify-zulip`
 directly.
