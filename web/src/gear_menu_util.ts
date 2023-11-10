@@ -15,8 +15,8 @@ export function version_display_string(): string {
         // forked from, and that it was modified.
         const display_version = page_params.zulip_merge_base
             .replace(/\+git.*/, "")
-            .replace(/-dev.*/, "-dev");
-        return $t({defaultMessage: "Connect Server {display_version} (modified)"}, {display_version});
+            .replace(/-dev.*/, "");
+        return $t({defaultMessage: "Connect Server {display_version}"}, {display_version});
     }
 
     // The below cases are all for official versions; either a
