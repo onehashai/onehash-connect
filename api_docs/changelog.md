@@ -1,24 +1,24 @@
 # API changelog
 
-This page documents changes to the Zulip Server API over time. See
-also the [Zulip release lifecycle][release-lifecycle] for background
-on why this API changelog is important, and the [Zulip server
+This page documents changes to the Connect Server API over time. See
+also the [Connect release lifecycle][release-lifecycle] for background
+on why this API changelog is important, and the [Connect server
 changelog][server-changelog].
 
 The API feature levels system used in this changelog is designed to
-make it possible to write API clients, such as the Zulip mobile and
-terminal apps, that work with a wide range of Zulip server
-versions. Every change to the Zulip API is recorded briefly here and
+make it possible to write API clients, such as the Connect mobile and
+terminal apps, that work with a wide range of Connect server
+versions. Every change to the Connect API is recorded briefly here and
 with full details in **Changes** entries in the API documentation for
 the modified endpoint(s).
 
-When using an API endpoint whose behavior has changed, Zulip API
+When using an API endpoint whose behavior has changed, Connect API
 clients should check the `zulip_feature_level` field, present in the
 [`GET /server_settings`](/api/get-server-settings) and [`POST
 /register`](/api/register-queue) responses, to determine the API
 format used by the Zulip server that they are interacting with.
 
-## Changes in Zulip 8.0
+## Changes in Connect 8.0
 
 **Feature level 218**
 
@@ -53,7 +53,7 @@ format used by the Zulip server that they are interacting with.
   optional parameter, `stream_id`. Now, `to` is used only for `"direct"` type.
   In the case of `"stream"` type, `stream_id` and `topic` are used.
 
-* Note that stream typing notifications were not enabled in any Zulip client
+* Note that stream typing notifications were not enabled in any Connect client
   prior to feature level 215.
 
 **Feature level 214**
@@ -91,7 +91,7 @@ format used by the Zulip server that they are interacting with.
   This replaces the use of `"result": "partially_completed"` (introduced
   in feature levels 154 and 153), so that these endpoints now send a
   `result` string of either `"success"` or `"error"`, like the rest of
-  the Zulip API.
+  the Connect API.
 
 **Feature level 210**
 
@@ -303,11 +303,11 @@ format used by the Zulip server that they are interacting with.
 Feature levels 186-187 are reserved for future use in 7.x maintenance
 releases.
 
-## Changes in Zulip 7.0
+## Changes in Connect 7.0
 
 **Feature level 185**
 
-No changes; feature level used for Zulip 7.0 release.
+No changes; feature level used for Connect 7.0 release.
 
 **Feature level 184**
 

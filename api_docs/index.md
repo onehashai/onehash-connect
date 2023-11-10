@@ -1,24 +1,24 @@
-# The Zulip API
+# The Connect API
 
-Zulip's APIs allow you to integrate other services with Zulip.  This
+OneHash Connect's APIs allow you to integrate other services with Connect.  This
 guide should help you find the API you need:
 
-* First, check if the tool you'd like to integrate with Zulip
+* First, check if the tool you'd like to integrate with Connect
   [already has a native integration](/integrations/).
 * Next, check if [Zapier](https://zapier.com/apps) or
   [IFTTT](https://ifttt.com/search) has an integration.
-  [Zulip's Zapier integration](/integrations/doc/zapier) and
-  [Zulip's IFTTT integration](/integrations/doc/ifttt) often allow
-  integrating a new service with Zulip without writing any code.
-* If you'd like to send content into Zulip, you can
+  [OneHash Connect's Zapier integration](/integrations/doc/zapier) and
+  [OneHash Connect's IFTTT integration](/integrations/doc/ifttt) often allow
+  integrating a new service with Connect without writing any code.
+* If you'd like to send content into Connect, you can
   [write a native incoming webhook integration](/api/incoming-webhooks-overview)
-  or use [Zulip's API for sending messages](/api/send-message).
+  or use [OneHash Connect's API for sending messages](/api/send-message).
 * If you're building an interactive bot that reacts to activity inside
-  Zulip, you'll want to look at Zulip's
+  Connect, you'll want to look at OneHash Connect's
   [Python framework for interactive bots](/api/running-bots) or
-  [Zulip's real-time events API](/api/get-events).
+  [OneHash Connect's real-time events API](/api/get-events).
 
-And if you still need to build your own integration with Zulip, check out
+And if you still need to build your own integration with Connect, check out
 the full [REST API](/api/rest), generally starting with
 [installing the API client bindings](/api/installation-instructions).
 

@@ -1,9 +1,9 @@
 # Configuring the Python bindings
 
-Zulip provides a set of tools that allows interacting with its API more
+Connect provides a set of tools that allows interacting with its API more
 easily, called the [Python bindings](https://pypi.python.org/pypi/zulip/).
 One of the most notable use cases for these bindings are bots developed
-using Zulip's [bot framework](/api/writing-bots).
+using OneHash Connect's [bot framework](/api/writing-bots).
 
 In order to use them, you need to configure them with your API key and other
 settings. There are two ways to achieve that:
@@ -19,7 +19,7 @@ A `.zuliprc` file is a plain text document that looks like this:
 [api]
 key=<API key from the web interface>
 email=<your email address>
-site=<your Zulip server's URI>
+site=<your Connect server's URI>
 ...
 ```
 
@@ -37,16 +37,16 @@ can be found in the following table:
     </thead>
     <tr>
         <td><code>key</code></td>
-        <td><code>ZULIP_API_KEY</code></td>
+        <td><code>CONNECT_API_KEY</code></td>
         <td>Yes</td>
         <td>
             <a href="/api/api-keys">API key</a>, which you can get through
-            Zulip's web interface.
+            Connect's web interface.
         </td>
     </tr>
     <tr>
         <td><code>email</code></td>
-        <td><code>ZULIP_EMAIL</code></td>
+        <td><code>CONNECT_EMAIL</code></td>
         <td>Yes</td>
         <td>
             The email address of the user who owns the API key mentioned
@@ -58,12 +58,12 @@ can be found in the following table:
         <td><code>ZULIP_SITE</code></td>
         <td>No</td>
         <td>
-            URL where your Zulip server is located.
+            URL where your Connect server is located.
         </td>
     </tr>
     <tr>
         <td><code>client_cert_key</code></td>
-        <td><code>ZULIP_CERT_KEY</code></td>
+        <td><code>CONNECT_CERT_KEY</code></td>
         <td>No</td>
         <td>
             Path to the SSL/TLS private key that the binding should use to
@@ -72,17 +72,17 @@ can be found in the following table:
     </tr>
     <tr>
         <td><code>client_cert</code></td>
-        <td><code>ZULIP_CERT</code></td>
+        <td><code>CONNECT_CERT</code></td>
         <td>No*</td>
         <td>
             The public counterpart of <code>client_cert_key</code>/
-            <code>ZULIP_CERT_KEY</code>. <i>This setting is required if a cert
+            <code>CONNECT_CERT_KEY</code>. <i>This setting is required if a cert
             key has been set.</i>
         </td>
     </tr>
     <tr>
         <td><code>client_bundle</code></td>
-        <td><code>ZULIP_CERT_BUNDLE</code></td>
+        <td><code>CONNECT_CERT_BUNDLE</code></td>
         <td>No</td>
         <td>
             Path where the server's PEM-encoded certificate is located. CA
@@ -93,10 +93,10 @@ can be found in the following table:
     </tr>
     <tr>
         <td><code>insecure</code></td>
-        <td><code>ZULIP_ALLOW_INSECURE</code></td>
+        <td><code>CONNECT_ALLOW_INSECURE</code></td>
         <td>No</td>
         <td>
-            Allows connecting to Zulip servers with an invalid SSL/TLS
+            Allows connecting to Connect servers with an invalid SSL/TLS
             certificate. Please note that enabling this will make the HTTPS
             connection insecure. Defaults to <code>false</code>.
         </td>

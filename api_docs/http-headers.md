@@ -1,6 +1,6 @@
 # HTTP headers
 
-This page documents the HTTP headers used by the Zulip API.
+This page documents the HTTP headers used by the Connect API.
 
 Most important is that API clients authenticate to the server using
 HTTP Basic authentication. If you're using the official [Python or
@@ -11,7 +11,7 @@ Otherwise, see the `curl` example on each endpoint's documentation
 page, which details the request format.
 
 Documented below are additional HTTP headers and header conventions
-generally used by Zulip:
+generally used by Connect:
 
 ## The `User-Agent` header
 
@@ -20,25 +20,25 @@ highly recommend doing so when writing an integration. It's easy to do
 and it can help save time when debugging issues related to an API
 client.
 
-If provided, the Zulip server will parse the `User-Agent` HTTP header
+If provided, the Connect server will parse the `User-Agent` HTTP header
 in order to identify specific clients and integrations. This
 information is used by the server for logging, [usage
 statistics](/help/analytics), and on rare occasions, for
 backwards-compatibility logic to preserve support for older versions
 of official clients.
 
-Official Zulip clients and integrations use a `User-Agent` that starts
-with something like `ZulipMobile/20.0.103 `, encoding the name of the
+Official Connect clients and integrations use a `User-Agent` that starts
+with something like `ConnectMobile/20.0.103 `, encoding the name of the
 application and it's version.
 
-Zulip's official API bindings have reasonable defaults for
-`User-Agent`. For example, the official Zulip Python bindings have a
-default `User-Agent` starting with `ZulipPython/{version}`, where
+OneHash Connect's official API bindings have reasonable defaults for
+`User-Agent`. For example, the official Connect Python bindings have a
+default `User-Agent` starting with `ConnectPython/{version}`, where
 `version` is the version of the library.
 
 You can give your bot/integration its own name by passing the `client`
 parameter when initializing the Python bindings. For example, the
-official Zulip Nagios integration is initialized like this:
+official Connect Nagios integration is initialized like this:
 
 ``` python
 client = zulip.Client(
@@ -48,12 +48,12 @@ client = zulip.Client(
 
 If you are working on an integration that you plan to share outside
 your organization, you can get help picking a good name in
-`#integrations` in the [Zulip development
+`#integrations` in the [Connect development
 community](https://zulip.com/development-community).
 
 ## Rate-limiting response headers
 
-To help clients avoid exceeding rate limits, Zulip sets the following
+To help clients avoid exceeding rate limits, Connect sets the following
 HTTP headers in all API responses:
 
 * `X-RateLimit-Remaining`: The number of additional requests of this
@@ -66,14 +66,14 @@ HTTP headers in all API responses:
   have any rate limits applied to it (and thus could do a burst of
   `X-RateLimit-Limit` requests).
 
-[Zulip's rate limiting rules are configurable][rate-limiting-rules],
+[OneHash Connect's rate limiting rules are configurable][rate-limiting-rules],
 and can vary by server and over time. The default configuration
 currently limits:
 
 * Every user is limited to 200 total API requests per minute.
 * Separate, much lower limits for authentication/login attempts.
 
-When the Zulip server has configured multiple rate limits that apply
+When the Connect server has configured multiple rate limits that apply
 to a given request, the values returned will be for the strictest
 limit.
 

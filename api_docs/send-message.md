@@ -30,7 +30,7 @@ curl -X POST {{ api_url }}/v1/messages \
 {tab|zulip-send}
 
 You can use `zulip-send`
-(available after you `pip install zulip`) to easily send Zulips from
+(available after you `pip install zulip`) to easily send Connects from
 the command-line, providing the message content via STDIN.
 
 ```bash
