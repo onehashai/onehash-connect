@@ -1,6 +1,6 @@
 # API keys
 
-An **API key** is how a bot identifies itself to Zulip. Anyone with a
+An **API key** is how a bot identifies itself to Connect. Anyone with a
 bot's API key can impersonate the bot, so be careful with it!
 
 ## Get a bot's API key

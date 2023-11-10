@@ -10,14 +10,14 @@ On this page you'll find:
   on how to set up a development environment for writing bots with all
   of our nice tooling to make it easy to write and test your work.
 * A [guide](#writing-a-bot) on writing a bot.
-* A [guide](#adding-a-bot-to-zulip) on adding a bot to Zulip.
+* A [guide](#adding-a-bot-to-zulip) on adding a bot to Connect.
 * A [guide](#testing-a-bots-output) on testing a bot's output.
 * [Documentation](#bot-api) of the bot API.
 * Common [problems](#common-problems) when developing/running bots and their solutions.
 
-## Installing a development version of the Zulip bots package
+## Installing a development version of the OneHash Connect bots package
 
-1. `git clone https://github.com/zulip/python-zulip-api.git` - clone the [python-zulip-api](
+1. `git clone https://github.com/zulip/python-zulip-api.git` - clone the [python-connect-api](
   https://github.com/zulip/python-zulip-api) repository.
 
 2. `cd python-zulip-api` - navigate into your cloned repository.
@@ -69,9 +69,9 @@ handler_class = MyBotHandler
 
 * These functions are documented in the [next section](#bot-api).
 
-## Adding a bot to Zulip
+## Adding a bot to OneHash Connect
 
-Zulip's bot system resides in the [python-zulip-api](
+OneHash Connect's bot system resides in the [python-zulip-api](
 https://github.com/zulip/python-zulip-api) repository.
 
 The structure of the bots ecosystem looks like the following:
@@ -127,8 +127,8 @@ Response: 12.0 meter = 13.12336 yard
 > zulip-bot-shell -b ~/followup.conf followup
 
 Enter your message: "Task completed"
-Response: stream: followup topic: foo_sender@zulip.com
-          from foo_sender@zulip.com: Task completed
+Response: stream: followup topic: foo_sender@onehash.ai
+          from foo_sender@onehash.ai: Task completed
 
 ```
 
@@ -141,7 +141,7 @@ This section documents functions available to the bot and the structure of the b
 
 With this API, you *can*
 
-* intercept, view, and process messages sent by users on Zulip.
+* intercept, view, and process messages sent by users on Connect.
 * send out new messages as replies to the processed messages.
 
 With this API, you *cannot*
@@ -188,7 +188,7 @@ handles user message.
 
 * self - the instance the method is called on.
 
-* message - a dictionary describing a Zulip message
+* message - a dictionary describing a Connect message
 
 * bot_handler - used to interact with the server, e.g. to send a message
 
@@ -279,7 +279,7 @@ bot code to persistently store data.
 
 The interface for doing this is `bot_handler.storage`.
 
-The data is stored in the Zulip Server's database.  Each bot user has
+The data is stored in the Connect Server's database.  Each bot user has
 an independent storage quota available to it.
 
 #### Performance considerations
@@ -361,10 +361,10 @@ every call to `put` and `get`, respectively.
  site=<dev-url>
 ```
 
-* key - the API key you created for the bot; this is how Zulip knows
+* key - the API key you created for the bot; this is how Connect knows
   the request is from an authorized user.
 
-* email - the email address of the bot, e.g. `some-bot@zulip.com`
+* email - the email address of the bot, e.g. `some-bot@onehash.ai`
 
 * site - your development environment URL; if you are working on a
   development environment hosted on your computer, use
@@ -418,7 +418,7 @@ The best way to learn about bot tests is to read all the existing tests in the
 
 Once you have written a test suite, you want to verify that everything works as expected.
 
-* To test a bot in [Zulip's bot directory](
+* To test a bot in [OneHash Connect's bot directory](
   https://github.com/zulip/python-zulip-api/tree/main/zulip_bots/zulip_bots/bots):
   `tools/test-bots <botname>`
 
@@ -495,7 +495,7 @@ to see examples of bot tests.
 * My bot won't start
     * Ensure that your API config file is correct (download the config file from the server).
     * Ensure that you bot script is located in `zulip_bots/bots/<my-bot>/`
-    * Are you using your own Zulip development server? Ensure that you run your bot outside
+    * Are you using your own Connect development server? Ensure that you run your bot outside
       the Vagrant environment.
     * Some bots require Python 3. Try switching to a Python 3 environment before running
       your bot.
@@ -505,10 +505,10 @@ to see examples of bot tests.
 The long-term plan for this bot system is to allow the same
 `ExternalBotHandler` code to eventually be usable in several contexts:
 
-* Run directly using the Zulip `call_on_each_message` API, which is
+* Run directly using the Connect `call_on_each_message` API, which is
   how the implementation above works.  This is great for quick
   development with minimal setup.
 * Run in a simple Python webserver server, processing messages
-  received from Zulip's outgoing webhooks integration.
-* For bots merged into the mainline Zulip codebase, enabled via a
-  button in the Zulip web UI, with no code deployment effort required.
+  received from OneHash Connect's outgoing webhooks integration.
+* For bots merged into the mainline Connect codebase, enabled via a
+  button in the Connect web UI, with no code deployment effort required.

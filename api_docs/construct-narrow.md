@@ -1,21 +1,21 @@
 # Construct a narrow
 
-A **narrow** is a set of filters for Zulip messages, that can be based
+A **narrow** is a set of filters for Connect messages, that can be based
 on many different factors (like sender, stream, topic, search
-keywords, etc.). Narrows are used in various places in the the Zulip
+keywords, etc.). Narrows are used in various places in the the Connect
 API (most importantly, in the API for fetching messages).
 
 It is simplest to explain the algorithm for encoding a search as a
 narrow using a single example. Consider the following search query
-(written as it would be entered in the Zulip web app's search box).
+(written as it would be entered in the Connect web app's search box).
 It filters for messages sent to stream `announce`, not sent by
-`iago@zulip.com`, and containing the words `cool` and `sunglasses`:
+`iago@onehash.ai`, and containing the words `cool` and `sunglasses`:
 
 ```
-stream:announce -sender:iago@zulip.com cool sunglasses
+stream:announce -sender:iago@onehash.ai cool sunglasses
 ```
 
-This query would be JSON-encoded for use in the Zulip API using JSON
+This query would be JSON-encoded for use in the Connect API using JSON
 as a list of simple objects, as follows:
 
 ```json
@@ -26,7 +26,7 @@ as a list of simple objects, as follows:
     },
     {
         "operator": "sender",
-        "operand": "iago@zulip.com",
+        "operand": "iago@onehash.ai",
         "negated": true
     },
     {
@@ -36,16 +36,16 @@ as a list of simple objects, as follows:
 ]
 ```
 
-The Zulip help center article on [searching for messages](/help/search-for-messages)
+The Connect help center article on [searching for messages](/help/search-for-messages)
 documents the majority of the search/narrow options supported by the
-Zulip API.
+Connect API.
 
 Note that many narrows, including all that lack a `stream` or `streams`
 operator, search the current user's personal message history. See
 [searching shared history](/help/search-for-messages#searching-shared-history)
 for details.
 
-**Changes**: In Zulip 7.0 (feature level 177), support was added
+**Changes**: In Connect 7.0 (feature level 177), support was added
 for three filters related to direct messages: `is:dm`, `dm` and
 `dm-including`. The `dm` operator replaced and deprecated the
 `pm-with` operator. The `is:dm` filter replaced and deprecated
@@ -77,7 +77,7 @@ The message ID operand for the `id` operator may be encoded as either a
 number or a string. The message ID operand for the `near` operator must
 be encoded as a string.
 
-**Changes**: Prior to Zulip 8.0 (feature level 194), the message ID
+**Changes**: Prior to Connect 8.0 (feature level 194), the message ID
 operand for the `id` operator needed to be encoded as a string.
 
 
@@ -92,7 +92,7 @@ operand for the `id` operator needed to be encoded as a string.
 
 ### Stream and user IDs
 
-There are a few additional narrow/search options (new in Zulip 2.1)
+There are a few additional narrow/search options (new in Connect 2.1)
 that use either stream IDs or user IDs that are not documented in the
 help center because they are primarily useful to API clients:
 

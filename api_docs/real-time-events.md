@@ -1,27 +1,27 @@
 # Real-time events API
 
-Zulip's real-time events API lets you write software that reacts
-immediately to events happening in Zulip.  This API is what powers the
-real-time updates in the Zulip web and mobile apps.  As a result, the
+OneHash Connect's real-time events API lets you write software that reacts
+immediately to events happening in Connect.  This API is what powers the
+real-time updates in the Connect web and mobile apps.  As a result, the
 events available via this API cover all changes to data displayed in
-the Zulip product, from new messages to stream descriptions to
+the Connect product, from new messages to stream descriptions to
 emoji reactions to changes in user or organization-level settings.
 
 ## Using the events API
 
-The simplest way to use Zulip's real-time events API is by using
+The simplest way to use OneHash Connect's real-time events API is by using
 `call_on_each_event` from our Python bindings.  You just need to write
 a Python function (in the examples below, the `lambda`s) and pass it
 into `call_on_each_event`; your function will be called whenever a new
 event matching the specified parameters (`event_types`, `narrow`,
-etc.) occurs in Zulip.
+etc.) occurs in Connect.
 
 `call_on_each_event` takes care of all the potentially tricky details
 of long-polling, error handling, exponential backoff in retries, etc.
 It's cousin, `call_on_each_message`, provides an even simpler
-interface for processing Zulip messages.
+interface for processing Connect messages.
 
-More complex applications (like a Zulip terminal client) may need to
+More complex applications (like a Connect terminal client) may need to
 instead use the raw [register](/api/register-queue) and
 [events](/api/get-events) endpoints.
 

@@ -11,9 +11,9 @@ integration.
 ## Step 0: Create fixtures
 
 The first step in creating an incoming webhook is to examine the data that the
-service you want to integrate will be sending to Zulip.
+service you want to integrate will be sending to Connect.
 
-* Use [Zulip's JSON integration](/integrations/doc/json),
+* Use [OneHash Connect's JSON integration](/integrations/doc/json),
 <https://webhook.site/>, or a similar tool to capture webhook
 payload(s) from the service you are integrating. Examining this data
 allows you to do two things:
@@ -50,10 +50,10 @@ Some third-party webhook APIs, such as GitHub's, don't encode all the
 information about an event in the JSON request body.  Instead, they
 put key details like the event type in a separate HTTP header
 (generally this is clear in their API documentation).  In order to
-test Zulip's handling of that integration, you will need to record
+test OneHash Connect's handling of that integration, you will need to record
 which HTTP headers are used with each fixture you capture.
 
-Since this is integration-dependent, Zulip offers a simple API for
+Since this is integration-dependent, Connect offers a simple API for
 doing this, which is probably best explained by looking at the example
 for GitHub: `zerver/webhooks/github/view.py`; basically, as part of
 writing your integration, you'll write a special function in your
@@ -127,7 +127,7 @@ https://zulip.readthedocs.io/en/latest/tutorials/writing-views.html#request-vari
 
 You must pass the name of your integration to the
 `webhook_view` decorator; that name will be used to
-describe your integration in Zulip's analytics (e.g. the `/stats`
+describe your integration in OneHash Connect's analytics (e.g. the `/stats`
 page). Here we have used `HelloWorld`. To be consistent with other
 integrations, use the name of the product you are integrating in camel
 case, spelled as the product spells its own name (except always first
@@ -144,12 +144,12 @@ integration and is always lower-case.
 
 At minimum, the webhook function must accept `request` (Django
 [HttpRequest](https://docs.djangoproject.com/en/3.2/ref/request-response/#django.http.HttpRequest)
-object), and `user_profile` (Zulip's user object). You may also want to
+object), and `user_profile` (OneHash Connect's user object). You may also want to
 define additional parameters using the `REQ` object.
 
 In the example above, we have defined `payload` which is populated
 from the body of the http request, `stream` with a default of `test`
-(available by default in the Zulip development environment), and
+(available by default in the Connect development environment), and
 `topic` with a default of `Hello World`. If your webhook uses a custom stream,
 it must exist before a message can be created in it. (See
 [Step 4: Create automated tests](#step-5-create-automated-tests) for how to handle this in tests.)
@@ -194,11 +194,11 @@ And you'll find the entry for Hello World:
   WebhookIntegration('helloworld', ['misc'], display_name='Hello World'),
 ```
 
-This tells the Zulip API to call the `api_helloworld_webhook` function in
+This tells the Connect API to call the `api_helloworld_webhook` function in
 `zerver/webhooks/helloworld/view.py` when it receives a request at
 `/api/v1/external/helloworld`.
 
-This line also tells Zulip to generate an entry for Hello World on the Zulip
+This line also tells Connect to generate an entry for Hello World on the Connect
 integrations page using `static/images/integrations/logos/helloworld.png` as its
 icon. The second positional argument defines a list of categories for the
 integration.
@@ -213,7 +213,7 @@ In rare cases, it's necessary for an incoming webhook to require
 additional user configuration beyond what is specified in the post
 URL.  The typical use case for this is APIs like the Stripe API that
 require clients to do a callback to get details beyond an opaque
-object ID that one would want to include in a Zulip notification.
+object ID that one would want to include in a Connect notification.
 
 These configuration options are declared as follows:
 
@@ -233,11 +233,11 @@ Common validators are available in `zerver/lib/validators.py`.
 ## Step 4: Manually testing the webhook
 
 For either one of the command line tools, first, you'll need to get an
-API key from the **Bots** section of your Zulip user's **Personal
+API key from the **Bots** section of your Connect user's **Personal
 settings**. To test the webhook, you'll need to [create a
 bot](https://zulip.com/help/add-a-bot-or-integration) with the
 **Incoming webhook** type. Replace `<api_key>` with your bot's API key
-in the examples presented below! This is how Zulip knows that the
+in the examples presented below! This is how Connect knows that the
 request was made by an authorized user.
 
 ### Curl
@@ -255,7 +255,7 @@ After running the above command, you should see something similar to:
 
 ### Management command: send_webhook_fixture_message
 
-Using `manage.py` from within the Zulip development environment:
+Using `manage.py` from within the Connect development environment:
 
 ```console
 (zulip-py3-venv) vagrant@vagrant:/srv/zulip$
@@ -267,7 +267,7 @@ Using `manage.py` from within the Zulip development environment:
 After running the above command, you should see something similar to:
 
 ```
-2016-07-07 15:06:59,187 INFO     127.0.0.1       POST    200 143ms (mem: 6ms/13) (md: 43ms/1) (db: 20ms/9q) (+start: 147ms) /api/v1/external/helloworld (helloworld-bot@zulip.com via ZulipHelloWorldWebhook)
+2016-07-07 15:06:59,187 INFO     127.0.0.1       POST    200 143ms (mem: 6ms/13) (md: 43ms/1) (db: 20ms/9q) (+start: 147ms) /api/v1/external/helloworld (helloworld-bot@onehash.ai via ConnectHelloWorldWebhook)
 ```
 
 Some webhooks require custom HTTP headers, which can be passed using
@@ -280,7 +280,7 @@ The format is a JSON dictionary, so make sure that the header names do
 not contain any spaces in them and that you use the precise quoting
 approach shown above.
 
-For more information about `manage.py` command-line tools in Zulip, see
+For more information about `manage.py` command-line tools in Connect, see
 the [management commands][management-commands] documentation.
 
 [management-commands]: https://zulip.readthedocs.io/en/latest/production/management-commands.html
@@ -298,7 +298,7 @@ The remaining fields are optional, and the URL will automatically be generated.
 
 3. Click **Send**!
 
-By opening Zulip in one tab and then this tool in another, you can quickly tweak
+By opening Connect in one tab and then this tool in another, you can quickly tweak
 your code and send sample messages for many different test fixtures.
 
 Note: Custom HTTP Headers must be entered as a JSON dictionary, if you want to use any in the first place that is.
@@ -386,7 +386,7 @@ data from the test fixture should result in an error. For details see
 [Negative tests](#negative-tests), below.
 
 Once you have written some tests, you can run just these new tests from within
-the Zulip development environment with this command:
+the Connect development environment with this command:
 
 ```console
 (zulip-py3-venv) vagrant@vagrant:/srv/zulip$
@@ -423,17 +423,17 @@ Second, you need to write the actual documentation content in
 `zerver/webhooks/mywebhook/doc.md`.
 
 ```md
-Learn how Zulip integrations work with this simple Hello World example!
+Learn how Connect integrations work with this simple Hello World example!
 
 1.  The Hello World webhook will use the `test` stream, which is created
-    by default in the Zulip development environment. If you are running
-    Zulip in production, you should make sure that this stream exists.
+    by default in the Connect development environment. If you are running
+    Connect in production, you should make sure that this stream exists.
 
 1.  {!create-bot-construct-url.md!}
 
 
 1.  To trigger a notification using this example webhook, you can use
-    `send_webhook_fixture_message` from a [Zulip development
+    `send_webhook_fixture_message` from a [Connect development
     environment](https://zulip.readthedocs.io/en/latest/development/overview.html):
 
     ```
@@ -456,8 +456,8 @@ Learn how Zulip integrations work with this simple Hello World example!
 ```
 
 `{!create-bot-construct-url.md!}` and `{!congrats.md!}` are examples of
-a Markdown macro. Zulip has a macro-based Markdown/Jinja2 framework that
-includes macros for common instructions in Zulip's webhooks/integrations
+a Markdown macro. Connect has a macro-based Markdown/Jinja2 framework that
+includes macros for common instructions in OneHash Connect's webhooks/integrations
 documentation.
 
 See
@@ -468,10 +468,10 @@ screenshot. Mostly you should plan on templating off an existing guide, like
 
 [integration-docs-guide]: https://zulip.readthedocs.io/en/latest/documentation/integrations.html
 
-## Step 7: Preparing a pull request to zulip/zulip
+## Step 7: Preparing a pull request to onehashai/onehash-connect
 
 When you have finished your webhook integration and are ready for it to be
-available in the Zulip product, follow these steps to prepare your pull
+available in the Connect product, follow these steps to prepare your pull
 request:
 
 1. Run tests including linters and ensure you have addressed any issues they
@@ -479,7 +479,7 @@ request:
    and [Linters](https://zulip.readthedocs.io/en/latest/testing/linters.html) for details.
 2. Read through [Code styles and conventions](
    https://zulip.readthedocs.io/en/latest/contributing/code-style.html) and take a look
-   through your code to double-check that you've followed Zulip's guidelines.
+   through your code to double-check that you've followed OneHash Connect's guidelines.
 3. Take a look at your Git history to ensure your commits have been clear and
    logical (see [Commit discipline](
    https://zulip.readthedocs.io/en/latest/contributing/commit-discipline.html) for tips). If not,
@@ -487,15 +487,15 @@ request:
    you'll want to squash your changes into a single commit and include a good,
    clear commit message.
 4. Push code to your fork.
-5. Submit a pull request to zulip/zulip.
+5. Submit a pull request to onehashai/onehash-connect.
 
 If you would like feedback on your integration as you go, feel free to post a
-message on the [public Zulip instance](https://chat.zulip.org/#narrow/stream/bots).
+message on the [public Connect instance](https://chat.zulip.org/#narrow/stream/bots).
 You can also create a [draft pull request](
 https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests#draft-pull-requests) while you
 are still working on your integration. See the
 [Git guide](https://zulip.readthedocs.io/en/latest/git/pull-requests.html#create-a-pull-request)
-for more on Zulip's pull request process.
+for more on OneHash Connect's pull request process.
 
 ## Advanced topics
 
@@ -564,7 +564,7 @@ def api_querytest_webhook(request: HttpRequest, user_profile: UserProfile,
                           topic: str=REQ(default='Default Alert')):
 ```
 
-In actual use, you might configure the 3rd party service to call your Zulip
+In actual use, you might configure the 3rd party service to call your Connect
 integration with a URL like this:
 
 ```

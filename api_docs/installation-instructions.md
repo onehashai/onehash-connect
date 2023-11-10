@@ -1,6 +1,6 @@
 # Installation instructions
 
-Zulip's REST API is easy to work with directly, but there are API
+OneHash Connect's REST API is easy to work with directly, but there are API
 libraries available for a few popular languages.
 
 The Python library is the most advanced (and has tools for easily

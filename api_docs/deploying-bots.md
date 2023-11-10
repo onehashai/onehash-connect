@@ -12,19 +12,19 @@ options for doing so:
   process with `zulip-run-bot`.  This consumes a bit of resources
   (since you need a persistent process running), but otherwise works
   great.
-* Using the Zulip Botserver, which is a simple Flask server for
-  running a bot in production, and connecting that to Zulip's outgoing
+* Using the Connect Botserver, which is a simple Flask server for
+  running a bot in production, and connecting that to OneHash Connect's outgoing
   webhooks feature.  This can be deployed in environments like
   Heroku's free tier without running a persistent process.
 
-## Zulip Botserver
+## OneHash Connect Botserver
 
-The Zulip Botserver is for people who want to
+The Connect Botserver is for people who want to
 
 * run bots in production.
 * run multiple bots at once.
 
-The Zulip Botserver is a Python (Flask) server that implements Zulip's
+The Connect Botserver is a Python (Flask) server that implements OneHash Connect's
 outgoing webhooks API.  You can of course write your own servers using
 the outgoing webhooks API, but the Botserver is designed to make it
 easy for a novice Python programmer to write a new bot and deploy it
@@ -32,8 +32,8 @@ in production.
 
 ### How Botserver works
 
-Zulip Botserver starts a web server that listens to incoming messages
-from your main Zulip server. The sequence of events in a successful
+Connect Botserver starts a web server that listens to incoming messages
+from your main Connect server. The sequence of events in a successful
 Botserver interaction are:
 
 1. Your bot user is mentioned or receives a direct message:
@@ -42,7 +42,7 @@ Botserver interaction are:
     @**My Bot User** hello world
     ```
 
-1. The Zulip server sends a POST request to the Botserver on `https://bot-server.example.com/`:
+1. The Connect server sends a POST request to the Botserver on `https://bot-server.example.com/`:
 
     ```json
     {
@@ -55,7 +55,7 @@ Botserver interaction are:
     }
     ```
 
-    This URL is configured in the Zulip web-app in your Bot User's settings.
+    This URL is configured in the Connect web-app in your Bot User's settings.
 
 1. The Botserver searches for a bot to handle the message.
 
@@ -65,7 +65,7 @@ Your bot's code should work just like it does with `zulip-run-bot`;
 for example, you reply using
 [bot_handler.send_reply](writing-bots#bot_handlersend_reply)).
 
-### Installing the Zulip Botserver
+### Installing the OneHash Connect Botserver
 
 Install the `zulip_botserver` package:
 
@@ -73,7 +73,7 @@ Install the `zulip_botserver` package:
 pip3 install zulip_botserver
 ```
 
-### Running a bot using the Zulip Botserver
+### Running a bot using the OneHash Connect Botserver
 
 
 1. Construct the URL for your bot, which will be of the form:
@@ -86,9 +86,9 @@ pip3 install zulip_botserver
     server on, and `port` is the port for it (the recommended default
     is `5002`).
 
-1. Register new bot users on the Zulip server's web interface.
+1. Register new bot users on the Connect server's web interface.
 
-    * Log in to the Zulip server.
+    * Log in to the Connect server.
     * Navigate to *Personal settings (<i class="fa fa-cog"></i>)* -> *Bots* -> *Add a new bot*.
       Select *Outgoing webhook* for bot type, fill out the form (using
       the URL from above) and click on *Create bot*.
@@ -108,13 +108,13 @@ pip3 install zulip_botserver
 1.  Congrats, everything is set up! Test your Botserver like you would
     test a normal bot.
 
-### Running multiple bots using the Zulip Botserver
+### Running multiple bots using the OneHash Connect Botserver
 
-The Zulip Botserver also supports running multiple bots from a single
+The Connect Botserver also supports running multiple bots from a single
 Botserver process.  You can do this with the following procedure.
 
 1. Download the `botserverrc` from the `your-bots` settings page, using
-   the "Download config of all active outgoing webhook bots in Zulip
+   the "Download config of all active outgoing webhook bots in Connect
    Botserver format." option at the top.
 
 1. Open the `botserverrc`. It should contain one or more sections that look like this:
@@ -151,7 +151,7 @@ Botserver process.  You can do this with the following procedure.
     site=http://hostname
     ```
 
-1.  Run the Zulip Botserver by passing the `botserverrc` to it. The
+1.  Run the Connect Botserver by passing the `botserverrc` to it. The
     command format is:
 
      ```
@@ -160,14 +160,14 @@ Botserver process.  You can do this with the following procedure.
 
      If omitted, `hostname` defaults to `127.0.0.1` and `port` to `5002`.
 
-### Running Zulip Botserver with supervisord
+### Running OneHash Connect Botserver with supervisord
 
 [supervisord](http://supervisord.org/) is a popular tool for running
 services in production.  It helps ensure the service starts on boot,
 manages log files, restarts the service if it crashes, etc.  This
-section documents how to run the Zulip Botserver using *supervisord*.
+section documents how to run the Connect Botserver using *supervisord*.
 
-Running the Zulip Botserver with *supervisord* works almost like
+Running the Connect Botserver with *supervisord* works almost like
 running it manually.
 
 1.  Install *supervisord* via your package manager; e.g. on Debian/Ubuntu:
@@ -227,13 +227,13 @@ Botserver with SSL using an `nginx` or `Apache` reverse proxy and
    bot](/api/outgoing-webhooks) and you've
    correctly configured the URL for your Botserver.
 
-1.  Your Botserver needs to be accessible from your Zulip server over
+1.  Your Botserver needs to be accessible from your Connect server over
     HTTP(S).  Make sure any firewall allows the connection.  We
-    recommend using [zulip-run-bot](running-bots) instead for
+    recommend using [connect-run-bot](running-bots) instead for
     development/testing on a laptop or other non-server system.
 
-    If your Zulip server is self-hosted, you can test by running `curl
-    http://zulipbotserver.example.com:5002` from your Zulip server;
+    If your Connect server is self-hosted, you can test by running `curl
+    http://zulipbotserver.example.com:5002` from your Connect server;
     the output should be:
 
     ```
