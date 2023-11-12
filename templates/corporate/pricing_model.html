@@ -5,7 +5,7 @@
         <div class="pricing-container">
             <div class="block">
                 <div class="plan-title responsive-title">
-                    Zulip Cloud
+                    OneHash Connect Cloud
                 </div>
 
                 <div class="price-box" tabindex="-1">
@@ -26,16 +26,16 @@
                     </div>
                     <div class="bottom">
                         <div class="text-content">
-                            {% if not realm or realm.plan_type == realm.PLAN_TYPE_SELF_HOSTED %}
+                            {% if not realm.plan_type == 'Free' %}
                             <div class="pricing-details">
                                 Free cloud service
                             </div>
                             <a href="/new/" class="button green">
                                 Create organization
                             </a>
-                            {% elif realm.plan_type == realm.PLAN_TYPE_LIMITED or sponsorship_pending %}
+                            {% elif realm.plan_type == 'Free' %}
                             <div class="pricing-details"></div>
-                            <a href='/upgrade/' class="button black-current-value" type="button">
+                            <a class="button black-current-value" type="button">
                                 Current plan
                             </a>
                             {% endif %}
@@ -54,50 +54,30 @@
                             <li>Unlimited search history</li>
                             <li>File storage up to 10 GB per user</li>
                             <li><a href="/help/message-retention-policy">Message retention policies</a></li>
-                            <li>Brand Zulip with your logo</li>
+                            <li>Brand Connect with your logo</li>
                             <li>Priority commercial support</li>
-                            <li>Funds the Zulip open source project</li>
+                            <!-- <li>Funds the Zulip open source project</li> -->
                         </ul>
                     </div>
                     <div class="bottom">
                         <div class="text-content">
                             <div class="standard-price-box">
-                                <div class="price">6<span class="price-cents">.67</span></div>
+                                <div class="price">4<span class="price-cents"></span></div>
                                 <div class="details">
                                     <span class="pricing-period">per user per month</span>
                                     <br />
                                     with annual billing discount
                                     <br />
-                                    $8/month billed monthly
+                                    $6/month billed monthly
                                 </div>
                             </div>
-                            {% if not realm %}
+                            {% if not realm.plan_type == 'Standard' %}
                             <a href="/upgrade/" class="button green">
-                                {% if free_trial_days %}
-                                Start {{ free_trial_days }} day free trial
-                                {% else %}
                                 Upgrade to Standard
-                                {% endif %}
                             </a>
-                            {% elif realm.plan_type in [realm.PLAN_TYPE_STANDARD, realm.PLAN_TYPE_STANDARD_FREE] %}
-                            <a href='/billing' class="button black-current-value" type="button">
-                                {% if realm_on_free_trial %}
-                                Current plan (free trial)
-                                {% else %}
+                            {% elif realm.plan_type == 'Standard' %}
+                            <a class="button black-current-value" type="button">
                                 Current plan
-                                {% endif %}
-                            </a>
-                            {% elif sponsorship_pending %}
-                            <a href="/billing/" class="button black-current-value" type="button">
-                                Sponsorship pending
-                            </a>
-                            {% else %}
-                            <a href="/upgrade/" class="button green">
-                                {% if free_trial_days %}
-                                Start {{ free_trial_days }} day free trial
-                                {% else %}
-                                Upgrade to Standard
-                                {% endif %}
                             </a>
                             {% endif %}
                         </div>
@@ -105,7 +85,7 @@
                 </div>
             </div>
 
-            <div class="block">
+            <!-- <div class="block">
                 <div class="plan-title responsive-title">
                     Self-host Zulip
                 </div>
@@ -167,7 +147,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

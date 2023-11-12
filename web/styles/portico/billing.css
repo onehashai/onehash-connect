@@ -4,11 +4,11 @@
 
 .billing-upgrade-page {
     font-family: "Source Sans 3 VF", sans-serif;
-    background-color: hsl(0deg 0% 98%);
+    background-color: hsl(0, 0%, 100%);
     height: 100vh;
 
     .hero {
-        background-color: hsl(153deg 32% 55%);
+        background-color: hsl(0, 0%, 100%);
         color: hsl(153deg 32% 55%);
         position: absolute;
         top: 0;
@@ -62,7 +62,7 @@
         & a,
         a:hover,
         a:visited {
-            color: hsl(170deg 47% 33%);
+            color: hsl(206.7, 100%, 45.5%);
             font-weight: 400;
         }
     }
@@ -78,9 +78,9 @@
 
             &:checked {
                 + .box {
-                    background-color: hsl(153deg 32% 55%);
+                    background-color: hsl(206.7, 100%, 45.5%);
                     color: hsl(0deg 0% 100%);
-                    border-color: hsl(152deg 33% 39%);
+                    border-color: hsl(0, 0%, 0%);
                 }
             }
         }

@@ -68,7 +68,8 @@ export function user_can_change_email(): boolean {
 }
 
 export function user_can_change_logo(): boolean {
-    return page_params.is_admin && page_params.zulip_plan_is_not_limited;
+    // return page_params.is_admin && page_params.zulip_plan_is_not_limited;
+    return page_params.is_admin;
 }
 
 function user_has_permission(policy_value: number): boolean {
