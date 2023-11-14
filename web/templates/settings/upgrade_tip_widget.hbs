@@ -1,5 +1,5 @@
 <div>
-    {{#unless zulip_plan_is_not_limited}}
+    {{!-- {{#unless zulip_plan_is_not_limited}} --}}
     {{#if is_business_type_org}}
         <a href="/upgrade/" class="upgrade-tip" target="_blank" rel="noopener noreferrer">
             {{upgrade_text_for_wide_organization_logo}}
@@ -7,11 +7,11 @@
     {{else}}
         <div class="upgrade-or-sponsorship-tip">
             {{#tr}}
-                Available on OneHash Cloud Standard. <z-link-upgrade>Upgrade</z-link-upgrade> or <z-link-sponsorship>request sponsorship</z-link-sponsorship> to access.
-                {{#*inline "z-link-upgrade"}}<a href="/upgrade/" target="_blank" rel="noopener noreferrer">{{> @partial-block}}</a>{{/inline}}
-                {{#*inline "z-link-sponsorship"}}<a href="/upgrade/#sponsorship" target="_blank" rel="noopener noreferrer">{{> @partial-block}}</a>{{/inline}}
+                Available on OneHash Cloud Standard. <z-link-upgrade>Upgrade.</z-link-upgrade>
+                {{#*inline "z-link-upgrade"}}<a href="/settings/upgrade/" target="_blank" rel="noopener noreferrer">{{> @partial-block}}</a>{{/inline}}
+                {{#*inline "z-link-sponsorship"}}<a href="/settings/upgrade/#sponsorship" target="_blank" rel="noopener noreferrer">{{> @partial-block}}</a>{{/inline}}
             {{/tr}}
         </div>
     {{/if}}
-    {{/unless}}
+    {{!-- {{/unless}} --}}
 </div>

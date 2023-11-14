@@ -128,7 +128,7 @@ def setup_upgrade_checkout_session_and_payment_intent(
             description=f"Upgrade to OneHash Connect Standard, ${price_per_license/100} x {licenses}",
             receipt_email=user.delivery_email,
             confirm=False,
-            statement_descriptor="OneHash Connect Cloud Standard",
+            statement_descriptor="Connect Cloud Standard",
             metadata=metadata,
         )
         payment_intent = PaymentIntent.objects.create(

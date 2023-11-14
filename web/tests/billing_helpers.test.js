@@ -13,7 +13,7 @@ const $ = require("./lib/zjquery");
 const {page_params} = require("./lib/zpage_billing_params");
 
 const template = fs.readFileSync(
-    path.resolve(__dirname, "../../templates/corporate/upgrade.html"),
+    path.resolve(__dirname, "../../templates/onehash_billing/connect_upgrade.html"),
     "utf8",
 );
 const dom = new JSDOM(template, {
@@ -130,7 +130,9 @@ run_test("create_ajax_request", ({override}) => {
         assert.equal(state.make_indicator, 1);
 
         assert.equal(type, "PATCH");
-        assert.equal(url, "/json/billing/upgrade");
+        // assert.equal(url, "/json/billing/upgrade");
+        assert.equal(url, "/json/settings/billing/upgrade");
+
 
         assert.equal(Object.keys(data).length, 5);
         assert.equal(data.signed_seat_count, "{{ signed_seat_count }}");
@@ -171,7 +173,8 @@ run_test("create_ajax_request", ({override}) => {
     });
 
     helpers.create_ajax_request(
-        "/json/billing/upgrade",
+        // "/json/billing/upgrade",
+        "/json/settings/billing/upgrade",
         "invoice",
         ["license_management"],
         "PATCH",

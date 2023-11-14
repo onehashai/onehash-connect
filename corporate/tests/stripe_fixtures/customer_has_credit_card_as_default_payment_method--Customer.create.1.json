@@ -1,23 +1,25 @@
 {
   "address": null,
   "balance": 0,
-  "created": 1000000000,
+  "created": 1699999129,
   "currency": null,
+  "default_currency": null,
   "default_source": null,
   "delinquent": false,
   "description": "zulip (Zulip Dev)",
   "discount": null,
   "email": "iago@zulip.com",
-  "id": "cus_NORMALIZED0001",
-  "invoice_prefix": "NORMA01",
+  "id": "cus_P0Ve3QkUdXn4ik",
+  "invoice_prefix": "2164D83D",
   "invoice_settings": {
     "custom_fields": null,
     "default_payment_method": null,
-    "footer": null
+    "footer": null,
+    "rendering_options": null
   },
   "livemode": false,
   "metadata": {
-    "realm_id": "1",
+    "realm_id": "2",
     "realm_str": "zulip"
   },
   "name": null,
@@ -26,5 +28,6 @@
   "phone": null,
   "preferred_locales": [],
   "shipping": null,
-  "tax_exempt": "none"
+  "tax_exempt": "none",
+  "test_clock": null
 }

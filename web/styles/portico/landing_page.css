@@ -48,11 +48,11 @@ ul {
 a {
     position: relative;
     cursor: pointer;
-    color: hsl(170deg 47% 33%);
+    color: hsl(206.7, 100%, 45.5%);
 
     &:hover,
     &:visited {
-        color: hsl(170deg 47% 33%);
+        color: hsl(206.7, 100%, 45.5%);
     }
 
     &:hover,
@@ -165,12 +165,12 @@ button {
     }
 
     &.green {
-        color: hsl(0deg 0% 100%);
-        background-color: hsl(170deg 47% 53%);
-        border-color: hsl(169deg 45% 43%);
+        color: hsl(0, 0%, 100%);
+        background-color: hsl(206.7, 100%, 45.5%);
+        border-color: hsl(0, 0%, 0%);
 
         &:hover {
-            background-color: hsl(170deg 47% 58%);
+            background-color: hsl(207, 100%, 37%);
         }
 
         &:active {
@@ -350,7 +350,7 @@ button {
 
             & a.cta {
                 font-size: 1em;
-                color: hsl(170deg 52% 70%);
+                color: hsl(0, 0%, 100%);
             }
         }
 
@@ -698,11 +698,11 @@ button {
 .compare,
 .compare-education {
     background: linear-gradient(
-        198deg,
-        hsl(170deg 34% 47%),
-        hsl(146deg 31% 60%)
+        0deg,
+        hsla(0, 0%, 100%, 0) 50%,
+        hsl(0, 0%, 100%)
     );
-    color: hsl(0deg 0% 100%);
+    color: hsl(0, 0%, 0%);
 
     .table-container {
         overflow-x: auto;
@@ -1748,41 +1748,41 @@ button {
 
 .gradients .gradient.dark-blue {
     background: linear-gradient(
-        10deg,
-        hsl(196deg 58% 14% / 0%) 50%,
-        hsl(196deg 58% 14% / 70%)
+        0deg,
+        hsla(0, 0%, 100%, 0) 50%,
+        hsl(0, 0%, 100%)
     );
 }
 
 .gradients .gradient.green {
     background: linear-gradient(
-        -25deg,
-        hsl(156deg 47% 47% / 0%) 40%,
-        hsl(156deg 47% 47%)
+        0deg,
+        hsla(0, 0%, 100%, 0) 50%,
+        hsl(0, 0%, 100%)
     );
 }
 
 .gradients .gradient.blue {
     background: linear-gradient(
-        25deg,
-        hsl(196deg 38% 51% / 0%) 40%,
-        hsl(196deg 38% 51%)
+        0deg,
+        hsla(0, 0%, 100%, 0) 50%,
+        hsl(0, 0%, 100%)
     );
 }
 
 .gradients .gradient.sunburst {
     background: linear-gradient(
-        5deg,
-        hsl(49deg 71% 68% / 0%) 20%,
-        hsl(49deg 71% 68%)
+        0deg,
+        hsla(0, 0%, 100%, 0) 50%,
+        hsl(0, 0%, 100%)
     );
 }
 
 .gradients .gradient.white-fade {
     background: linear-gradient(
         0deg,
-        hsl(0deg 0% 100%) 0%,
-        hsl(0deg 0% 98% / 0%) 40%
+        hsla(0, 0%, 100%, 0) 50%,
+        hsl(0, 0%, 100%)
     );
 }
 
@@ -1796,7 +1796,7 @@ button {
     font-size: 2.5em;
     margin: 0;
 
-    color: hsl(0deg 0% 100%);
+    color: hsl(0, 0%, 0%);
 }
 
 .portico-landing.plans .main .padded-content > h2 {
@@ -1822,7 +1822,7 @@ button {
     padding: 10px;
     margin-bottom: 3px;
 
-    color: hsl(0deg 0% 100%);
+    color: hsl(0, 0%, 0%);
 
     font-size: 2em;
     font-weight: 300;
@@ -1864,7 +1864,7 @@ button {
 
 .pricing-model .pricing-container hr {
     border: none;
-    border-bottom: 2px solid hsl(170deg 47% 53%);
+    border-bottom: 2px solid hsl(206.7, 100%, 45.5%);
     margin: 15px 0;
 }
 
@@ -1910,7 +1910,7 @@ button {
     width: 100%;
     height: 150px;
 
-    background-color: hsl(0deg 0% 93%);
+    background-color: hsl(0, 0%, 100%);
 }
 
 .pricing-model .pricing-container .text-content .price::before {
@@ -1960,7 +1960,7 @@ button {
 }
 
 .pricing-model .pricing-container .price-box:focus {
-    outline: none;
+    outline: none
 }
 
 .pricing-model .pricing-container .price-box:focus .button {
@@ -2536,7 +2536,7 @@ button {
         background: linear-gradient(
             -25deg,
             hsl(156deg 47% 47% / 0%) 10%,
-            hsl(156deg 47% 47%) 80%
+            hsl(0, 0%, 100%) 80%
         );
     }
 

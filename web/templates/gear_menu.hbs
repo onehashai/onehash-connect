@@ -135,13 +135,19 @@
                     <i class="fa fa-sitemap" aria-hidden="true"></i> {{t 'API documentation' }}
                 </a>
             </li>
-            {{#if show_billing}}
+            {{!-- {{#if show_billing}}
             <li role="presentation" class="hidden-for-spectators">
                 <a href="/billing/" target="_blank" rel="noopener noreferrer" role="menuitem">
                     <i class="fa fa-credit-card" aria-hidden="true"></i> {{t 'Billing' }}
                 </a>
             </li>
-            {{/if}}
+            {{/if}} --}}
+             {{!-- Billing --}}
+             {{!-- <li role="presentation" class="hidden-for-spectators">
+                <a href="/settings/billing/" target="_blank" rel="noopener noreferrer" role="menuitem">
+                    <i class="fa fa-credit-card" aria-hidden="true"></i> {{t 'Billing' }}
+                </a>
+            </li> --}}
             {{#if promote_sponsoring_zulip}}
             <li role="presentation" class="hidden-for-spectators">
                 <a target="_blank" rel="noopener noreferrer" role="menuitem">
@@ -149,13 +155,18 @@
                 </a>
             </li>
             {{/if}}
-            {{#if show_plans}}
+            {{!-- {{#if show_plans}}
             <li role="presentation" class="hidden-for-spectators">
                 <a href="/plans/" target="_blank" rel="noopener noreferrer" role="menuitem">
                     <i class="fa fa-rocket" aria-hidden="true"></i> {{t 'Plans and pricing' }}
                 </a>
             </li>
-            {{/if}}
+            {{/if}} --}}
+            <li role="presentation" class="hidden-for-spectators">
+                <a href="/settings/plans/" target="_blank" rel="noopener noreferrer" role="menuitem">
+                    <i class="fa fa-rocket" aria-hidden="true"></i> {{t 'Plans and pricing' }}
+                </a>
+            </li>
             <li class="divider hidden-for-spectators" role="presentation"></li>
             {{#if (or can_invite_users_by_email can_create_multiuse_invite)}}
             <li role="presentation">

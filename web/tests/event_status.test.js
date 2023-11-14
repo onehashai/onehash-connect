@@ -6,12 +6,12 @@ const {set_global, zrequire, mock_esm} = require("./lib/namespace");
 const {run_test} = require("./lib/test");
 const $ = require("./lib/zjquery");
 
-const event_status = zrequire("billing/event_status");
+const event_status = zrequire("settings/billing/event_status");
 const helpers = mock_esm("../src/billing/helpers");
 
 run_test("initialize_retry_with_another_card_link_click_handler", ({override}) => {
     override(helpers, "create_ajax_request", (url, form_name, ignored_inputs, method, callback) => {
-        assert.equal(url, "/json/billing/session/start_retry_payment_intent_session");
+        assert.equal(url, "/json/settings/billing/session/start_retry_payment_intent_session");
         assert.equal(form_name, "restartsession");
         assert.deepEqual(ignored_inputs, []);
         assert.equal(method, "POST");
@@ -37,7 +37,7 @@ run_test("initialize_retry_with_another_card_link_click_handler", ({override}) =
 run_test("check_status", async ({override}) => {
     $("#data").attr("data-stripe-session-id", "stripe_session_id");
     override($, "get", async (url, data) => {
-        assert.equal(url, "/json/billing/event/status");
+        assert.equal(url, "/json/settings/billing/event/status");
         assert.deepEqual(data, {stripe_session_id: "stripe_session_id"});
         return {
             session: {
@@ -50,7 +50,7 @@ run_test("check_status", async ({override}) => {
     assert.ok(!completed);
 
     override($, "get", async (url, data) => {
-        assert.equal(url, "/json/billing/event/status");
+        assert.equal(url, "/json/settings/billing/event/status");
         assert.deepEqual(data, {stripe_session_id: "stripe_session_id"});
         return {
             session: {
@@ -66,7 +66,7 @@ run_test("check_status", async ({override}) => {
     assert.ok(!completed);
 
     override($, "get", async (url, data) => {
-        assert.equal(url, "/json/billing/event/status");
+        assert.equal(url, "/json/settings/billing/event/status");
         assert.deepEqual(data, {stripe_session_id: "stripe_session_id"});
         return {
             session: {
@@ -87,7 +87,7 @@ run_test("check_status", async ({override}) => {
             replace(new_location) {
                 assert.equal(
                     new_location,
-                    "/billing/event_status?stripe_payment_intent_id=spid_1A",
+                    "/settings/billing/event_status?stripe_payment_intent_id=spid_1A",
                 );
             },
         },
@@ -100,7 +100,7 @@ run_test("check_status", async ({override}) => {
     );
 
     override($, "get", async (url, data) => {
-        assert.equal(url, "/json/billing/event/status");
+        assert.equal(url, "/json/settings/billing/event/status");
         assert.deepEqual(data, {stripe_session_id: "stripe_session_id"});
         return {
             session: {
@@ -118,7 +118,7 @@ run_test("check_status", async ({override}) => {
             replace(new_location) {
                 assert.equal(
                     new_location,
-                    "/billing/event_status?stripe_payment_intent_id=spid_1B",
+                    "/settings/billing/event_status?stripe_payment_intent_id=spid_1B",
                 );
             },
         },
@@ -131,7 +131,7 @@ run_test("check_status", async ({override}) => {
     );
 
     override($, "get", async (url, data) => {
-        assert.equal(url, "/json/billing/event/status");
+        assert.equal(url, "/json/settings/billing/event/status");
         assert.deepEqual(data, {stripe_session_id: "stripe_session_id"});
         return {
             session: {
@@ -158,7 +158,7 @@ run_test("check_status", async ({override}) => {
     );
 
     override($, "get", async (url, data) => {
-        assert.equal(url, "/json/billing/event/status");
+        assert.equal(url, "/json/settings/billing/event/status");
         assert.deepEqual(data, {stripe_session_id: "stripe_session_id"});
         return {
             session: {
@@ -185,7 +185,7 @@ run_test("check_status", async ({override}) => {
     );
 
     override($, "get", async (url, data) => {
-        assert.equal(url, "/json/billing/event/status");
+        assert.equal(url, "/json/settings/billing/event/status");
         assert.deepEqual(data, {stripe_session_id: "stripe_session_id"});
         return {
             session: {
@@ -212,7 +212,7 @@ run_test("check_status", async ({override}) => {
     );
 
     override($, "get", async (url, data) => {
-        assert.equal(url, "/json/billing/event/status");
+        assert.equal(url, "/json/settings/billing/event/status");
         assert.deepEqual(data, {stripe_session_id: "stripe_session_id"});
         return {
             session: {
@@ -234,7 +234,7 @@ run_test("check_status", async ({override}) => {
     $("#data").attr("data-stripe-session-id", "");
     $("#data").attr("data-stripe-payment-intent-id", "stripe_payment_intent_id");
     override($, "get", async (url, data) => {
-        assert.equal(url, "/json/billing/event/status");
+        assert.equal(url, "/json/settings/billing/event/status");
         assert.deepEqual(data, {stripe_payment_intent_id: "stripe_payment_intent_id"});
         return {
             payment_intent: {
@@ -257,7 +257,7 @@ run_test("check_status", async ({override}) => {
     assert.ok($("#retry-with-another-card-link").get_on_handler("click"));
 
     override($, "get", async (url, data) => {
-        assert.equal(url, "/json/billing/event/status");
+        assert.equal(url, "/json/settings/billing/event/status");
         assert.deepEqual(data, {stripe_payment_intent_id: "stripe_payment_intent_id"});
         return {
             payment_intent: {
@@ -279,7 +279,7 @@ run_test("check_status", async ({override}) => {
     assert.equal($("#webhook-error").text(), "Something went wrong.");
 
     override($, "get", async (url, data) => {
-        assert.equal(url, "/json/billing/event/status");
+        assert.equal(url, "/json/settings/billing/event/status");
         assert.deepEqual(data, {stripe_payment_intent_id: "stripe_payment_intent_id"});
         return {
             payment_intent: {
@@ -294,7 +294,7 @@ run_test("check_status", async ({override}) => {
     assert.ok(!completed);
 
     override($, "get", async (url, data) => {
-        assert.equal(url, "/json/billing/event/status");
+        assert.equal(url, "/json/settings/billing/event/status");
         assert.deepEqual(data, {stripe_payment_intent_id: "stripe_payment_intent_id"});
         return {
             payment_intent: {
@@ -308,7 +308,7 @@ run_test("check_status", async ({override}) => {
     set_global("window", {
         location: {
             replace(new_location) {
-                assert.equal(new_location, "/billing/");
+                assert.equal(new_location, "/settings/billing/");
             },
         },
     });
@@ -320,7 +320,7 @@ run_test("check_status", async ({override}) => {
     );
 
     override($, "get", async (url, data) => {
-        assert.equal(url, "/json/billing/event/status");
+        assert.equal(url, "/json/settings/billing/event/status");
         assert.deepEqual(data, {stripe_payment_intent_id: "stripe_payment_intent_id"});
         return {
             payment_intent: {
@@ -339,7 +339,7 @@ run_test("check_status", async ({override}) => {
     assert.equal($("#webhook-error").text(), "Something went wrong.");
 
     override($, "get", async (url, data) => {
-        assert.equal(url, "/json/billing/event/status");
+        assert.equal(url, "/json/settings/billing/event/status");
         assert.deepEqual(data, {stripe_payment_intent_id: "stripe_payment_intent_id"});
         return {
             payment_intent: {

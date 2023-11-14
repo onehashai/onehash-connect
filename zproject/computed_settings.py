@@ -210,6 +210,7 @@ INSTALLED_APPS = [
     "django_otp.plugins.otp_totp",
     "two_factor",
     "two_factor.plugins.phonenumber",
+    "onehash_billing",
 ]
 if USING_PGROONGA:
     INSTALLED_APPS += ["pgroonga"]
@@ -513,7 +514,7 @@ if PRODUCTION:
         },
     ]
 
-INTERNAL_BOT_DOMAIN = "zulip.com"
+INTERNAL_BOT_DOMAIN = "onehash.ai"
 
 ########################################################################
 # CAMO HTTPS CACHE CONFIGURATION

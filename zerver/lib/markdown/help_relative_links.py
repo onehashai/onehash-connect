@@ -27,8 +27,8 @@ gear_info = {
     ],
     "integrations": ['<i class="fa fa-github"></i> Integrations', "/integrations/"],
     "stats": ['<i class="fa fa-bar-chart"></i> Usage statistics', "/stats"],
-    "plans": ['<i class="fa fa-rocket"></i> Plans and pricing', "/plans/"],
-    "billing": ['<i class="fa fa-credit-card"></i> Billing', "/billing/"],
+    "plans": ['<i class="fa fa-rocket"></i> Plans and pricing', "/settings/plans/"],
+    "billing": ['<i class="fa fa-credit-card"></i> Billing', "/settings/billing/"],
     "keyboard-shortcuts": [
         '<i class="fa fa-keyboard-o"></i> Keyboard shortcuts (?)',
         "/#keyboard-shortcuts",

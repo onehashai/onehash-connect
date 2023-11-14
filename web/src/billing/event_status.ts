@@ -53,28 +53,29 @@ function handle_session_complete_event(session: StripeSession): void {
         case "upgrade_from_billing_page":
         case "retry_upgrade_with_another_payment_method":
             message = "We have received your billing details. Attempting to create charge...";
-            redirect_to = `/billing/event_status?stripe_payment_intent_id=${session.stripe_payment_intent_id!}`;
+            redirect_to = `/settings/billing/event_status?stripe_payment_intent_id=${session.stripe_payment_intent_id!}`;
             break;
         case "free_trial_upgrade_from_billing_page":
             message =
                 "Your free trial of Zulip Cloud Standard has been activated. You would be redirected to the billing page soon.";
-            redirect_to = "/billing/";
+            redirect_to = "/settings/billing/";
             break;
         case "free_trial_upgrade_from_onboarding_page":
             message =
                 "Your free trial of Zulip Cloud Standard has been activated. You would be redirected to the billing page soon.";
-            redirect_to = "/billing?onboarding=true";
+            redirect_to = "/settings/billing?onboarding=true";
             break;
         case "card_update_from_billing_page":
             message =
                 "Your card has been updated. You would be redirected to the billing page soon.";
-            redirect_to = "/billing#payment-method";
+            redirect_to = "/settings/billing#payment-method";
     }
     update_status_and_redirect(message, redirect_to);
 }
 
 async function stripe_checkout_session_status_check(stripe_session_id: string): Promise<boolean> {
-    const response: unknown = await $.get("/json/billing/event/status", {stripe_session_id});
+    // const response: unknown = await $.get("/json/billing/event/status", {stripe_session_id});
+    const response: unknown = await $.get("/json/settings/billing/event/status", {stripe_session_id});
     const response_data = stripe_response_schema.parse(response);
 
     if (response_data.session.status === "created") {
@@ -100,7 +101,8 @@ export function initialize_retry_with_another_card_link_click_handler(): void {
         e.preventDefault();
         $("#webhook-error").hide();
         helpers.create_ajax_request(
-            "/json/billing/session/start_retry_payment_intent_session",
+            // "/json/billing/session/start_retry_payment_intent_session",
+            "/json/settings/billing/session/start_retry_payment_intent_session",
             "restartsession",
             [],
             "POST",
@@ -116,7 +118,8 @@ export function initialize_retry_with_another_card_link_click_handler(): void {
 export async function stripe_payment_intent_status_check(
     stripe_payment_intent_id: string,
 ): Promise<boolean> {
-    const response: unknown = await $.get("/json/billing/event/status", {stripe_payment_intent_id});
+    // const response: unknown = await $.get("/json/billing/event/status", {stripe_payment_intent_id});
+    const response: unknown = await $.get("/json/settings/billing/event/status", {stripe_payment_intent_id});
 
     const response_schema = z.object({
         payment_intent: z.object({
@@ -160,7 +163,7 @@ export async function stripe_payment_intent_status_check(
             if (response_data.payment_intent.event_handler!.status === "succeeded") {
                 update_status_and_redirect(
                     "Charge created successfully. Your organization has been upgraded. Redirecting to billing page...",
-                    "/billing/",
+                    "/settings/billing/",
                 );
                 return true;
             }
