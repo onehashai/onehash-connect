@@ -513,7 +513,7 @@ if PRODUCTION:
         },
     ]
 
-INTERNAL_BOT_DOMAIN = "zulip.com"
+INTERNAL_BOT_DOMAIN = "onehash.ai"
 
 ########################################################################
 # CAMO HTTPS CACHE CONFIGURATION
