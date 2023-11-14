@@ -7,8 +7,8 @@ from django.contrib.auth.views import redirect_to_login
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
 
-from corporate.lib.stripe import is_realm_on_free_trial
-from corporate.models import get_customer_by_realm
+from onehash_billing.lib.stripe import is_realm_on_free_trial
+from onehash_billing.models import get_customer_by_realm
 from zerver.context_processors import get_realm_from_request, latest_info_context
 from zerver.decorator import add_google_analytics
 from zerver.lib.github import (
@@ -35,7 +35,7 @@ def apps_view(request: HttpRequest, platform: Optional[str] = None) -> HttpRespo
         return HttpResponseRedirect("https://zulip.com/apps/", status=301)
     return TemplateResponse(
         request,
-        "corporate/apps.html",
+        "onehash_billing/connect_apps.html",
     )
 
 
@@ -52,7 +52,7 @@ def plans_view(request: HttpRequest) -> HttpResponse:
     realm = get_realm_from_request(request)
     free_trial_days = settings.FREE_TRIAL_DAYS
     sponsorship_pending = False
-    sponsorship_url = "/upgrade/#sponsorship"
+    sponsorship_url = "settings/upgrade/#sponsorship"
     if is_subdomain_root_or_alias(request):
         # If we're on the root domain, we make this link first ask you which organization.
         sponsorship_url = f"/accounts/go/?{urlencode({'next': sponsorship_url})}"
@@ -60,9 +60,9 @@ def plans_view(request: HttpRequest) -> HttpResponse:
 
     if realm is not None:
         if realm.plan_type == Realm.PLAN_TYPE_SELF_HOSTED and settings.PRODUCTION:
-            return HttpResponseRedirect("https://zulip.com/plans/")
+            return HttpResponseRedirect("https://www.onehash.ai/")
         if not request.user.is_authenticated:
-            return redirect_to_login(next="/plans/")
+            return redirect_to_login(next="/settings/plans/")
         if request.user.is_guest:
             return TemplateResponse(request, "404.html", status=404)
         customer = get_customer_by_realm(realm)
@@ -72,7 +72,7 @@ def plans_view(request: HttpRequest) -> HttpResponse:
 
     return TemplateResponse(
         request,
-        "corporate/plans.html",
+        "onehash_billing/connect_plans.html",
         context={
             "realm": realm,
             "free_trial_days": free_trial_days,

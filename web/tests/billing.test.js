@@ -50,7 +50,8 @@ run_test("card_update", ({override}) => {
     });
     let create_ajax_request_called = false;
     function card_change_ajax(url, form_name, ignored_inputs, method, success_callback) {
-        assert.equal(url, "/json/billing/session/start_card_update_session");
+        // assert.equal(url, "/json/billing/session/start_card_update_session");
+        assert.equal(url, "/json/settings/billing/session/start_card_update_session");
         assert.equal(form_name, "cardchange");
         assert.deepEqual(ignored_inputs, []);
         assert.equal(method, "POST");
@@ -73,12 +74,13 @@ run_test("planchange", ({override}) => {
     override(helpers, "set_tab", () => {});
     let create_ajax_request_called = false;
     function plan_change_ajax(url, form_name, ignored_inputs, method, success_callback) {
-        assert.equal(url, "/json/billing/plan");
+        // assert.equal(url, "/json/billing/plan");
+        assert.equal(url, "/json/settings/billing/plan");
         assert.equal(form_name, "planchange");
         assert.deepEqual(ignored_inputs, []);
         assert.equal(method, "PATCH");
         location.replace = (new_location) => {
-            assert.equal(new_location, "/billing/");
+            assert.equal(new_location, "/settings/billing/");
         };
         success_callback();
         create_ajax_request_called = true;
@@ -96,12 +98,13 @@ run_test("licensechange", ({override}) => {
     override(helpers, "set_tab", () => {});
     let create_ajax_request_called = false;
     function license_change_ajax(url, form_name, ignored_inputs, method, success_callback) {
-        assert.equal(url, "/json/billing/plan");
+        // assert.equal(url, "/json/billing/plan");
+        assert.equal(url, "/json/settings/billing/plan");
         assert.equal(form_name, "licensechange");
         assert.deepEqual(ignored_inputs, ["licenses_at_next_renewal"]);
         assert.equal(method, "PATCH");
         location.replace = (new_location) => {
-            assert.equal(new_location, "/billing/");
+            assert.equal(new_location, "/settings/billing/");
         };
         success_callback();
         create_ajax_request_called = true;
@@ -165,12 +168,13 @@ run_test("licensechange", ({override}) => {
         method,
         success_callback,
     ) {
-        assert.equal(url, "/json/billing/plan");
+        // assert.equal(url, "/json/billing/plan");
+        assert.equal(url, "/json/settings/billing/plan");
         assert.equal(form_name, "licensechange");
         assert.deepEqual(ignored_inputs, ["licenses"]);
         assert.equal(method, "PATCH");
         location.replace = (new_location) => {
-            assert.equal(new_location, "/billing/");
+            assert.equal(new_location, "/settings/billing/");
         };
         success_callback();
         create_ajax_request_called = true;

@@ -13,7 +13,7 @@ const {page_params} = require("./lib/zpage_billing_params");
 
 const noop = () => {};
 const template = fs.readFileSync(
-    path.resolve(__dirname, "../../templates/corporate/upgrade.html"),
+    path.resolve(__dirname, "../../templates/onehash_billing/connect_upgrade.html"),
     "utf8",
 );
 const dom = new JSDOM(template, {pretendToBeVisual: true});
@@ -40,7 +40,8 @@ run_test("initialize", ({override_rewire}) => {
             create_ajax_request_form_call_count += 1;
             switch (form_name) {
                 case "autopay":
-                    assert.equal(url, "/json/billing/upgrade");
+                    // assert.equal(url, "/json/billing/upgrade");
+                    assert.equal(url, "/json/settings/billing/upgrade");
                     assert.deepEqual(ignored_inputs, []);
                     assert.equal(type, "POST");
                     location.replace = (new_location) => {
@@ -50,16 +51,18 @@ run_test("initialize", ({override_rewire}) => {
                     success_callback({stripe_session_url: "https://stripe_session_url"});
                     break;
                 case "invoice":
-                    assert.equal(url, "/json/billing/upgrade");
+                    // assert.equal(url, "/json/billing/upgrade");
+                    assert.equal(url, "/json/settings/billing/upgrade");
                     assert.deepEqual(ignored_inputs, []);
                     assert.equal(type, "POST");
                     location.replace = (new_location) => {
-                        assert.equal(new_location, "/billing/");
+                        assert.equal(new_location, "/settings/billing/");
                     };
                     success_callback();
                     break;
                 case "sponsorship":
-                    assert.equal(url, "/json/billing/sponsorship");
+                    // assert.equal(url, "/json/billing/sponsorship");
+                    assert.equal(url, "/json/settings/billing/sponsorship");
                     assert.deepEqual(ignored_inputs, []);
                     assert.equal(type, "POST");
                     location.replace = (new_location) => {

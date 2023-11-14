@@ -6,11 +6,12 @@ import * as helpers from "./helpers";
 
 export function create_update_license_request(): void {
     helpers.create_ajax_request(
-        "/json/billing/plan",
+        // "/json/billing/plan",
+        "/json/settings/billing/plan",
         "licensechange",
         ["licenses_at_next_renewal"],
         "PATCH",
-        () => window.location.replace("/billing/"),
+        () => window.location.replace("/settings/billing/"),
     );
 }
 
@@ -20,7 +21,8 @@ export function initialize(): void {
 
     $("#update-card-button").on("click", (e) => {
         helpers.create_ajax_request(
-            "/json/billing/session/start_card_update_session",
+            // "/json/billing/session/start_card_update_session",
+            "/json/settings/billing/session/start_card_update_session",
             "cardchange",
             [],
             "POST",
@@ -56,7 +58,8 @@ export function initialize(): void {
     $("#update-licenses-at-next-renewal-button").on("click", (e) => {
         e.preventDefault();
         helpers.create_ajax_request(
-            "/json/billing/plan",
+            // "/json/billing/plan",
+            "/json/settings/billing/plan",
             "licensechange",
             ["licenses"],
             "PATCH",
@@ -65,8 +68,11 @@ export function initialize(): void {
     });
 
     $("#change-plan-status").on("click", (e) => {
-        helpers.create_ajax_request("/json/billing/plan", "planchange", [], "PATCH", () =>
-            window.location.replace("/billing/"),
+        // helpers.create_ajax_request("/json/billing/plan", "planchange", [], "PATCH", () =>
+        //     window.location.replace("/billing/"),
+        // );
+        helpers.create_ajax_request("/json/settings/billing/plan", "planchange", [], "PATCH", () =>
+            window.location.replace("/settings/billing/"),
         );
         e.preventDefault();
     });

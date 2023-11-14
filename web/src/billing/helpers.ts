@@ -168,9 +168,12 @@ export function set_sponsorship_form(): void {
             return;
         }
         e.preventDefault();
-        create_ajax_request("/json/billing/sponsorship", "sponsorship", [], "POST", () =>
-            window.location.replace("/"),
-        );
+        // create_ajax_request("/json/billing/sponsorship", "sponsorship", [], "POST", () =>
+        //     window.location.replace("/"),
+        // );
+        create_ajax_request("/json/settings/billing/sponsorship", "sponsorship", [], "POST", () =>
+        window.location.replace("/"),
+    );
     });
 }
 

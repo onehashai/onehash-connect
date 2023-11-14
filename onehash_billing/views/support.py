@@ -2,7 +2,7 @@ from django import forms
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from corporate.lib.support import get_support_url
+from onehash_billing.lib.support import get_support_url
 from zerver.decorator import zulip_login_required
 from zerver.lib.request import has_request_variables
 from zerver.lib.send_email import FromAddress, send_email

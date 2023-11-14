@@ -5,14 +5,14 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.utils.translation import gettext as _
 
-from corporate.models import PaymentIntent, Session, get_customer_by_realm
+from onehash_billing.models import OneHashPaymentIntent, OneHashSession, get_customer_by_realm
 from zerver.decorator import require_organization_member, zulip_login_required
 from zerver.lib.exceptions import JsonableError
 from zerver.lib.request import REQ, has_request_variables
 from zerver.lib.response import json_success
 from zerver.models import UserProfile
 
-billing_logger = logging.getLogger("corporate.stripe")
+billing_logger = logging.getLogger("onehash_billing.stripe")
 
 
 @require_organization_member
@@ -29,16 +29,16 @@ def event_status(
 
     if stripe_session_id is not None:
         try:
-            session = Session.objects.get(stripe_session_id=stripe_session_id, customer=customer)
-        except Session.DoesNotExist:
+            session = OneHashSession.objects.get(stripe_session_id=stripe_session_id, customer=customer)
+        except OneHashSession.DoesNotExist:
             raise JsonableError(_("Session not found"))
 
-        if session.type == Session.CARD_UPDATE_FROM_BILLING_PAGE and not user.has_billing_access:
+        if session.type == OneHashSession.CARD_UPDATE_FROM_BILLING_PAGE and not user.has_billing_access:
             raise JsonableError(_("Must be a billing administrator or an organization owner"))
         return json_success(request, data={"session": session.to_dict()})
 
     if stripe_payment_intent_id is not None:
-        payment_intent = PaymentIntent.objects.filter(
+        payment_intent = OneHashPaymentIntent.objects.filter(
             stripe_payment_intent_id=stripe_payment_intent_id,
             customer=customer,
         ).last()
@@ -60,4 +60,4 @@ def event_status_page(
         "stripe_session_id": stripe_session_id,
         "stripe_payment_intent_id": stripe_payment_intent_id,
     }
-    return render(request, "corporate/event_status.html", context=context)
+    return render(request, "onehash_billing/connect_event_status.html", context=context)

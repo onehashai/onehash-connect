@@ -11,7 +11,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from corporate.lib.stripe import (
+from onehash_billing.lib.stripe import (
     DEFAULT_INVOICE_DAYS_UNTIL_DUE,
     MIN_INVOICED_LICENSES,
     BillingError,
@@ -27,16 +27,17 @@ from corporate.lib.stripe import (
     update_sponsorship_status,
     validate_licenses,
 )
-from corporate.lib.support import get_support_url
-from corporate.models import (
-    CustomerPlan,
-    PaymentIntent,
-    Session,
-    ZulipSponsorshipRequest,
+from onehash_billing.lib.support import get_support_url
+from onehash_billing.models import (
+    OneHashCustomerPlan,
+    OneHashPaymentIntent,
+    OneHashSession,
+    ConnectSponsorshipRequest,
     get_current_plan_by_customer,
     get_customer_by_realm,
 )
 from corporate.views.billing_page import add_sponsorship_info_to_context, billing_home
+from zerver.actions.presence import consolidate_client
 from zerver.actions.users import do_make_user_billing_admin
 from zerver.decorator import require_organization_member, zulip_login_required
 from zerver.lib.request import REQ, has_request_variables
@@ -45,7 +46,7 @@ from zerver.lib.send_email import FromAddress, send_email
 from zerver.lib.validator import check_bool, check_int, check_string_in
 from zerver.models import UserProfile, get_org_type_display_name
 
-billing_logger = logging.getLogger("corporate.stripe")
+billing_logger = logging.getLogger("onehash_billing.stripe")
 
 VALID_BILLING_MODALITY_VALUES = ["send_invoice", "charge_automatically"]
 VALID_BILLING_SCHEDULE_VALUES = ["annual", "monthly"]
@@ -94,7 +95,7 @@ def setup_upgrade_checkout_session_and_payment_intent(
     assert customer is not None  # for mypy
     free_trial = is_free_trial_offer_enabled()
     _, _, _, price_per_license = compute_plan_parameters(
-        CustomerPlan.STANDARD,
+        OneHashCustomerPlan.STANDARD,
         license_management == "automatic",
         billing_schedule,
         customer.default_discount,
@@ -115,12 +116,12 @@ def setup_upgrade_checkout_session_and_payment_intent(
     }
     if free_trial:
         if onboarding:
-            session_type = Session.FREE_TRIAL_UPGRADE_FROM_ONBOARDING_PAGE
+            session_type = OneHashSession.FREE_TRIAL_UPGRADE_FROM_ONBOARDING_PAGE
         else:
-            session_type = Session.FREE_TRIAL_UPGRADE_FROM_BILLING_PAGE
+            session_type = OneHashSession.FREE_TRIAL_UPGRADE_FROM_BILLING_PAGE
         payment_intent = None
     else:
-        session_type = Session.UPGRADE_FROM_BILLING_PAGE
+        session_type = OneHashSession.UPGRADE_FROM_BILLING_PAGE
         stripe_payment_intent = stripe.PaymentIntent.create(
             amount=price_per_license * licenses,
             currency="usd",
@@ -128,24 +129,24 @@ def setup_upgrade_checkout_session_and_payment_intent(
             description=f"Upgrade to OneHash Connect Standard, ${price_per_license/100} x {licenses}",
             receipt_email=user.delivery_email,
             confirm=False,
-            statement_descriptor="OneHash Connect Cloud Standard",
+            statement_descriptor="Connect Cloud Standard",
             metadata=metadata,
         )
-        payment_intent = PaymentIntent.objects.create(
+        payment_intent = OneHashPaymentIntent.objects.create(
             customer=customer,
             stripe_payment_intent_id=stripe_payment_intent.id,
-            status=PaymentIntent.get_status_integer_from_status_text(stripe_payment_intent.status),
+            status=OneHashPaymentIntent.get_status_integer_from_status_text(stripe_payment_intent.status),
         )
     stripe_session = stripe.checkout.Session.create(
-        cancel_url=f"{user.realm.uri}/upgrade/",
+        cancel_url=f"{user.realm.uri}/settings/upgrade/",
         customer=customer.stripe_customer_id,
         mode="setup",
         payment_method_types=["card"],
         metadata=metadata,
         setup_intent_data={"metadata": metadata},
-        success_url=f"{user.realm.uri}/billing/event_status?stripe_session_id={{CHECKOUT_SESSION_ID}}",
+        success_url=f"{user.realm.uri}/settings/billing/event_status?stripe_session_id={{CHECKOUT_SESSION_ID}}",
     )
-    session = Session.objects.create(
+    session = OneHashSession.objects.create(
         customer=customer, stripe_session_id=stripe_session.id, type=session_type
     )
     if payment_intent is not None:
@@ -177,7 +178,6 @@ def upgrade(
         if billing_modality == "send_invoice":
             schedule = "annual"
             license_management = "manual"
-
         customer = get_customer_by_realm(user.realm)
         exempt_from_license_number_check = (
             customer is not None and customer.exempt_from_license_number_check
@@ -194,7 +194,7 @@ def upgrade(
         automanage_licenses = license_management == "automatic"
         charge_automatically = billing_modality == "charge_automatically"
 
-        billing_schedule = {"annual": CustomerPlan.ANNUAL, "monthly": CustomerPlan.MONTHLY}[
+        billing_schedule = {"annual": OneHashCustomerPlan.ANNUAL, "monthly": OneHashCustomerPlan.MONTHLY}[
             schedule
         ]
         if charge_automatically:
@@ -289,13 +289,13 @@ def initial_upgrade(
         "min_invoiced_licenses": max(seat_count, MIN_INVOICED_LICENSES),
         "default_invoice_days_until_due": DEFAULT_INVOICE_DAYS_UNTIL_DUE,
         "exempt_from_license_number_check": exempt_from_license_number_check,
-        "plan": "Zulip Cloud Standard",
+        "plan": "Connect Cloud Standard",
         "free_trial_days": settings.FREE_TRIAL_DAYS,
         "onboarding": onboarding,
         "page_params": {
             "seat_count": seat_count,
-            "annual_price": 8000,
-            "monthly_price": 800,
+            "annual_price": 5400,
+            "monthly_price": 600,
             "percent_off": float(percent_off),
             "demo_organization_scheduled_deletion_date": user.realm.demo_organization_scheduled_deletion_date,
         },
@@ -303,12 +303,12 @@ def initial_upgrade(
     }
     add_sponsorship_info_to_context(context, user)
 
-    response = render(request, "corporate/upgrade.html", context=context)
+    response = render(request, "onehash_billing/connect_upgrade.html", context=context)
     return response
 
 
 class SponsorshipRequestForm(forms.Form):
-    website = forms.URLField(max_length=ZulipSponsorshipRequest.MAX_ORG_URL_LENGTH, required=False)
+    website = forms.URLField(max_length=ConnectSponsorshipRequest.MAX_ORG_URL_LENGTH, required=False)
     organization_type = forms.IntegerField()
     description = forms.CharField(widget=forms.Textarea)
 
@@ -337,7 +337,7 @@ def sponsorship(
 
     if form.is_valid():
         with transaction.atomic():
-            sponsorship_request = ZulipSponsorshipRequest(
+            sponsorship_request = ConnectSponsorshipRequest(
                 realm=realm,
                 requested_by=user,
                 org_website=form.cleaned_data["website"],

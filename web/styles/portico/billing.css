@@ -140,8 +140,8 @@
         color: hsl(0deg 0% 100%);
         background: linear-gradient(
             145deg,
-            hsl(191deg 56% 55%),
-            hsl(169deg 65% 42%)
+            hsl(206.7, 100%, 45.5%),
+            hsl(206.7, 100%, 45.5%)
         );
         box-shadow: 0 3px 10px hsl(0deg 0% 0% / 20%);
         border: 0;
@@ -157,13 +157,13 @@
     }
 
     .stripe-button-el:hover {
-        background-color: hsl(169deg 65% 42%);
+        background-color: hsl(209, 87%, 34%);
         box-shadow: 0 3px 10px hsl(0deg 0% 0% / 30%);
     }
 
     .stripe-button-el:active,
     .stripe-button-el:enabled:active {
-        background-color: hsl(169deg 70% 32%);
+        background-color: hsl(206.7, 100%, 45.5%);
 
         & span {
             background: 0;

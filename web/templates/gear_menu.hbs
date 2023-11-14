@@ -143,6 +143,11 @@
             </li>
             {{/if}} --}}
              {{!-- Billing --}}
+             {{!-- <li role="presentation" class="hidden-for-spectators">
+                <a href="/settings/billing/" target="_blank" rel="noopener noreferrer" role="menuitem">
+                    <i class="fa fa-credit-card" aria-hidden="true"></i> {{t 'Billing' }}
+                </a>
+            </li> --}}
             {{#if promote_sponsoring_zulip}}
             <li role="presentation" class="hidden-for-spectators">
                 <a target="_blank" rel="noopener noreferrer" role="menuitem">
@@ -158,7 +163,7 @@
             </li>
             {{/if}} --}}
             <li role="presentation" class="hidden-for-spectators">
-                <a href="/plan/" target="_blank" rel="noopener noreferrer" role="menuitem">
+                <a href="/settings/plans/" target="_blank" rel="noopener noreferrer" role="menuitem">
                     <i class="fa fa-rocket" aria-hidden="true"></i> {{t 'Plans and pricing' }}
                 </a>
             </li>

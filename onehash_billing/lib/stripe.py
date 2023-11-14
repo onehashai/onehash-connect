@@ -18,10 +18,10 @@ from django.utils.translation import gettext_lazy
 from django.utils.translation import override as override_language
 from typing_extensions import ParamSpec
 
-from corporate.models import (
-    Customer,
-    CustomerPlan,
-    LicenseLedger,
+from onehash_billing.models import (
+    OneHashCustomer,
+    OneHashCustomerPlan,
+    OneHashLicenseLedger,
     get_current_plan_by_customer,
     get_current_plan_by_realm,
     get_customer_by_realm,
@@ -41,7 +41,7 @@ BILLING_LOG_PATH = os.path.join(
     "/var/log/zulip" if not settings.DEVELOPMENT else settings.DEVELOPMENT_LOG_DIRECTORY,
     "billing.log",
 )
-billing_logger = logging.getLogger("corporate.stripe")
+billing_logger = logging.getLogger("onehash_billing.stripe")
 log_to_file(billing_logger, BILLING_LOG_PATH)
 log_to_file(logging.getLogger("stripe"), BILLING_LOG_PATH)
 
@@ -53,7 +53,8 @@ MAX_INVOICED_LICENSES = 1000
 DEFAULT_INVOICE_DAYS_UNTIL_DUE = 30
 
 # The version of Stripe API the billing system supports.
-STRIPE_API_VERSION = "2020-08-27"
+# STRIPE_API_VERSION = "2020-08-27"
+STRIPE_API_VERSION = "2022-11-15"
 
 stripe.api_version = STRIPE_API_VERSION
 
@@ -168,10 +169,10 @@ def next_month(billing_cycle_anchor: datetime, dt: datetime) -> datetime:
     )
 
 
-def start_of_next_billing_cycle(plan: CustomerPlan, event_time: datetime) -> datetime:
+def start_of_next_billing_cycle(plan: OneHashCustomerPlan, event_time: datetime) -> datetime:
     months_per_period = {
-        CustomerPlan.ANNUAL: 12,
-        CustomerPlan.MONTHLY: 1,
+        OneHashCustomerPlan.ANNUAL: 12,
+        OneHashCustomerPlan.MONTHLY: 1,
     }[plan.billing_schedule]
     periods = 1
     dt = plan.billing_cycle_anchor
@@ -181,13 +182,13 @@ def start_of_next_billing_cycle(plan: CustomerPlan, event_time: datetime) -> dat
     return dt
 
 
-def next_invoice_date(plan: CustomerPlan) -> Optional[datetime]:
-    if plan.status == CustomerPlan.ENDED:
+def next_invoice_date(plan: OneHashCustomerPlan) -> Optional[datetime]:
+    if plan.status == OneHashCustomerPlan.ENDED:
         return None
     assert plan.next_invoice_date is not None  # for mypy
     months_per_period = {
-        CustomerPlan.ANNUAL: 12,
-        CustomerPlan.MONTHLY: 1,
+        OneHashCustomerPlan.ANNUAL: 12,
+        OneHashCustomerPlan.MONTHLY: 1,
     }[plan.billing_schedule]
     if plan.automanage_licenses:
         months_per_period = 1
@@ -199,7 +200,7 @@ def next_invoice_date(plan: CustomerPlan) -> Optional[datetime]:
     return dt
 
 
-def renewal_amount(plan: CustomerPlan, event_time: datetime) -> int:  # nocoverage: TODO
+def renewal_amount(plan: OneHashCustomerPlan, event_time: datetime) -> int:  # nocoverage: TODO
     if plan.fixed_price is not None:
         return plan.fixed_price
     new_plan, last_ledger_entry = make_end_of_cycle_updates_if_needed(plan, event_time)
@@ -213,7 +214,7 @@ def renewal_amount(plan: CustomerPlan, event_time: datetime) -> int:  # nocovera
     return plan.price_per_license * last_ledger_entry.licenses_at_next_renewal
 
 
-def get_idempotency_key(ledger_entry: LicenseLedger) -> Optional[str]:
+def get_idempotency_key(ledger_entry: OneHashLicenseLedger) -> Optional[str]:
     if settings.TEST_SUITE:
         return None
     return f"ledger_entry:{ledger_entry.id}"  # nocoverage
@@ -316,7 +317,7 @@ def stripe_get_customer(stripe_customer_id: str) -> stripe.Customer:
 
 
 @catch_stripe_errors
-def do_create_stripe_customer(user: UserProfile, payment_method: Optional[str] = None) -> Customer:
+def do_create_stripe_customer(user: UserProfile, payment_method: Optional[str] = None) -> OneHashCustomer:
     realm = user.realm
     # We could do a better job of handling race conditions here, but if two
     # people from a realm try to upgrade at exactly the same time, the main
@@ -346,7 +347,7 @@ def do_create_stripe_customer(user: UserProfile, payment_method: Optional[str] =
                 event_type=RealmAuditLog.STRIPE_CARD_CHANGED,
                 event_time=event_time,
             )
-        customer, created = Customer.objects.update_or_create(
+        customer, created = OneHashCustomer.objects.update_or_create(
             realm=realm, defaults={"stripe_customer_id": stripe_customer.id}
         )
         from zerver.actions.users import do_make_user_billing_admin
@@ -394,7 +395,7 @@ def stripe_customer_has_credit_card_as_default_payment_method(
     return stripe_customer.invoice_settings.default_payment_method.type == "card"
 
 
-def customer_has_credit_card_as_default_payment_method(customer: Customer) -> bool:
+def customer_has_credit_card_as_default_payment_method(customer: OneHashCustomer) -> bool:
     if not customer.stripe_customer_id:
         return False
     stripe_customer = stripe_get_customer(customer.stripe_customer_id)
@@ -405,16 +406,16 @@ def customer_has_credit_card_as_default_payment_method(customer: Customer) -> bo
 # event_times in the past or future
 @transaction.atomic
 def make_end_of_cycle_updates_if_needed(
-    plan: CustomerPlan, event_time: datetime
-) -> Tuple[Optional[CustomerPlan], Optional[LicenseLedger]]:
-    last_ledger_entry = LicenseLedger.objects.filter(plan=plan).order_by("-id").first()
+    plan: OneHashCustomerPlan, event_time: datetime
+) -> Tuple[Optional[OneHashCustomerPlan], Optional[OneHashLicenseLedger]]:
+    last_ledger_entry = OneHashLicenseLedger.objects.filter(plan=plan).order_by("-id").first()
     last_ledger_renewal = (
-        LicenseLedger.objects.filter(plan=plan, is_renewal=True).order_by("-id").first()
+        OneHashLicenseLedger.objects.filter(plan=plan, is_renewal=True).order_by("-id").first()
     )
     assert last_ledger_renewal is not None
     last_renewal = last_ledger_renewal.event_time
 
-    if plan.is_free_trial() or plan.status == CustomerPlan.SWITCH_NOW_FROM_STANDARD_TO_PLUS:
+    if plan.is_free_trial() or plan.status == OneHashCustomerPlan.SWITCH_NOW_FROM_STANDARD_TO_PLUS:
         assert plan.next_invoice_date is not None
         next_billing_cycle = plan.next_invoice_date
     else:
@@ -422,8 +423,8 @@ def make_end_of_cycle_updates_if_needed(
     if next_billing_cycle <= event_time and last_ledger_entry is not None:
         licenses_at_next_renewal = last_ledger_entry.licenses_at_next_renewal
         assert licenses_at_next_renewal is not None
-        if plan.status == CustomerPlan.ACTIVE:
-            return None, LicenseLedger.objects.create(
+        if plan.status == OneHashCustomerPlan.ACTIVE:
+            return None, OneHashLicenseLedger.objects.create(
                 plan=plan,
                 is_renewal=True,
                 event_time=next_billing_cycle,
@@ -433,9 +434,9 @@ def make_end_of_cycle_updates_if_needed(
         if plan.is_free_trial():
             plan.invoiced_through = last_ledger_entry
             plan.billing_cycle_anchor = next_billing_cycle.replace(microsecond=0)
-            plan.status = CustomerPlan.ACTIVE
+            plan.status = OneHashCustomerPlan.ACTIVE
             plan.save(update_fields=["invoiced_through", "billing_cycle_anchor", "status"])
-            return None, LicenseLedger.objects.create(
+            return None, OneHashLicenseLedger.objects.create(
                 plan=plan,
                 is_renewal=True,
                 event_time=next_billing_cycle,
@@ -443,37 +444,37 @@ def make_end_of_cycle_updates_if_needed(
                 licenses_at_next_renewal=licenses_at_next_renewal,
             )
 
-        if plan.status == CustomerPlan.SWITCH_TO_ANNUAL_AT_END_OF_CYCLE:
+        if plan.status == OneHashCustomerPlan.SWITCH_TO_ANNUAL_AT_END_OF_CYCLE:
             if plan.fixed_price is not None:  # nocoverage
                 raise NotImplementedError("Can't switch fixed priced monthly plan to annual.")
 
-            plan.status = CustomerPlan.ENDED
+            plan.status = OneHashCustomerPlan.ENDED
             plan.save(update_fields=["status"])
 
             discount = plan.customer.default_discount or plan.discount
             _, _, _, price_per_license = compute_plan_parameters(
                 tier=plan.tier,
                 automanage_licenses=plan.automanage_licenses,
-                billing_schedule=CustomerPlan.ANNUAL,
+                billing_schedule=OneHashCustomerPlan.ANNUAL,
                 discount=plan.discount,
             )
 
-            new_plan = CustomerPlan.objects.create(
+            new_plan = OneHashCustomerPlan.objects.create(
                 customer=plan.customer,
-                billing_schedule=CustomerPlan.ANNUAL,
+                billing_schedule=OneHashCustomerPlan.ANNUAL,
                 automanage_licenses=plan.automanage_licenses,
                 charge_automatically=plan.charge_automatically,
                 price_per_license=price_per_license,
                 discount=discount,
                 billing_cycle_anchor=next_billing_cycle,
                 tier=plan.tier,
-                status=CustomerPlan.ACTIVE,
+                status=OneHashCustomerPlan.ACTIVE,
                 next_invoice_date=next_billing_cycle,
                 invoiced_through=None,
-                invoicing_status=CustomerPlan.INITIAL_INVOICE_TO_BE_SENT,
+                invoicing_status=OneHashCustomerPlan.INITIAL_INVOICE_TO_BE_SENT,
             )
 
-            new_plan_ledger_entry = LicenseLedger.objects.create(
+            new_plan_ledger_entry = OneHashLicenseLedger.objects.create(
                 plan=new_plan,
                 is_renewal=True,
                 event_time=next_billing_cycle,
@@ -495,41 +496,41 @@ def make_end_of_cycle_updates_if_needed(
             )
             return new_plan, new_plan_ledger_entry
 
-        if plan.status == CustomerPlan.SWITCH_NOW_FROM_STANDARD_TO_PLUS:
+        if plan.status == OneHashCustomerPlan.SWITCH_NOW_FROM_STANDARD_TO_PLUS:
             standard_plan = plan
             standard_plan.end_date = next_billing_cycle
-            standard_plan.status = CustomerPlan.ENDED
+            standard_plan.status = OneHashCustomerPlan.ENDED
             standard_plan.save(update_fields=["status", "end_date"])
 
             (_, _, _, plus_plan_price_per_license) = compute_plan_parameters(
-                CustomerPlan.PLUS,
+                OneHashCustomerPlan.PLUS,
                 standard_plan.automanage_licenses,
                 standard_plan.billing_schedule,
                 standard_plan.customer.default_discount,
             )
             plus_plan_billing_cycle_anchor = standard_plan.end_date.replace(microsecond=0)
 
-            plus_plan = CustomerPlan.objects.create(
+            plus_plan = OneHashCustomerPlan.objects.create(
                 customer=standard_plan.customer,
-                status=CustomerPlan.ACTIVE,
+                status=OneHashCustomerPlan.ACTIVE,
                 automanage_licenses=standard_plan.automanage_licenses,
                 charge_automatically=standard_plan.charge_automatically,
                 price_per_license=plus_plan_price_per_license,
                 discount=standard_plan.customer.default_discount,
                 billing_schedule=standard_plan.billing_schedule,
-                tier=CustomerPlan.PLUS,
+                tier=OneHashCustomerPlan.PLUS,
                 billing_cycle_anchor=plus_plan_billing_cycle_anchor,
-                invoicing_status=CustomerPlan.INITIAL_INVOICE_TO_BE_SENT,
+                invoicing_status=OneHashCustomerPlan.INITIAL_INVOICE_TO_BE_SENT,
                 next_invoice_date=plus_plan_billing_cycle_anchor,
             )
 
             standard_plan_last_ledger = (
-                LicenseLedger.objects.filter(plan=standard_plan).order_by("id").last()
+                OneHashLicenseLedger.objects.filter(plan=standard_plan).order_by("id").last()
             )
             assert standard_plan_last_ledger is not None
             licenses_for_plus_plan = standard_plan_last_ledger.licenses_at_next_renewal
             assert licenses_for_plus_plan is not None
-            plus_plan_ledger_entry = LicenseLedger.objects.create(
+            plus_plan_ledger_entry = OneHashLicenseLedger.objects.create(
                 plan=plus_plan,
                 is_renewal=True,
                 event_time=plus_plan_billing_cycle_anchor,
@@ -538,18 +539,18 @@ def make_end_of_cycle_updates_if_needed(
             )
             return plus_plan, plus_plan_ledger_entry
 
-        if plan.status == CustomerPlan.DOWNGRADE_AT_END_OF_CYCLE:
+        if plan.status == OneHashCustomerPlan.DOWNGRADE_AT_END_OF_CYCLE:
             process_downgrade(plan)
         return None, None
     return None, last_ledger_entry
 
 
-# Returns Customer instead of stripe_customer so that we don't make a Stripe
+# Returns OneHashCustomer instead of stripe_customer so that we don't make a Stripe
 # API call if there's nothing to update
 @catch_stripe_errors
 def update_or_create_stripe_customer(
     user: UserProfile, payment_method: Optional[str] = None
-) -> Customer:
+) -> OneHashCustomer:
     realm = user.realm
     customer = get_customer_by_realm(realm)
     if customer is None or customer.stripe_customer_id is None:
@@ -571,17 +572,17 @@ def get_price_per_license(
 ) -> int:
     price_per_license: Optional[int] = None
 
-    if tier == CustomerPlan.STANDARD:
-        if billing_schedule == CustomerPlan.ANNUAL:
+    if tier == OneHashCustomerPlan.STANDARD:
+        if billing_schedule == OneHashCustomerPlan.ANNUAL:
             price_per_license = 8000
-        elif billing_schedule == CustomerPlan.MONTHLY:
+        elif billing_schedule == OneHashCustomerPlan.MONTHLY:
             price_per_license = 800
         else:  # nocoverage
             raise InvalidBillingScheduleError(billing_schedule)
-    elif tier == CustomerPlan.PLUS:
-        if billing_schedule == CustomerPlan.ANNUAL:
+    elif tier == OneHashCustomerPlan.PLUS:
+        if billing_schedule == OneHashCustomerPlan.ANNUAL:
             price_per_license = 16000
-        elif billing_schedule == CustomerPlan.MONTHLY:
+        elif billing_schedule == OneHashCustomerPlan.MONTHLY:
             price_per_license = 1600
         else:  # nocoverage
             raise InvalidBillingScheduleError(billing_schedule)
@@ -604,9 +605,9 @@ def compute_plan_parameters(
     # so standardize on 1 second resolution.
     # TODO talk about leap seconds?
     billing_cycle_anchor = timezone_now().replace(microsecond=0)
-    if billing_schedule == CustomerPlan.ANNUAL:
+    if billing_schedule == OneHashCustomerPlan.ANNUAL:
         period_end = add_months(billing_cycle_anchor, 12)
-    elif billing_schedule == CustomerPlan.MONTHLY:
+    elif billing_schedule == OneHashCustomerPlan.MONTHLY:
         period_end = add_months(billing_cycle_anchor, 1)
     else:  # nocoverage
         raise InvalidBillingScheduleError(billing_schedule)
@@ -692,7 +693,7 @@ def process_initial_upgrade(
         period_end,
         price_per_license,
     ) = compute_plan_parameters(
-        CustomerPlan.STANDARD,
+        OneHashCustomerPlan.STANDARD,
         automanage_licenses,
         billing_schedule,
         customer.default_discount,
@@ -715,14 +716,14 @@ def process_initial_upgrade(
             "discount": customer.default_discount,
             "billing_cycle_anchor": billing_cycle_anchor,
             "billing_schedule": billing_schedule,
-            "tier": CustomerPlan.STANDARD,
+            "tier": OneHashCustomerPlan.STANDARD,
         }
         if free_trial:
-            plan_params["status"] = CustomerPlan.FREE_TRIAL
-        plan = CustomerPlan.objects.create(
+            plan_params["status"] = OneHashCustomerPlan.FREE_TRIAL
+        plan = OneHashCustomerPlan.objects.create(
             customer=customer, next_invoice_date=next_invoice_date, **plan_params
         )
-        ledger_entry = LicenseLedger.objects.create(
+        ledger_entry = OneHashLicenseLedger.objects.create(
             plan=plan,
             is_renewal=True,
             event_time=billing_cycle_anchor,
@@ -775,7 +776,7 @@ def process_initial_upgrade(
 
 
 def update_license_ledger_for_manual_plan(
-    plan: CustomerPlan,
+    plan: OneHashCustomerPlan,
     event_time: datetime,
     licenses: Optional[int] = None,
     licenses_at_next_renewal: Optional[int] = None,
@@ -785,14 +786,14 @@ def update_license_ledger_for_manual_plan(
         if not plan.customer.exempt_from_license_number_check:
             assert get_latest_seat_count(plan.customer.realm) <= licenses
         assert licenses > plan.licenses()
-        LicenseLedger.objects.create(
+        OneHashLicenseLedger.objects.create(
             plan=plan, event_time=event_time, licenses=licenses, licenses_at_next_renewal=licenses
         )
     elif licenses_at_next_renewal is not None:
         assert plan.customer.realm is not None
         if not plan.customer.exempt_from_license_number_check:
             assert get_latest_seat_count(plan.customer.realm) <= licenses_at_next_renewal
-        LicenseLedger.objects.create(
+        OneHashLicenseLedger.objects.create(
             plan=plan,
             event_time=event_time,
             licenses=plan.licenses(),
@@ -803,7 +804,7 @@ def update_license_ledger_for_manual_plan(
 
 
 def update_license_ledger_for_automanaged_plan(
-    realm: Realm, plan: CustomerPlan, event_time: datetime
+    realm: Realm, plan: OneHashCustomerPlan, event_time: datetime
 ) -> None:
     new_plan, last_ledger_entry = make_end_of_cycle_updates_if_needed(plan, event_time)
     if last_ledger_entry is None:
@@ -813,7 +814,7 @@ def update_license_ledger_for_automanaged_plan(
     licenses_at_next_renewal = get_latest_seat_count(realm)
     licenses = max(licenses_at_next_renewal, last_ledger_entry.licenses)
 
-    LicenseLedger.objects.create(
+    OneHashLicenseLedger.objects.create(
         plan=plan,
         event_time=event_time,
         licenses=licenses,
@@ -830,7 +831,7 @@ def update_license_ledger_if_needed(realm: Realm, event_time: datetime) -> None:
     update_license_ledger_for_automanaged_plan(realm, plan, event_time)
 
 
-def get_plan_renewal_or_end_date(plan: CustomerPlan, event_time: datetime) -> datetime:
+def get_plan_renewal_or_end_date(plan: OneHashCustomerPlan, event_time: datetime) -> datetime:
     billing_period_end = start_of_next_billing_cycle(plan, event_time)
 
     if plan.end_date is not None and plan.end_date < billing_period_end:
@@ -838,8 +839,8 @@ def get_plan_renewal_or_end_date(plan: CustomerPlan, event_time: datetime) -> da
     return billing_period_end
 
 
-def invoice_plan(plan: CustomerPlan, event_time: datetime) -> None:
-    if plan.invoicing_status == CustomerPlan.STARTED:
+def invoice_plan(plan: OneHashCustomerPlan, event_time: datetime) -> None:
+    if plan.invoicing_status == OneHashCustomerPlan.STARTED:
         raise NotImplementedError("Plan with invoicing_status==STARTED needs manual resolution.")
     if not plan.customer.stripe_customer_id:
         assert plan.customer.realm is not None
@@ -849,7 +850,7 @@ def invoice_plan(plan: CustomerPlan, event_time: datetime) -> None:
 
     make_end_of_cycle_updates_if_needed(plan, event_time)
 
-    if plan.invoicing_status == CustomerPlan.INITIAL_INVOICE_TO_BE_SENT:
+    if plan.invoicing_status == OneHashCustomerPlan.INITIAL_INVOICE_TO_BE_SENT:
         invoiced_through_id = -1
         licenses_base = None
     else:
@@ -858,7 +859,7 @@ def invoice_plan(plan: CustomerPlan, event_time: datetime) -> None:
         invoiced_through_id = plan.invoiced_through.id
 
     invoice_item_created = False
-    for ledger_entry in LicenseLedger.objects.filter(
+    for ledger_entry in OneHashLicenseLedger.objects.filter(
         plan=plan, id__gt=invoiced_through_id, event_time__lte=event_time
     ).order_by("id"):
         price_args: Dict[str, int] = {}
@@ -875,7 +876,7 @@ def invoice_plan(plan: CustomerPlan, event_time: datetime) -> None:
         elif licenses_base is not None and ledger_entry.licenses != licenses_base:
             assert plan.price_per_license
             last_ledger_entry_renewal = (
-                LicenseLedger.objects.filter(
+                OneHashLicenseLedger.objects.filter(
                     plan=plan, is_renewal=True, event_time__lte=ledger_entry.event_time
                 )
                 .order_by("-id")
@@ -899,7 +900,7 @@ def invoice_plan(plan: CustomerPlan, event_time: datetime) -> None:
 
         if price_args:
             plan.invoiced_through = ledger_entry
-            plan.invoicing_status = CustomerPlan.STARTED
+            plan.invoicing_status = OneHashCustomerPlan.STARTED
             plan.save(update_fields=["invoicing_status", "invoiced_through"])
             stripe.InvoiceItem.create(
                 currency="usd",
@@ -917,7 +918,7 @@ def invoice_plan(plan: CustomerPlan, event_time: datetime) -> None:
             )
             invoice_item_created = True
         plan.invoiced_through = ledger_entry
-        plan.invoicing_status = CustomerPlan.DONE
+        plan.invoicing_status = OneHashCustomerPlan.DONE
         plan.save(update_fields=["invoicing_status", "invoiced_through"])
         licenses_base = ledger_entry.licenses
 
@@ -944,7 +945,7 @@ def invoice_plan(plan: CustomerPlan, event_time: datetime) -> None:
 def invoice_plans_as_needed(event_time: Optional[datetime] = None) -> None:
     if event_time is None:  # nocoverage
         event_time = timezone_now()
-    for plan in CustomerPlan.objects.filter(next_invoice_date__lte=event_time):
+    for plan in OneHashCustomerPlan.objects.filter(next_invoice_date__lte=event_time):
         invoice_plan(plan, event_time)
 
 
@@ -963,7 +964,7 @@ def attach_discount_to_realm(
         customer.default_discount = discount
         customer.save(update_fields=["default_discount"])
     else:
-        Customer.objects.create(realm=realm, default_discount=discount)
+        OneHashCustomer.objects.create(realm=realm, default_discount=discount)
     plan = get_current_plan_by_realm(realm)
     if plan is not None:
         plan.price_per_license = get_price_per_license(plan.tier, plan.billing_schedule, discount)
@@ -981,7 +982,7 @@ def attach_discount_to_realm(
 def update_sponsorship_status(
     realm: Realm, sponsorship_pending: bool, *, acting_user: Optional[UserProfile]
 ) -> None:
-    customer, _ = Customer.objects.get_or_create(realm=realm)
+    customer, _ = OneHashCustomer.objects.get_or_create(realm=realm)
     customer.sponsorship_pending = sponsorship_pending
     customer.save(update_fields=["sponsorship_pending"])
     RealmAuditLog.objects.create(
@@ -1037,35 +1038,35 @@ def get_discount_for_realm(realm: Realm) -> Optional[Decimal]:
     return None
 
 
-def do_change_plan_status(plan: CustomerPlan, status: int) -> None:
+def do_change_plan_status(plan: OneHashCustomer, status: int) -> None:
     plan.status = status
     plan.save(update_fields=["status"])
     billing_logger.info(
-        "Change plan status: Customer.id: %s, CustomerPlan.id: %s, status: %s",
+        "Change plan status: OneHashCustomer.id: %s, OneHashCustomerPlan.id: %s, status: %s",
         plan.customer.id,
         plan.id,
         status,
     )
 
 
-def process_downgrade(plan: CustomerPlan) -> None:
+def process_downgrade(plan: OneHashCustomerPlan) -> None:
     from zerver.actions.realm_settings import do_change_realm_plan_type
 
     assert plan.customer.realm is not None
     do_change_realm_plan_type(plan.customer.realm, Realm.PLAN_TYPE_LIMITED, acting_user=None)
-    plan.status = CustomerPlan.ENDED
+    plan.status = OneHashCustomerPlan.ENDED
     plan.save(update_fields=["status"])
 
 
 def estimate_annual_recurring_revenue_by_realm() -> Dict[str, int]:  # nocoverage
     annual_revenue = {}
-    for plan in CustomerPlan.objects.filter(status=CustomerPlan.ACTIVE).select_related(
+    for plan in OneHashCustomerPlan.objects.filter(status=OneHashCustomerPlan.ACTIVE).select_related(
         "customer__realm"
     ):
         # TODO: figure out what to do for plans that don't automatically
         # renew, but which probably will renew
         renewal_cents = renewal_amount(plan, timezone_now())
-        if plan.billing_schedule == CustomerPlan.MONTHLY:
+        if plan.billing_schedule == OneHashCustomerPlan.MONTHLY:
             renewal_cents *= 12
         # TODO: Decimal stuff
         assert plan.customer.realm is not None
@@ -1075,7 +1076,7 @@ def estimate_annual_recurring_revenue_by_realm() -> Dict[str, int]:  # nocoverag
 
 def get_realms_to_default_discount_dict() -> Dict[str, Decimal]:
     realms_to_default_discount: Dict[str, Any] = {}
-    customers = Customer.objects.exclude(default_discount=None).exclude(default_discount=0)
+    customers = OneHashCustomer.objects.exclude(default_discount=None).exclude(default_discount=0)
     for customer in customers:
         assert customer.realm is not None
         realms_to_default_discount[customer.realm.string_id] = assert_is_not_none(
@@ -1093,7 +1094,7 @@ def downgrade_now_without_creating_additional_invoices(realm: Realm) -> None:
         return
 
     process_downgrade(plan)
-    plan.invoiced_through = LicenseLedger.objects.filter(plan=plan).order_by("id").last()
+    plan.invoiced_through = OneHashLicenseLedger.objects.filter(plan=plan).order_by("id").last()
     plan.next_invoice_date = next_invoice_date(plan)
     plan.save(update_fields=["invoiced_through", "next_invoice_date"])
 
@@ -1101,10 +1102,10 @@ def downgrade_now_without_creating_additional_invoices(realm: Realm) -> None:
 def downgrade_at_the_end_of_billing_cycle(realm: Realm) -> None:
     plan = get_current_plan_by_realm(realm)
     assert plan is not None
-    do_change_plan_status(plan, CustomerPlan.DOWNGRADE_AT_END_OF_CYCLE)
+    do_change_plan_status(plan, OneHashCustomerPlan.DOWNGRADE_AT_END_OF_CYCLE)
 
 
-def get_all_invoices_for_customer(customer: Customer) -> Generator[stripe.Invoice, None, None]:
+def get_all_invoices_for_customer(customer: OneHashCustomer) -> Generator[stripe.Invoice, None, None]:
     if customer.stripe_customer_id is None:
         return
 
@@ -1131,7 +1132,7 @@ def void_all_open_invoices(realm: Realm) -> int:
     return voided_invoices_count
 
 
-def customer_has_last_n_invoices_open(customer: Customer, n: int) -> bool:
+def customer_has_last_n_invoices_open(customer: OneHashCustomer, n: int) -> bool:
     if customer.stripe_customer_id is None:  # nocoverage
         return False
 
@@ -1143,7 +1144,7 @@ def customer_has_last_n_invoices_open(customer: Customer, n: int) -> bool:
 
 
 def downgrade_small_realms_behind_on_payments_as_needed() -> None:
-    customers = Customer.objects.all().exclude(stripe_customer_id=None)
+    customers = OneHashCustomer.objects.all().exclude(stripe_customer_id=None)
     for customer in customers:
         realm = customer.realm
         assert realm is not None
@@ -1184,8 +1185,8 @@ def switch_realm_from_standard_to_plus_plan(realm: Realm) -> None:
 
     if (
         not standard_plan
-        or standard_plan.status != CustomerPlan.ACTIVE
-        or standard_plan.tier != CustomerPlan.STANDARD
+        or standard_plan.status != OneHashCustomerPlan.ACTIVE
+        or standard_plan.tier != OneHashCustomerPlan.STANDARD
     ):
         raise BillingError("Organization does not have an active Standard plan")
 
@@ -1194,7 +1195,7 @@ def switch_realm_from_standard_to_plus_plan(realm: Realm) -> None:
 
     plan_switch_time = timezone_now()
 
-    standard_plan.status = CustomerPlan.SWITCH_NOW_FROM_STANDARD_TO_PLUS
+    standard_plan.status = OneHashCustomerPlan.SWITCH_NOW_FROM_STANDARD_TO_PLUS
     standard_plan.next_invoice_date = plan_switch_time
     standard_plan.save(update_fields=["status", "next_invoice_date"])
 
@@ -1205,7 +1206,7 @@ def switch_realm_from_standard_to_plus_plan(realm: Realm) -> None:
     standard_plan_next_renewal_date = start_of_next_billing_cycle(standard_plan, plan_switch_time)
 
     standard_plan_last_renewal_ledger = (
-        LicenseLedger.objects.filter(is_renewal=True, plan=standard_plan).order_by("id").last()
+        OneHashLicenseLedger.objects.filter(is_renewal=True, plan=standard_plan).order_by("id").last()
     )
     assert standard_plan_last_renewal_ledger is not None
     assert standard_plan.price_per_license is not None

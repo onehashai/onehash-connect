@@ -5,26 +5,26 @@ from typing import Any, Callable, Dict, Union
 import stripe
 from django.conf import settings
 
-from corporate.lib.stripe import (
+from onehash_billing.lib.stripe import (
     BillingError,
     UpgradeWithExistingPlanError,
     ensure_realm_does_not_have_active_plan,
     process_initial_upgrade,
     update_or_create_stripe_customer,
 )
-from corporate.models import Event, PaymentIntent, Session
+from onehash_billing.models import OneHashEvent, OneHashPaymentIntent, OneHashSession
 from zerver.models import get_active_user_profile_by_id_in_realm
 
-billing_logger = logging.getLogger("corporate.stripe")
+billing_logger = logging.getLogger("onehash_billing.stripe")
 
 
 def error_handler(
     func: Callable[[Any, Any], None],
-) -> Callable[[Union[stripe.checkout.Session, stripe.PaymentIntent], Event], None]:
+) -> Callable[[Union[stripe.checkout.Session, stripe.PaymentIntent], OneHashEvent], None]:
     def wrapper(
-        stripe_object: Union[stripe.checkout.Session, stripe.PaymentIntent], event: Event
+        stripe_object: Union[stripe.checkout.Session, stripe.PaymentIntent], event: OneHashEvent
     ) -> None:
-        event.status = Event.EVENT_HANDLER_STARTED
+        event.status = OneHashEvent.EVENT_HANDLER_STARTED
         event.save(update_fields=["status"])
 
         try:
@@ -38,7 +38,7 @@ def error_handler(
                 stripe_object.customer,
                 stripe_object.metadata,
             )
-            event.status = Event.EVENT_HANDLER_FAILED
+            event.status = OneHashEvent.EVENT_HANDLER_FAILED
             event.handler_error = {
                 "message": e.msg,
                 "description": e.error_description,
@@ -50,14 +50,14 @@ def error_handler(
                 event.type,
                 stack_info=True,
             )
-            event.status = Event.EVENT_HANDLER_FAILED
+            event.status = OneHashEvent.EVENT_HANDLER_FAILED
             event.handler_error = {
                 "description": f"uncaught exception in {event.type} event handler",
                 "message": BillingError.CONTACT_SUPPORT.format(email=settings.ZULIP_ADMINISTRATOR),
             }
             event.save(update_fields=["status", "handler_error"])
         else:
-            event.status = Event.EVENT_HANDLER_SUCCEEDED
+            event.status = OneHashEvent.EVENT_HANDLER_SUCCEEDED
             event.save()
 
     return wrapper
@@ -65,9 +65,9 @@ def error_handler(
 
 @error_handler
 def handle_checkout_session_completed_event(
-    stripe_session: stripe.checkout.Session, session: Session
+    stripe_session: stripe.checkout.Session, session: OneHashSession
 ) -> None:
-    session.status = Session.COMPLETED
+    session.status = OneHashSession.COMPLETED
     session.save()
 
     stripe_setup_intent = stripe.SetupIntent.retrieve(stripe_session.setup_intent)
@@ -78,13 +78,13 @@ def handle_checkout_session_completed_event(
     payment_method = stripe_setup_intent.payment_method
 
     if session.type in [
-        Session.UPGRADE_FROM_BILLING_PAGE,
-        Session.RETRY_UPGRADE_WITH_ANOTHER_PAYMENT_METHOD,
+        OneHashSession.UPGRADE_FROM_BILLING_PAGE,
+        OneHashSession.RETRY_UPGRADE_WITH_ANOTHER_PAYMENT_METHOD,
     ]:
         ensure_realm_does_not_have_active_plan(user.realm)
         update_or_create_stripe_customer(user, payment_method)
         assert session.payment_intent is not None
-        session.payment_intent.status = PaymentIntent.PROCESSING
+        session.payment_intent.status = OneHashPaymentIntent.PROCESSING
         session.payment_intent.last_payment_error = ()
         session.payment_intent.save(update_fields=["status", "last_payment_error"])
         with suppress(stripe.error.CardError):
@@ -94,8 +94,8 @@ def handle_checkout_session_completed_event(
                 off_session=True,
             )
     elif session.type in [
-        Session.FREE_TRIAL_UPGRADE_FROM_BILLING_PAGE,
-        Session.FREE_TRIAL_UPGRADE_FROM_ONBOARDING_PAGE,
+        OneHashSession.FREE_TRIAL_UPGRADE_FROM_BILLING_PAGE,
+        OneHashSession.FREE_TRIAL_UPGRADE_FROM_ONBOARDING_PAGE,
     ]:
         ensure_realm_does_not_have_active_plan(user.realm)
         update_or_create_stripe_customer(user, payment_method)
@@ -107,15 +107,15 @@ def handle_checkout_session_completed_event(
             charge_automatically=True,
             free_trial=True,
         )
-    elif session.type in [Session.CARD_UPDATE_FROM_BILLING_PAGE]:
+    elif session.type in [OneHashSession.CARD_UPDATE_FROM_BILLING_PAGE]:
         update_or_create_stripe_customer(user, payment_method)
 
 
 @error_handler
 def handle_payment_intent_succeeded_event(
-    stripe_payment_intent: stripe.PaymentIntent, payment_intent: PaymentIntent
+    stripe_payment_intent: stripe.PaymentIntent, payment_intent: OneHashPaymentIntent
 ) -> None:
-    payment_intent.status = PaymentIntent.SUCCEEDED
+    payment_intent.status = OneHashPaymentIntent.SUCCEEDED
     payment_intent.save()
     metadata: Dict[str, Any] = stripe_payment_intent.metadata
     assert payment_intent.customer.realm is not None
@@ -160,9 +160,9 @@ def handle_payment_intent_succeeded_event(
 
 @error_handler
 def handle_payment_intent_payment_failed_event(
-    stripe_payment_intent: stripe.PaymentIntent, payment_intent: PaymentIntent
+    stripe_payment_intent: stripe.PaymentIntent, payment_intent: OneHashPaymentIntent
 ) -> None:
-    payment_intent.status = PaymentIntent.get_status_integer_from_status_text(
+    payment_intent.status = OneHashPaymentIntent.get_status_integer_from_status_text(
         stripe_payment_intent.status
     )
     assert payment_intent.customer.realm is not None

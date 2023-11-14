@@ -7,16 +7,16 @@ from django.contrib.contenttypes.models import ContentType
 from django.http import HttpRequest, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from corporate.lib.stripe import STRIPE_API_VERSION
-from corporate.lib.stripe_event_handler import (
+from onehash_billing.lib.stripe import STRIPE_API_VERSION
+from onehash_billing.lib.stripe_event_handler import (
     handle_checkout_session_completed_event,
     handle_payment_intent_payment_failed_event,
     handle_payment_intent_succeeded_event,
 )
-from corporate.models import Event, PaymentIntent, Session
+from onehash_billing.models import OneHashEvent, OneHashPaymentIntent, OneHashSession
 from zproject.config import get_secret
 
-billing_logger = logging.getLogger("corporate.stripe")
+billing_logger = logging.getLogger("onehash_billing.stripe")
 
 
 @csrf_exempt
@@ -55,19 +55,19 @@ def stripe_webhook(request: HttpRequest) -> HttpResponse:
     ]:
         return HttpResponse(status=200)
 
-    if Event.objects.filter(stripe_event_id=stripe_event.id).exists():
+    if OneHashEvent.objects.filter(stripe_event_id=stripe_event.id).exists():
         return HttpResponse(status=200)
 
-    event = Event(stripe_event_id=stripe_event.id, type=stripe_event.type)
+    event = OneHashEvent(stripe_event_id=stripe_event.id, type=stripe_event.type)
 
     if stripe_event.type == "checkout.session.completed":
         stripe_session = stripe_event.data.object
         assert isinstance(stripe_session, stripe.checkout.Session)
         try:
-            session = Session.objects.get(stripe_session_id=stripe_session.id)
-        except Session.DoesNotExist:
+            session = OneHashSession.objects.get(stripe_session_id=stripe_session.id)
+        except OneHashSession.DoesNotExist:
             return HttpResponse(status=200)
-        event.content_type = ContentType.objects.get_for_model(Session)
+        event.content_type = ContentType.objects.get_for_model(OneHashSession)
         event.object_id = session.id
         event.save()
         handle_checkout_session_completed_event(stripe_session, event)
@@ -75,14 +75,14 @@ def stripe_webhook(request: HttpRequest) -> HttpResponse:
         stripe_payment_intent = stripe_event.data.object
         assert isinstance(stripe_payment_intent, stripe.PaymentIntent)
         try:
-            payment_intent = PaymentIntent.objects.get(
+            payment_intent = OneHashPaymentIntent.objects.get(
                 stripe_payment_intent_id=stripe_payment_intent.id
             )
-        except PaymentIntent.DoesNotExist:
+        except OneHashPaymentIntent.DoesNotExist:
             # PaymentIntent that was not manually created from the billing system.
             # Could be an Invoice getting paid which is not an event we are interested in.
             return HttpResponse(status=200)
-        event.content_type = ContentType.objects.get_for_model(PaymentIntent)
+        event.content_type = ContentType.objects.get_for_model(OneHashPaymentIntent)
         event.object_id = payment_intent.id
         event.save()
         handle_payment_intent_succeeded_event(stripe_payment_intent, event)
@@ -90,14 +90,14 @@ def stripe_webhook(request: HttpRequest) -> HttpResponse:
         stripe_payment_intent = stripe_event.data.object
         try:
             assert isinstance(stripe_payment_intent, stripe.PaymentIntent)
-            payment_intent = PaymentIntent.objects.get(
+            payment_intent = OneHashPaymentIntent.objects.get(
                 stripe_payment_intent_id=stripe_payment_intent.id
             )
-        except PaymentIntent.DoesNotExist:
+        except OneHashPaymentIntent.DoesNotExist:
             # PaymentIntent that was not manually created from the billing system.
             # Could be an Invoice getting paid which is not an event we are interested in.
             return HttpResponse(status=200)
-        event.content_type = ContentType.objects.get_for_model(PaymentIntent)
+        event.content_type = ContentType.objects.get_for_model(OneHashPaymentIntent)
         event.object_id = payment_intent.id
         event.save()
         handle_payment_intent_payment_failed_event(stripe_payment_intent, event)

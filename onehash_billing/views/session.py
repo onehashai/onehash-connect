@@ -5,14 +5,14 @@ import stripe
 from django.http import HttpRequest, HttpResponse
 from django.utils.translation import gettext as _
 
-from corporate.models import PaymentIntent, Session, get_customer_by_realm
+from onehash_billing.models import OneHashPaymentIntent, OneHashSession, get_customer_by_realm
 from zerver.decorator import require_billing_access, require_organization_member
 from zerver.lib.exceptions import JsonableError
 from zerver.lib.request import REQ, has_request_variables
 from zerver.lib.response import json_success
 from zerver.models import UserProfile
 
-billing_logger = logging.getLogger("corporate.stripe")
+billing_logger = logging.getLogger("onehash_billing.stripe")
 
 
 @require_billing_access
@@ -29,12 +29,12 @@ def start_card_update_stripe_session(request: HttpRequest, user: UserProfile) ->
         },
         mode="setup",
         payment_method_types=["card"],
-        success_url=f"{user.realm.uri}/billing/event_status?stripe_session_id={{CHECKOUT_SESSION_ID}}",
+        success_url=f"{user.realm.uri}/settings/billing/event_status?stripe_session_id={{CHECKOUT_SESSION_ID}}",
     )
-    Session.objects.create(
+    OneHashSession.objects.create(
         stripe_session_id=stripe_session.id,
         customer=customer,
-        type=Session.CARD_UPDATE_FROM_BILLING_PAGE,
+        type=OneHashSession.CARD_UPDATE_FROM_BILLING_PAGE,
     )
     return json_success(
         request,
@@ -55,10 +55,10 @@ def start_retry_payment_intent_session(
         raise JsonableError(_("Please create a customer first."))
 
     try:
-        payment_intent = PaymentIntent.objects.get(
+        payment_intent = OneHashPaymentIntent.objects.get(
             stripe_payment_intent_id=stripe_payment_intent_id, customer=customer
         )
-    except PaymentIntent.DoesNotExist:
+    except OneHashPaymentIntent.DoesNotExist:
         raise JsonableError(_("Invalid payment intent id."))
 
     stripe_payment_intent = stripe.PaymentIntent.retrieve(stripe_payment_intent_id)
@@ -76,18 +76,18 @@ def start_retry_payment_intent_session(
     }
     metadata.update(stripe_payment_intent.metadata)
     stripe_session = stripe.checkout.Session.create(
-        cancel_url=f"{user.realm.uri}/upgrade/",
+        cancel_url=f"{user.realm.uri}/settings/upgrade/",
         customer=customer.stripe_customer_id,
         metadata=metadata,
         setup_intent_data={"metadata": metadata},
         mode="setup",
         payment_method_types=["card"],
-        success_url=f"{user.realm.uri}/billing/event_status?stripe_session_id={{CHECKOUT_SESSION_ID}}",
+        success_url=f"{user.realm.uri}/settings/billing/event_status?stripe_session_id={{CHECKOUT_SESSION_ID}}",
     )
-    session = Session.objects.create(
+    session = OneHashSession.objects.create(
         stripe_session_id=stripe_session.id,
         customer=customer,
-        type=Session.RETRY_UPGRADE_WITH_ANOTHER_PAYMENT_METHOD,
+        type=OneHashSession.RETRY_UPGRADE_WITH_ANOTHER_PAYMENT_METHOD,
     )
 
     session.payment_intent = payment_intent

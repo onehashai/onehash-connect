@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import $ from "jquery";
 
 import * as helpers from "./helpers";
@@ -16,7 +17,7 @@ export const initialize = (): void => {
         }
         e.preventDefault();
 
-        helpers.create_ajax_request("/json/billing/upgrade", "autopay", [], "POST", (response) => {
+        helpers.create_ajax_request("/json/settings/billing/upgrade", "autopay", [], "POST", (response) => {
             const response_data = helpers.stripe_session_url_schema.parse(response);
             window.location.replace(response_data.stripe_session_url);
         });
@@ -27,8 +28,8 @@ export const initialize = (): void => {
             return;
         }
         e.preventDefault();
-        helpers.create_ajax_request("/json/billing/upgrade", "invoice", [], "POST", () =>
-            window.location.replace("/billing/"),
+        helpers.create_ajax_request("/json/settings/billing/upgrade", "invoice", [], "POST", () =>
+            window.location.replace("/settings/billing/"),
         );
     });
 

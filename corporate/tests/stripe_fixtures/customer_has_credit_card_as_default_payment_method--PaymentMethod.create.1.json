@@ -1,47 +1,51 @@
 {
-  "billing_details": {
-    "address": {
-      "city": null,
-      "country": null,
-      "line1": null,
-      "line2": null,
-      "postal_code": null,
-      "state": null
-    },
-    "email": null,
-    "name": null,
-    "phone": null
+  "_message": "Sending credit card numbers directly to the Stripe API is generally unsafe. We suggest you use test tokens that map to the test card you are using, see https://stripe.com/docs/testing. To enable raw card data APIs in test mode, see https://support.stripe.com/questions/enabling-access-to-raw-card-data-apis.",
+  "code": null,
+  "error": {
+    "charge": null,
+    "code": null,
+    "decline_code": null,
+    "doc_url": null,
+    "message": "Sending credit card numbers directly to the Stripe API is generally unsafe. We suggest you use test tokens that map to the test card you are using, see https://stripe.com/docs/testing. To enable raw card data APIs in test mode, see https://support.stripe.com/questions/enabling-access-to-raw-card-data-apis.",
+    "param": null,
+    "payment_intent": null,
+    "payment_method": null,
+    "request_log_url": "https://dashboard.stripe.com/test/logs/req_kfE9h8CnaCkOaz?t=1699999131",
+    "setup_intent": null,
+    "source": null,
+    "type": "invalid_request_error"
   },
-  "card": {
-    "brand": "visa",
-    "checks": {
-      "address_line1_check": null,
-      "address_postal_code_check": null,
-      "cvc_check": "unchecked"
-    },
-    "country": "US",
-    "exp_month": 3,
-    "exp_year": 2033,
-    "fingerprint": "NORMALIZED000001",
-    "funding": "credit",
-    "generated_from": null,
-    "last4": "4242",
-    "networks": {
-      "available": [
-        "visa"
-      ],
-      "preferred": null
-    },
-    "three_d_secure_usage": {
-      "supported": true
-    },
-    "wallet": null
+  "headers": {
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Expose-Headers": "Request-Id, Stripe-Manage-Version, Stripe-Should-Retry, X-Stripe-External-Auth-Required, X-Stripe-Privileged-Session-Required",
+    "Access-Control-Max-Age": "300",
+    "Cache-Control": "no-cache, no-store",
+    "Connection": "keep-alive",
+    "Content-Length": "480",
+    "Content-Security-Policy": "report-uri https://q.stripe.com/csp-report?p=v1%2Fpayment_methods; block-all-mixed-content; default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; img-src 'self'; script-src 'self' 'report-sample'; style-src 'self'",
+    "Content-Type": "application/json",
+    "Date": "Tue, 14 Nov 2023 21:58:51 GMT",
+    "Idempotency-Key": "ebff17a2-299d-4c8a-893d-dd778f5ba5d1",
+    "Original-Request": "req_kfE9h8CnaCkOaz",
+    "Request-Id": "req_kfE9h8CnaCkOaz",
+    "Server": "nginx",
+    "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+    "Stripe-Should-Retry": "false",
+    "Stripe-Version": "2020-08-27",
+    "Vary": "Origin",
+    "X-Stripe-Routing-Context-Priority-Tier": "api-testmode"
   },
-  "created": 1000000000,
-  "customer": null,
-  "id": "pm_1K2OYHHSaWXyvFpK5Bf5MCLF",
-  "livemode": false,
-  "metadata": {},
-  "object": "payment_method",
-  "type": "card"
+  "http_body": "{\n  \"error\": {\n    \"message\": \"Sending credit card numbers directly to the Stripe API is generally unsafe. We suggest you use test tokens that map to the test card you are using, see https://stripe.com/docs/testing. To enable raw card data APIs in test mode, see https://support.stripe.com/questions/enabling-access-to-raw-card-data-apis.\",\n    \"request_log_url\": \"https://dashboard.stripe.com/test/logs/req_kfE9h8CnaCkOaz?t=1699999131\",\n    \"type\": \"invalid_request_error\"\n  }\n}\n",
+  "http_status": 402,
+  "json_body": {
+    "error": {
+      "message": "Sending credit card numbers directly to the Stripe API is generally unsafe. We suggest you use test tokens that map to the test card you are using, see https://stripe.com/docs/testing. To enable raw card data APIs in test mode, see https://support.stripe.com/questions/enabling-access-to-raw-card-data-apis.",
+      "request_log_url": "https://dashboard.stripe.com/test/logs/req_kfE9h8CnaCkOaz?t=1699999131",
+      "type": "invalid_request_error"
+    }
+  },
+  "param": null,
+  "request_id": "req_kfE9h8CnaCkOaz"
 }

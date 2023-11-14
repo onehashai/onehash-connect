@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.utils.timezone import now as timezone_now
 from django.utils.translation import gettext as _
 
-from corporate.lib.stripe import (
+from onehash_billing.lib.stripe import (
     cents_to_dollar_string,
     do_change_plan_status,
     downgrade_at_the_end_of_billing_cycle,
@@ -22,8 +22,8 @@ from corporate.lib.stripe import (
     update_license_ledger_for_manual_plan,
     validate_licenses,
 )
-from corporate.models import (
-    CustomerPlan,
+from onehash_billing.models import (
+    OneHashCustomerPlan,
     get_current_plan_by_customer,
     get_current_plan_by_realm,
     get_customer_by_realm,
@@ -35,7 +35,7 @@ from zerver.lib.response import json_success
 from zerver.lib.validator import check_bool, check_int, check_int_in
 from zerver.models import Realm, UserProfile
 
-billing_logger = logging.getLogger("corporate.stripe")
+billing_logger = logging.getLogger("onehash_billing.stripe")
 
 
 # Should only be called if the customer is being charged automatically
@@ -91,7 +91,8 @@ def billing_home(
 
     if user.realm.plan_type == user.realm.PLAN_TYPE_STANDARD_FREE:
         context["is_sponsored"] = True
-        return render(request, "corporate/billing.html", context=context)
+        return render(request, "onehash_billing/connect_billing.html", context=context)
+    
 
     if customer is None:
         from corporate.views.upgrade import initial_upgrade
@@ -100,15 +101,16 @@ def billing_home(
 
     if customer.sponsorship_pending:
         context["sponsorship_pending"] = True
-        return render(request, "corporate/billing.html", context=context)
+        return render(request, "onehash_billing/connect_billing.html", context=context)
 
-    if not CustomerPlan.objects.filter(customer=customer).exists():
+    if not OneHashCustomerPlan.objects.filter(customer=customer).exists():
         from corporate.views.upgrade import initial_upgrade
 
         return HttpResponseRedirect(reverse(initial_upgrade))
 
     if not user.has_billing_access:
-        return render(request, "corporate/billing.html", context=context)
+        return render(request, "onehash_billing/connect_billing.html", context=context)
+
 
     plan = get_current_plan_by_customer(customer)
     if plan is not None:
@@ -118,9 +120,9 @@ def billing_home(
             if new_plan is not None:  # nocoverage
                 plan = new_plan
             assert plan is not None  # for mypy
-            downgrade_at_end_of_cycle = plan.status == CustomerPlan.DOWNGRADE_AT_END_OF_CYCLE
+            downgrade_at_end_of_cycle = plan.status == OneHashCustomerPlan.DOWNGRADE_AT_END_OF_CYCLE
             switch_to_annual_at_end_of_cycle = (
-                plan.status == CustomerPlan.SWITCH_TO_ANNUAL_AT_END_OF_CYCLE
+                plan.status == OneHashCustomerPlan.SWITCH_TO_ANNUAL_AT_END_OF_CYCLE
             )
             licenses = last_ledger_entry.licenses
             licenses_at_next_renewal = last_ledger_entry.licenses_at_next_renewal
@@ -159,12 +161,13 @@ def billing_home(
                 payment_method=payment_method,
                 charge_automatically=charge_automatically,
                 stripe_email=stripe_customer.email,
-                CustomerPlan=CustomerPlan,
+                CustomerPlan=OneHashCustomerPlan,
                 onboarding=onboarding,
             )
             add_sponsorship_info_to_context(context, user)
 
-    return render(request, "corporate/billing.html", context=context)
+    return render(request, "onehash_billing/connect_billing.html", context=context)
+
 
 
 @require_billing_access
@@ -176,10 +179,10 @@ def update_plan(
         "status",
         json_validator=check_int_in(
             [
-                CustomerPlan.ACTIVE,
-                CustomerPlan.DOWNGRADE_AT_END_OF_CYCLE,
-                CustomerPlan.SWITCH_TO_ANNUAL_AT_END_OF_CYCLE,
-                CustomerPlan.ENDED,
+                OneHashCustomerPlan.ACTIVE,
+                OneHashCustomerPlan.DOWNGRADE_AT_END_OF_CYCLE,
+                OneHashCustomerPlan.SWITCH_TO_ANNUAL_AT_END_OF_CYCLE,
+                OneHashCustomerPlan.ENDED,
             ]
         ),
         default=None,
@@ -202,18 +205,18 @@ def update_plan(
         raise JsonableError(_("Unable to update the plan. The plan has ended."))
 
     if status is not None:
-        if status == CustomerPlan.ACTIVE:
-            assert plan.status == CustomerPlan.DOWNGRADE_AT_END_OF_CYCLE
+        if status == OneHashCustomerPlan.ACTIVE:
+            assert plan.status == OneHashCustomerPlan.DOWNGRADE_AT_END_OF_CYCLE
             do_change_plan_status(plan, status)
-        elif status == CustomerPlan.DOWNGRADE_AT_END_OF_CYCLE:
-            assert plan.status == CustomerPlan.ACTIVE
+        elif status == OneHashCustomerPlan.DOWNGRADE_AT_END_OF_CYCLE:
+            assert plan.status == OneHashCustomerPlan.ACTIVE
             downgrade_at_the_end_of_billing_cycle(user.realm)
-        elif status == CustomerPlan.SWITCH_TO_ANNUAL_AT_END_OF_CYCLE:
-            assert plan.billing_schedule == CustomerPlan.MONTHLY
-            assert plan.status == CustomerPlan.ACTIVE
+        elif status == OneHashCustomerPlan.SWITCH_TO_ANNUAL_AT_END_OF_CYCLE:
+            assert plan.billing_schedule == OneHashCustomerPlan.MONTHLY
+            assert plan.status == OneHashCustomerPlan.ACTIVE
             assert plan.fixed_price is None
             do_change_plan_status(plan, status)
-        elif status == CustomerPlan.ENDED:
+        elif status == OneHashCustomerPlan.ENDED:
             assert plan.is_free_trial()
             downgrade_now_without_creating_additional_invoices(user.realm)
         return json_success(request)
