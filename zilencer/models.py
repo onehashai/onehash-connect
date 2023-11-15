@@ -27,9 +27,6 @@ class RemoteZulipServer(models.Model):
     `manage.py register_server`.
     """
 
-    class Meta:
-        app_label = 'zilencer'
-        
     UUID_LENGTH = 36
     API_KEY_LENGTH = 64
     HOSTNAME_MAX_LENGTH = 128

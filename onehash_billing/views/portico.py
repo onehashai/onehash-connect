@@ -59,8 +59,8 @@ def plans_view(request: HttpRequest) -> HttpResponse:
     realm_on_free_trial = False
 
     if realm is not None:
-        if realm.plan_type == Realm.PLAN_TYPE_SELF_HOSTED and settings.PRODUCTION:
-            return HttpResponseRedirect("https://www.onehash.ai/")
+        # if realm.plan_type == Realm.PLAN_TYPE_SELF_HOSTED and settings.PRODUCTION:
+        #     return HttpResponseRedirect("https://www.onehash.ai/")
         if not request.user.is_authenticated:
             return redirect_to_login(next="/settings/plans/")
         if request.user.is_guest:
