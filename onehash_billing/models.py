@@ -9,7 +9,6 @@ from typing_extensions import override
 from zerver.models import Realm, UserProfile
 from zilencer.models import RemoteZulipServer
 
-
 class OneHashCustomer(models.Model):
     """
     This model primarily serves to connect a Realm with

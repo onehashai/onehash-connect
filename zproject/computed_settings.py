@@ -204,13 +204,13 @@ INSTALLED_APPS = [
     "zerver",
     "social_django",
     "django_scim",
+    "onehash_billing",
     # 2FA related apps.
     "django_otp",
     "django_otp.plugins.otp_static",
     "django_otp.plugins.otp_totp",
     "two_factor",
     "two_factor.plugins.phonenumber",
-    "onehash_billing",
 ]
 if USING_PGROONGA:
     INSTALLED_APPS += ["pgroonga"]
@@ -218,6 +218,7 @@ INSTALLED_APPS += EXTRA_INSTALLED_APPS
 
 ZILENCER_ENABLED = "zilencer" in INSTALLED_APPS
 CORPORATE_ENABLED = "corporate" in INSTALLED_APPS
+ONEHASH_BILLING_ENABLED = "onehash_billing" in INSTALLED_APPS
 
 if not TORNADO_PORTS:
     TORNADO_PORTS = get_tornado_ports(config_file)
