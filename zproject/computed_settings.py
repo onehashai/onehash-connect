@@ -204,6 +204,7 @@ INSTALLED_APPS = [
     "zerver",
     "social_django",
     "django_scim",
+    "zilencer",
     "onehash_billing",
     # 2FA related apps.
     "django_otp",
