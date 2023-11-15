@@ -850,7 +850,11 @@ urls += [
 # Healthcheck URL
 urls += [path("health", health)]
 
+#OneHash Billing urls
+urls += [path("onehash_billing/", include('onehash_billing.urls'))]
+
 # The sequence is important; if i18n URLs don't come first then
 # reverse URL mapping points to i18n URLs which causes the frontend
 # tests to fail
 urlpatterns = i18n_patterns(*i18n_urls) + urls + legacy_urls
+

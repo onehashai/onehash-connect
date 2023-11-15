@@ -317,7 +317,6 @@ def sanity_check_output(data: TableData) -> None:
         *apps.get_app_config("social_django").get_models(include_auto_created=True),
         *apps.get_app_config("two_factor").get_models(include_auto_created=True),
         *apps.get_app_config("zerver").get_models(include_auto_created=True),
-        *apps.get_app_config("onehash_billing").get_models(include_auto_created=True),
     ]
     all_tables_db = {model._meta.db_table for model in target_models}
 

@@ -45,7 +45,6 @@ def get_filtered_commands() -> Dict[str, str]:
         # "two_factor" removed because it's a 2FA internals detail.
         "zerver",
         "zilencer",
-        "onehash_billing"
     ]
     documented_command_subsets = {
         "django.core": {
