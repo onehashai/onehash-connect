@@ -50,6 +50,10 @@ if settings.BILLING_ENABLED:
     from corporate.lib.registration import check_spare_licenses_available_for_registering_new_user
     from corporate.lib.stripe import LicenseLimitError
 
+# if settings.ONEHASH_BILLING_ENABLED:
+#     from onehash_billing.lib.registration import check_spare_licenses_available_for_registering_new_user
+#     from onehash_billing.lib.stripe import LicenseLimitError
+
 # We don't mark this error for translation, because it's displayed
 # only to MIT users.
 MIT_VALIDATION_ERROR = Markup(

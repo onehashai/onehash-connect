@@ -19,6 +19,7 @@ from pydantic import BaseModel, ConfigDict
 
 from analytics.lib.counts import COUNT_STATS
 from corporate.lib.stripe import do_deactivate_remote_server
+from onehash_billing.lib.stripe import do_deactivate_remote_server
 from zerver.decorator import require_post
 from zerver.lib.exceptions import JsonableError
 from zerver.lib.push_notifications import (
