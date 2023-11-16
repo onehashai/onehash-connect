@@ -35,9 +35,11 @@ from zerver.models import (
 )
 from zproject.backends import all_implemented_backend_names
 
-if settings.CORPORATE_ENABLED:
-    from corporate.lib.support import get_support_url
+# if settings.CORPORATE_ENABLED:
+#     from corporate.lib.support import get_support_url
 
+if settings.ONEHASH_CORPORATE_ENABLED:
+    from onehash_corporate.lib.support import get_support_url
 
 def do_change_realm_subdomain(
     realm: Realm,
@@ -302,7 +304,36 @@ def do_create_realm(
         prereg_realm.save(update_fields=["status", "created_realm"])
 
     # Send a notification to the admin realm when a new organization registers.
-    if settings.CORPORATE_ENABLED:
+    # if settings.CORPORATE_ENABLED:
+    #     admin_realm = get_realm(settings.SYSTEM_BOT_REALM)
+    #     sender = get_system_bot(settings.NOTIFICATION_BOT, admin_realm.id)
+
+    #     support_url = get_support_url(realm)
+    #     organization_type = get_org_type_display_name(realm.org_type)
+
+    #     message = "[{name}]({support_link}) ([{subdomain}]({realm_link})). Organization type: {type}".format(
+    #         name=realm.name,
+    #         subdomain=realm.display_subdomain,
+    #         realm_link=realm.uri,
+    #         support_link=support_url,
+    #         type=organization_type,
+    #     )
+    #     topic = "new organizations"
+
+    #     try:
+    #         signups_stream = get_signups_stream(admin_realm)
+
+    #         internal_send_stream_message(
+    #             sender,
+    #             signups_stream,
+    #             topic,
+    #             message,
+    #         )
+    #     except Stream.DoesNotExist:  # nocoverage
+    #         # If the signups stream hasn't been created in the admin
+    #         # realm, don't auto-create it to send to it; just do nothing.
+    #         pass
+    if settings.ONEHASH_CORPORATE_ENABLED:
         admin_realm = get_realm(settings.SYSTEM_BOT_REALM)
         sender = get_system_bot(settings.NOTIFICATION_BOT, admin_realm.id)
 

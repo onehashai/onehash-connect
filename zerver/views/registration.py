@@ -656,6 +656,7 @@ def registration_helper(
         "MAX_NAME_LENGTH": str(UserProfile.MAX_NAME_LENGTH),
         "MAX_PASSWORD_LENGTH": str(form.MAX_PASSWORD_LENGTH),
         "corporate_enabled": settings.CORPORATE_ENABLED,
+        "onehash_corporate_enabled": settings.ONEHASH_CORPORATE_ENABLED,
         "default_email_address_visibility": default_email_address_visibility,
         "selected_realm_type_name": get_selected_realm_type_name(prereg_realm),
         "email_address_visibility_admins_only": RealmUserDefault.EMAIL_ADDRESS_VISIBILITY_ADMINS,
@@ -757,7 +758,9 @@ def send_confirm_registration_email(
         context={
             "create_realm": realm is None,
             "activate_url": activation_url,
-            "corporate_enabled": settings.CORPORATE_ENABLED,
+            # "corporate_enabled": settings.CORPORATE_ENABLED,
+            "onehash_corporate_enabled": settings.ONEHASH_CORPORATE_ENABLED,
+
         },
         realm=realm,
         request=request,
@@ -822,7 +825,10 @@ def create_realm(request: HttpRequest, creation_key: Optional[str] = None) -> Ht
                 send_confirm_registration_email(email, activation_url, request=request)
             except EmailNotDeliveredError:
                 logging.exception("Failed to deliver email during realm creation")
-                if settings.CORPORATE_ENABLED:
+                # if settings.CORPORATE_ENABLED:
+                #     return server_error(request)
+                # return config_error(request, "smtp")
+                if settings.ONEHASH_CORPORATE_ENABLED:
                     return server_error(request)
                 return config_error(request, "smtp")
 
@@ -954,7 +960,10 @@ def accounts_home(
                 send_confirm_registration_email(email, activation_url, request=request, realm=realm)
             except EmailNotDeliveredError:
                 logging.exception("Failed to deliver email during user registration")
-                if settings.CORPORATE_ENABLED:
+                # if settings.CORPORATE_ENABLED:
+                #     return server_error(request)
+                # return config_error(request, "smtp")
+                if settings.ONEHASH_CORPORATE_ENABLED:
                     return server_error(request)
                 return config_error(request, "smtp")
             signup_send_confirm_url = reverse("signup_send_confirm")

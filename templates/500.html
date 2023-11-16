@@ -28,7 +28,11 @@
                         {% trans %}
                         This page will reload automatically when service is restored.
                         {% endtrans %}
-                        {% if corporate_enabled %}
+                        <!-- {% if corporate_enabled %}
+                            {% trans %}
+                            In the meantime, you can <a href="mailto:{{support_email}}">contact OneHash Connect support</a>.
+                            {% endtrans %} -->
+                        {% if onehash_corporate_enabled %}
                             {% trans %}
                             In the meantime, you can <a href="mailto:{{support_email}}">contact OneHash Connect support</a>.
                             {% endtrans %}

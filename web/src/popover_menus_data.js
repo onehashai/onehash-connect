@@ -210,6 +210,8 @@ export function get_gear_menu_content_context() {
         can_create_multiuse_invite: settings_data.user_can_create_multiuse_invite(),
         can_invite_users_by_email: settings_data.user_can_invite_users_by_email(),
         corporate_enabled: page_params.corporate_enabled,
+        // For OneHash Billing
+        onehash_corporate_enabled: page_params.onehash_corporate_enabled,
         is_guest: page_params.is_guest,
         login_link: page_params.development_environment ? "/devlogin/" : "/login/",
         promote_sponsoring_zulip: page_params.promote_sponsoring_zulip,

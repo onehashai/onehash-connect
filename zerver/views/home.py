@@ -148,9 +148,11 @@ def home(request: HttpRequest) -> HttpResponse:
     if (
         settings.ROOT_DOMAIN_LANDING_PAGE
         and subdomain == Realm.SUBDOMAIN_FOR_ROOT_DOMAIN
-        and settings.CORPORATE_ENABLED
+        # and settings.CORPORATE_ENABLED
+        and settings.ONEHASH_CORPORATE_ENABLED
+        
     ):
-        from corporate.views.portico import hello_view
+        from onehash_corporate.views.portico import hello_view
 
         return hello_view(request)
 

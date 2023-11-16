@@ -109,7 +109,13 @@
                     <i class="fa fa-circle-o" aria-hidden="true"></i>{{t 'About Connect' }}
                 </a>
             </li>
-            {{#if corporate_enabled}}
+            {{!-- {{#if corporate_enabled}}
+            <li role="presentation">
+                <a href="/help/contact-support" target="_blank" rel="noopener noreferrer" role="menuitem">
+                    <i class="fa fa-envelope" aria-hidden="true"></i> {{t 'Contact support' }}
+                </a>
+            </li> --}}
+            {{#if onehash_corporate_enabled}}
             <li role="presentation">
                 <a href="/help/contact-support" target="_blank" rel="noopener noreferrer" role="menuitem">
                     <i class="fa fa-envelope" aria-hidden="true"></i> {{t 'Contact support' }}

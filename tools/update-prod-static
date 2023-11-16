@@ -47,6 +47,9 @@ run(["./tools/setup/build_timezone_values"])
 if settings.CORPORATE_ENABLED:
     run(["./tools/setup/generate_landing_page_images.py"])
 
+if settings.ONEHASH_CORPORATE_ENABLED:
+    run(["./tools/setup/generate_landing_page_images.py"])
+    
 # Create webpack bundle
 run(["./tools/webpack", "--quiet"])
 

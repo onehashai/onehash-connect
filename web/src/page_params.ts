@@ -10,6 +10,7 @@ export const page_params: {
         allowed: boolean;
     }[];
     corporate_enabled: boolean;
+    onehash_corporate_enabled: boolean;
     delivery_email: string;
     development_environment: boolean;
     is_admin: boolean;

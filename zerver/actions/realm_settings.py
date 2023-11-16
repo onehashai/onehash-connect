@@ -561,6 +561,8 @@ def do_send_realm_reactivation_email(realm: Realm, *, acting_user: Optional[User
         "realm_uri": realm.uri,
         "realm_name": realm.name,
         "corporate_enabled": settings.CORPORATE_ENABLED,
+        "onehash_corporate_enabled": settings.ONEHASH_CORPORATE_ENABLED,
+
     }
     language = realm.default_language
     send_email_to_admins(

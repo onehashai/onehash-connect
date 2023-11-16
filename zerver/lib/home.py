@@ -204,6 +204,8 @@ def build_page_params_for_home_page_load(
         warn_no_email=settings.WARN_NO_EMAIL,
         # Only show marketing email settings if on Zulip Cloud
         corporate_enabled=settings.CORPORATE_ENABLED,
+        # For OneHash Billing
+        onehash_corporate_enabled=settings.ONEHASH_CORPORATE_ENABLED,
         ## Misc. extra data.
         language_list=get_language_list(),
         needs_tutorial=needs_tutorial,
