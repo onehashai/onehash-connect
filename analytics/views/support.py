@@ -80,6 +80,9 @@ def get_plan_name(plan_type: int) -> str:
         Realm.PLAN_TYPE_STANDARD: "standard",
         Realm.PLAN_TYPE_STANDARD_FREE: "open source",
         Realm.PLAN_TYPE_PLUS: "plus",
+        # OneHash realm plans
+        Realm.PLAN_TYPE_ONEHASH_FREE: "free",
+        Realm.PLAN_TYPE_ONEHASH_FREE: "standard",
     }[plan_type]
 
 

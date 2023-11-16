@@ -644,7 +644,10 @@ class Realm(models.Model):  # type: ignore[django-manager-missing] # django-stub
     PLAN_TYPE_STANDARD = 3
     PLAN_TYPE_STANDARD_FREE = 4
     PLAN_TYPE_PLUS = 10
-    plan_type = models.PositiveSmallIntegerField(default=PLAN_TYPE_SELF_HOSTED)
+    # For OneHash Billing
+    PLAN_TYPE_ONEHASH_FREE = 11
+    PLAN_TYPE_ONEHASH_STANDARD = 12
+    plan_type = models.PositiveSmallIntegerField(default=PLAN_TYPE_ONEHASH_FREE)
 
     # This value is also being used in web/src/settings_bots.bot_creation_policy_values.
     # On updating it here, update it there as well.

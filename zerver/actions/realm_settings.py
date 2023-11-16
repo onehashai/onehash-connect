@@ -469,8 +469,11 @@ def do_change_realm_plan_type(
 ) -> None:
     old_value = realm.plan_type
 
-    if plan_type == Realm.PLAN_TYPE_LIMITED:
-        # We do not allow public access on limited plans.
+    # if plan_type == Realm.PLAN_TYPE_LIMITED:
+    #     # We do not allow public access on limited plans.
+    #     do_set_realm_property(realm, "enable_spectator_access", False, acting_user=acting_user)
+    if plan_type == Realm.PLAN_TYPE_ONEHASH_FREE:
+        # We do not allow public access on free plans.
         do_set_realm_property(realm, "enable_spectator_access", False, acting_user=acting_user)
 
     realm.plan_type = plan_type
@@ -502,6 +505,16 @@ def do_change_realm_plan_type(
     elif plan_type == Realm.PLAN_TYPE_LIMITED:
         realm.max_invites = settings.INVITES_DEFAULT_REALM_DAILY_MAX
         realm.message_visibility_limit = Realm.MESSAGE_VISIBILITY_LIMITED
+        realm.upload_quota_gb = Realm.UPLOAD_QUOTA_LIMITED
+    # Onehash Free Plan limit
+    elif plan_type == Realm.PLAN_TYPE_ONEHASH_FREE:
+        realm.max_invites = settings.INVITES_DEFAULT_REALM_DAILY_MAX
+        realm.message_visibility_limit = Realm.MESSAGE_VISIBILITY_LIMITED
+        realm.upload_quota_gb = Realm.UPLOAD_QUOTA_LIMITED
+    #OneHash Standard Plan limit
+    elif plan_type == Realm.PLAN_TYPE_ONEHASH_STANDARD:
+        realm.max_invites = settings.INVITES_DEFAULT_REALM_DAILY_MAX
+        realm.message_visibility_limit = None
         realm.upload_quota_gb = Realm.UPLOAD_QUOTA_LIMITED
     else:
         raise AssertionError("Invalid plan type")

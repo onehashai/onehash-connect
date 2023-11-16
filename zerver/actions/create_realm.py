@@ -187,7 +187,8 @@ def do_create_realm(
     if enable_spectator_access is not None:
         if enable_spectator_access:
             # Realms with LIMITED plan cannot have spectators enabled.
-            assert plan_type != Realm.PLAN_TYPE_LIMITED
+            # assert plan_type != Realm.PLAN_TYPE_LIMITED
+            assert plan_type != Realm.PLAN_TYPE_ONEHASH_FREE
             assert plan_type is not None or not settings.BILLING_ENABLED
         kwargs["enable_spectator_access"] = enable_spectator_access
 
@@ -286,7 +287,8 @@ def do_create_realm(
 
     if plan_type is None and settings.BILLING_ENABLED:
         # We use acting_user=None for setting the initial plan type.
-        do_change_realm_plan_type(realm, Realm.PLAN_TYPE_LIMITED, acting_user=None)
+        # do_change_realm_plan_type(realm, Realm.PLAN_TYPE_LIMITED, acting_user=None)
+        do_change_realm_plan_type(realm, Realm.PLAN_TYPE_ONEHASH_FREE, acting_user=None)
 
     if prereg_realm is not None:
         prereg_realm.status = confirmation_settings.STATUS_USED

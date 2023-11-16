@@ -95,7 +95,9 @@ def too_many_recent_realm_invites(realm: Realm, num_invitees: int) -> bool:
     if num_invitees + recent_invites > realm.max_invites:
         return True
 
-    if realm.plan_type != Realm.PLAN_TYPE_LIMITED:
+    # if realm.plan_type != Realm.PLAN_TYPE_LIMITED:
+    #     return False
+    if realm.plan_type != Realm.PLAN_TYPE_ONEHASH_FREE:
         return False
     if realm.max_invites != settings.INVITES_DEFAULT_REALM_DAILY_MAX:
         return False

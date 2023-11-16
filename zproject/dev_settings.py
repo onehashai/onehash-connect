@@ -74,7 +74,7 @@ NOTIFICATION_BOT = "notification-bot@zulip.com"
 EMAIL_GATEWAY_BOT = "emailgateway@zulip.com"
 PHYSICAL_ADDRESS = "Zulip Headquarters, 123 Octo Stream, South Pacific Ocean"
 STAFF_SUBDOMAIN = "zulip"
-EXTRA_INSTALLED_APPS = ["zilencer", "analytics", "corporate","onehash_billing"]
+EXTRA_INSTALLED_APPS = ["zilencer", "analytics", "corporate","onehash_corporate"]
 # Disable Camo in development
 CAMO_URI = ""
 
@@ -170,6 +170,8 @@ if FAKE_LDAP_MODE:
     AUTHENTICATION_BACKENDS += ("zproject.backends.ZulipLDAPAuthBackend",)
 
 BILLING_ENABLED = True
+# OneHash Billing
+ONEHASH_BILLING_ENABLED = True
 LANDING_PAGE_NAVBAR_MESSAGE: Optional[str] = None
 
 # Our run-dev proxy uses X-Forwarded-Port to communicate to Django

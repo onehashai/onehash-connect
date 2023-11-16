@@ -77,19 +77,33 @@ def promote_sponsoring_zulip_in_realm(realm: Realm) -> bool:
 def get_billing_info(user_profile: Optional[UserProfile]) -> BillingInfo:
     show_billing = False
     show_plans = False
-    if settings.CORPORATE_ENABLED and user_profile is not None:
+    # if settings.CORPORATE_ENABLED and user_profile is not None:
+    #     if user_profile.has_billing_access:
+    #         from corporate.models import CustomerPlan, get_customer_by_realm
+
+    #         customer = get_customer_by_realm(user_profile.realm)
+    #         if customer is not None:
+    #             if customer.sponsorship_pending:
+    #                 show_billing = True
+    #             elif CustomerPlan.objects.filter(customer=customer).exists():
+    #                 show_billing = True
+
+    #     if not user_profile.is_guest and user_profile.realm.plan_type == Realm.PLAN_TYPE_LIMITED:
+    #         show_plans = True
+    if user_profile is not None:
         if user_profile.has_billing_access:
-            from corporate.models import CustomerPlan, get_customer_by_realm
+            from onehash_corporate.models import OneHashCustomerPlan, get_customer_by_realm
 
             customer = get_customer_by_realm(user_profile.realm)
             if customer is not None:
                 if customer.sponsorship_pending:
                     show_billing = True
-                elif CustomerPlan.objects.filter(customer=customer).exists():
+                elif OneHashCustomerPlan.objects.filter(customer=customer).exists():
                     show_billing = True
 
-        if not user_profile.is_guest and user_profile.realm.plan_type == Realm.PLAN_TYPE_LIMITED:
+        if not user_profile.is_guest and user_profile.realm.plan_type == Realm.PLAN_TYPE_ONEHASH_FREE:
             show_plans = True
+
 
     return BillingInfo(
         show_billing=show_billing,

@@ -1406,10 +1406,10 @@ def do_import_realm(import_dir: Path, subdomain: str, processes: int = 1) -> Rea
     # Import the analytics file.
     import_analytics_data(realm=realm, import_dir=import_dir)
 
-    if settings.BILLING_ENABLED:
-        do_change_realm_plan_type(realm, Realm.PLAN_TYPE_LIMITED, acting_user=None)
-    else:
-        do_change_realm_plan_type(realm, Realm.PLAN_TYPE_SELF_HOSTED, acting_user=None)
+    # if settings.BILLING_ENABLED:
+    #     do_change_realm_plan_type(realm, Realm.PLAN_TYPE_LIMITED, acting_user=None)
+    # else:
+    do_change_realm_plan_type(realm, Realm.PLAN_TYPE_ONEHASH_FREE, acting_user=None)
 
     # Activate the realm
     realm.deactivated = data["zerver_realm"][0]["deactivated"]
