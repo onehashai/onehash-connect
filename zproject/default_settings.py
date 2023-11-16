@@ -343,7 +343,7 @@ SYSTEM_BOT_REALM = "zulipinternal"
 # Structurally, we will probably eventually merge
 # analytics into part of the main server, rather
 # than a separate app.
-EXTRA_INSTALLED_APPS = ["analytics","zilencer","onehash_corporate"]
+EXTRA_INSTALLED_APPS = ["analytics","corporate","zilencer","onehash_corporate"]
 
 # Used to construct URLs to point to the Zulip server.  Since we
 # only support HTTPS in production, this is just for development.
