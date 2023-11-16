@@ -22,26 +22,18 @@ billing_logger = logging.getLogger("onehash_corporate.stripe")
 @csrf_exempt
 def stripe_webhook(request: HttpRequest) -> HttpResponse:
     stripe_webhook_endpoint_secret = get_secret("stripe_webhook_endpoint_secret", "")
-    if (
-        stripe_webhook_endpoint_secret and not settings.TEST_SUITE
-    ):  # nocoverage: We can't verify the signature in test suite since we fetch the events
-        # from Stripe events API and manually post to the webhook endpoint.
+    if stripe_webhook_endpoint_secret:
         try:
             stripe_event = stripe.Webhook.construct_event(
                 request.body,
                 request.headers["Stripe-Signature"],
                 stripe_webhook_endpoint_secret,
             )
-        except ValueError:
-            return HttpResponse(status=400)
-        except stripe.error.SignatureVerificationError:
+        except (ValueError, stripe.error.SignatureVerificationError):
             return HttpResponse(status=400)
     else:
-        assert not settings.PRODUCTION
-        try:
-            stripe_event = stripe.Event.construct_from(json.loads(request.body), stripe.api_key)
-        except Exception:
-            return HttpResponse(status=400)
+        # Handle the case where the webhook endpoint secret is not configured
+        return HttpResponse(status=400)
 
     if stripe_event.api_version != STRIPE_API_VERSION:
         error_message = f"Mismatch between billing system Stripe API version({STRIPE_API_VERSION}) and Stripe webhook event API version({stripe_event.api_version})."

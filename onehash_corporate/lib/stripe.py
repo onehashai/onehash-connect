@@ -54,7 +54,7 @@ DEFAULT_INVOICE_DAYS_UNTIL_DUE = 30
 
 # The version of Stripe API the billing system supports.
 # STRIPE_API_VERSION = "2020-08-27"
-STRIPE_API_VERSION = "2022-11-15"
+STRIPE_API_VERSION = "2020-03-02"
 
 stripe.api_version = STRIPE_API_VERSION
 
@@ -574,9 +574,9 @@ def get_price_per_license(
 
     if tier == CustomerPlans.STANDARD:
         if billing_schedule == CustomerPlans.ANNUAL:
-            price_per_license = 8000
+            price_per_license = 5400
         elif billing_schedule == CustomerPlans.MONTHLY:
-            price_per_license = 800
+            price_per_license = 600
         else:  # nocoverage
             raise InvalidBillingScheduleError(billing_schedule)
     elif tier == CustomerPlans.PLUS:
@@ -1019,7 +1019,7 @@ def approve_sponsorship(realm: Realm, *, acting_user: Optional[UserProfile]) -> 
                 "If you could {begin_link}list Zulip as a sponsor on your website{end_link}, "
                 "we would really appreciate it!"
             ).format(
-                plan_name="Zulip Cloud Standard",
+                plan_name="Connect Standard",
                 emoji=":tada:",
                 begin_link="[",
                 end_link="](/help/linking-to-zulip-website)",

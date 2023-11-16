@@ -128,7 +128,7 @@ def setup_upgrade_checkout_session_and_payment_intent(
             description=f"Upgrade to OneHash Connect Standard, ${price_per_license/100} x {licenses}",
             receipt_email=user.delivery_email,
             confirm=False,
-            statement_descriptor="Connect Cloud Standard",
+            statement_descriptor="Connect Standard",
             metadata=metadata,
         )
         payment_intent = PaymentIntents.objects.create(
@@ -137,11 +137,12 @@ def setup_upgrade_checkout_session_and_payment_intent(
             status=PaymentIntents.get_status_integer_from_status_text(stripe_payment_intent.status),
         )
     stripe_session = stripe.checkout.Session.create(
-        cancel_url=f"{user.realm.uri}/upgrade/",
+        cancel_url=f"{user.realm.uri}/settings/upgrade/",
         customer=customer.stripe_customer_id,
         mode="setup",
         payment_method_types=["card"],
         metadata=metadata,
+        billing_address_collection="required",
         setup_intent_data={"metadata": metadata},
         success_url=f"{user.realm.uri}/settings/billing/event_status?stripe_session_id={{CHECKOUT_SESSION_ID}}",
     )

@@ -38,7 +38,7 @@ def error_handler(
                 stripe_object.customer,
                 stripe_object.metadata,
             )
-            event.status = Event.EVENT_HANDLER_FAILED
+            event.status = Events.EVENT_HANDLER_FAILED
             event.handler_error = {
                 "message": e.msg,
                 "description": e.error_description,
@@ -50,14 +50,14 @@ def error_handler(
                 event.type,
                 stack_info=True,
             )
-            event.status = Event.EVENT_HANDLER_FAILED
+            event.status = Events.EVENT_HANDLER_FAILED
             event.handler_error = {
                 "description": f"uncaught exception in {event.type} event handler",
-                "message": BillingError.CONTACT_SUPPORT.format(email=settings.ZULIP_ADMINISTRATOR),
+                "message": BillingError.CONTACT_SUPPORT.format(email='support@onehash.ai'),
             }
             event.save(update_fields=["status", "handler_error"])
         else:
-            event.status = Event.EVENT_HANDLER_SUCCEEDED
+            event.status = Events.EVENT_HANDLER_SUCCEEDED
             event.save()
 
     return wrapper

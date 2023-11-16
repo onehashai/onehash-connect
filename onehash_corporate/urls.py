@@ -37,7 +37,7 @@ i18n_urlpatterns: Any = [
     path("settings/upgrade/", initial_upgrade, name="initial_upgrade"),
     path("support/", support_request),
     path("settings/billing/event_status/", event_status_page, name="event_status_page"),
-    path("stripe/webhook/", stripe_webhook, name="stripe_webhook"),
+    path("settings/stripe/webhook/", stripe_webhook, name="stripe_webhook"),
 ]
 
 v1_api_and_json_patterns = [

@@ -54,7 +54,7 @@ def payment_method_string(stripe_customer: stripe.Customer) -> str:
     # automatic payments, but in theory we could add it for a customer via
     # the Stripe dashboard.
     return _("Unknown payment method. Please contact {email}.").format(
-        email=settings.ZULIP_ADMINISTRATOR,
+        email='support@onehash.ai',
     )  # nocoverage
 
 
