@@ -29,7 +29,7 @@ def start_card_update_stripe_session(request: HttpRequest, user: UserProfile) ->
         },
         mode="setup",
         payment_method_types=["card"],
-        success_url=f"{user.realm.uri}/billing/event_status?stripe_session_id={{CHECKOUT_SESSION_ID}}",
+        success_url=f"{user.realm.uri}/settings/billing/event_status?stripe_session_id={{CHECKOUT_SESSION_ID}}",
     )
     Sessions.objects.create(
         stripe_session_id=stripe_session.id,
@@ -82,7 +82,7 @@ def start_retry_payment_intent_session(
         setup_intent_data={"metadata": metadata},
         mode="setup",
         payment_method_types=["card"],
-        success_url=f"{user.realm.uri}/billing/event_status?stripe_session_id={{CHECKOUT_SESSION_ID}}",
+        success_url=f"{user.realm.uri}/settings/billing/event_status?stripe_session_id={{CHECKOUT_SESSION_ID}}",
     )
     session = Sessions.objects.create(
         stripe_session_id=stripe_session.id,

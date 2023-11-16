@@ -143,7 +143,7 @@ def setup_upgrade_checkout_session_and_payment_intent(
         payment_method_types=["card"],
         metadata=metadata,
         setup_intent_data={"metadata": metadata},
-        success_url=f"{user.realm.uri}/billing/event_status?stripe_session_id={{CHECKOUT_SESSION_ID}}",
+        success_url=f"{user.realm.uri}/settings/billing/event_status?stripe_session_id={{CHECKOUT_SESSION_ID}}",
     )
     session = Sessions.objects.create(
         customer=customer, stripe_session_id=stripe_session.id, type=session_type
@@ -254,7 +254,7 @@ def initial_upgrade(
     user = request.user
     assert user.is_authenticated
 
-    if not settings.BILLING_ENABLED or user.is_guest:
+    if not settings.ONEHASH_BILLING_ENABLED or user.is_guest:
         return render(request, "404.html", status=404)
 
     billing_page_url = reverse(billing_home)
@@ -289,13 +289,13 @@ def initial_upgrade(
         "min_invoiced_licenses": max(seat_count, MIN_INVOICED_LICENSES),
         "default_invoice_days_until_due": DEFAULT_INVOICE_DAYS_UNTIL_DUE,
         "exempt_from_license_number_check": exempt_from_license_number_check,
-        "plan": "Zulip Cloud Standard",
+        "plan": "Connect Standard",
         "free_trial_days": settings.FREE_TRIAL_DAYS,
         "onboarding": onboarding,
         "page_params": {
             "seat_count": seat_count,
-            "annual_price": 8000,
-            "monthly_price": 800,
+            "annual_price": 5400,
+            "monthly_price": 600,
             "percent_off": float(percent_off),
             "demo_organization_scheduled_deletion_date": user.realm.demo_organization_scheduled_deletion_date,
         },
@@ -303,7 +303,7 @@ def initial_upgrade(
     }
     add_sponsorship_info_to_context(context, user)
 
-    response = render(request, "onehash_corporate/upgrade.html", context=context)
+    response = render(request, "onehash_corporate/connect_upgrade.html", context=context)
     return response
 
 

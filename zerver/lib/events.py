@@ -314,7 +314,7 @@ def fetch_initial_state_data(
         state["development_environment"] = settings.DEVELOPMENT
         state["realm_org_type"] = realm.org_type
         state["realm_plan_type"] = realm.plan_type
-        state["zulip_plan_is_not_limited"] = realm.plan_type != Realm.PLAN_TYPE_LIMITED
+        # state["zulip_plan_is_not_limited"] = realm.plan_type != Realm.PLAN_TYPE_LIMITED
         state["upgrade_text_for_wide_organization_logo"] = str(Realm.UPGRADE_TEXT_STANDARD)
         # OneHash Free Plan state
         state["connect_plan_is_not_free"] = realm.plan_type != Realm.PLAN_TYPE_ONEHASH_FREE
@@ -1075,7 +1075,7 @@ def apply_event(
 
             if event["property"] == "plan_type":
                 # Then there are some extra fields that also need to be set.
-                state["zulip_plan_is_not_limited"] = event["value"] != Realm.PLAN_TYPE_LIMITED
+                # state["zulip_plan_is_not_limited"] = event["value"] != Realm.PLAN_TYPE_LIMITED
                 # OneHash Free plan state
                 state["connect_plan_is_not_free"] = event["value"] != Realm.PLAN_TYPE_ONEHASH_FREE
                 state["realm_upload_quota_mib"] = event["extra_data"]["upload_quota"]

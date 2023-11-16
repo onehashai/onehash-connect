@@ -46,13 +46,13 @@ from zerver.models import (
 )
 from zproject.backends import check_password_strength, email_auth_enabled, email_belongs_to_ldap
 
-if settings.BILLING_ENABLED:
-    from corporate.lib.registration import check_spare_licenses_available_for_registering_new_user
-    from corporate.lib.stripe import LicenseLimitError
+# if settings.BILLING_ENABLED:
+#     from corporate.lib.registration import check_spare_licenses_available_for_registering_new_user
+#     from corporate.lib.stripe import LicenseLimitError
 
-# if settings.ONEHASH_BILLING_ENABLED:
-#     from onehash_billing.lib.registration import check_spare_licenses_available_for_registering_new_user
-#     from onehash_billing.lib.stripe import LicenseLimitError
+if settings.ONEHASH_BILLING_ENABLED:
+    from onehash_corporate.lib.registration import check_spare_licenses_available_for_registering_new_user
+    from onehash_corporate.lib.stripe import LicenseLimitError
 
 # We don't mark this error for translation, because it's displayed
 # only to MIT users.

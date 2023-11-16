@@ -107,9 +107,13 @@ from zproject.backends import (
     password_auth_enabled,
 )
 
-if settings.BILLING_ENABLED:
-    from corporate.lib.registration import check_spare_licenses_available_for_registering_new_user
-    from corporate.lib.stripe import LicenseLimitError
+# if settings.BILLING_ENABLED:
+#     from corporate.lib.registration import check_spare_licenses_available_for_registering_new_user
+#     from corporate.lib.stripe import LicenseLimitError
+
+if settings.ONEHASH_BILLING_ENABLED:
+    from onehash_corporate.lib.registration import check_spare_licenses_available_for_registering_new_user
+    from onehash_corporate.lib.stripe import LicenseLimitError
 
 
 @has_request_variables

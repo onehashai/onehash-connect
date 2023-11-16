@@ -266,7 +266,9 @@ export function enable_or_disable_permission_settings_in_edit_panel(sub) {
     update_default_stream_and_stream_privacy_state($stream_settings);
 
     const disable_message_retention_setting =
-        !page_params.zulip_plan_is_not_limited || !page_params.is_owner;
+        // !page_params.zulip_plan_is_not_limited || !page_params.is_owner;
+        !page_params.connect_plan_is_not_free || !page_params.is_owner;
+
     $stream_settings
         .find(".stream_message_retention_setting")
         .prop("disabled", disable_message_retention_setting);

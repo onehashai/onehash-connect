@@ -36,7 +36,12 @@
         <tr>
             <th>Realm</th>
             <th>Created (green if ≤12wk)</th>
-            {% if billing_enabled %}
+            <!-- {% if billing_enabled %}
+            <th>Plan type</th>
+            <th>Org type</th>
+            <th>ARR</th>
+            <th>Rate (%)</th> -->
+            {% if onehash_billing_enabled %}
             <th>Plan type</th>
             <th>Org type</th>
             <th>ARR</th>
@@ -68,7 +73,12 @@
                 {{ row.date_created_day }}
             </td>
 
-            {% if billing_enabled %}
+            <!-- {% if billing_enabled %}
+            <td>
+                {{ row.plan_type_string }}
+            </td>
+            {% endif %} -->
+            {% if onehash_billing_enabled %}
             <td>
                 {{ row.plan_type_string }}
             </td>
@@ -78,7 +88,13 @@
                 {{ row.org_type_string }}
             </td>
 
-            {% if billing_enabled %}
+            <!-- {% if billing_enabled %}
+            <td class="number">
+                {% if row.arr %}
+                {{ row.arr }}
+                {% endif %}
+            </td> -->
+            {% if onehash_billing_enabled %}
             <td class="number">
                 {% if row.arr %}
                 {{ row.arr }}

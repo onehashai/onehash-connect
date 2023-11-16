@@ -357,7 +357,8 @@ function set_create_web_public_stream_dropdown_visibility() {
     settings_components.change_element_block_display_property(
         "id_realm_create_web_public_stream_policy",
         page_params.server_web_public_streams_enabled &&
-            page_params.zulip_plan_is_not_limited &&
+            // page_params.zulip_plan_is_not_limited &&
+            page_params.connect_plan_is_not_free &&
             page_params.realm_enable_spectator_access,
     );
 }
@@ -1099,7 +1100,11 @@ export function build_page() {
     }
 
     realm_icon.build_realm_icon_widget(upload_realm_logo_or_icon, null, true);
-    if (page_params.zulip_plan_is_not_limited) {
+    // if (page_params.zulip_plan_is_not_limited) {
+    //     realm_logo.build_realm_logo_widget(upload_realm_logo_or_icon, false);
+    //     realm_logo.build_realm_logo_widget(upload_realm_logo_or_icon, true);
+    // }
+    if (page_params.connect_plan_is_not_free) {
         realm_logo.build_realm_logo_widget(upload_realm_logo_or_icon, false);
         realm_logo.build_realm_logo_widget(upload_realm_logo_or_icon, true);
     }

@@ -51,9 +51,29 @@ from zerver.views.invite import get_invitee_emails_set
 if settings.ZILENCER_ENABLED:
     from zilencer.models import RemoteZulipServer
 
-if settings.BILLING_ENABLED:
-    from corporate.lib.stripe import approve_sponsorship as do_approve_sponsorship
-    from corporate.lib.stripe import (
+# if settings.BILLING_ENABLED:
+#     from corporate.lib.stripe import approve_sponsorship as do_approve_sponsorship
+#     from corporate.lib.stripe import (
+#         attach_discount_to_realm,
+#         downgrade_at_the_end_of_billing_cycle,
+#         downgrade_now_without_creating_additional_invoices,
+#         get_discount_for_realm,
+#         get_latest_seat_count,
+#         make_end_of_cycle_updates_if_needed,
+#         switch_realm_from_standard_to_plus_plan,
+#         update_billing_method_of_current_plan,
+#         update_sponsorship_status,
+#         void_all_open_invoices,
+#     )
+#     from corporate.models import (
+#         Customer,
+#         CustomerPlan,
+#         get_current_plan_by_realm,
+#         get_customer_by_realm,
+#     )
+if settings.ONEHASH_BILLING_ENABLED:
+    from onehash_corporate.lib.stripe import approve_sponsorship as do_approve_sponsorship
+    from onehash_corporate.lib.stripe import (
         attach_discount_to_realm,
         downgrade_at_the_end_of_billing_cycle,
         downgrade_now_without_creating_additional_invoices,
@@ -65,9 +85,9 @@ if settings.BILLING_ENABLED:
         update_sponsorship_status,
         void_all_open_invoices,
     )
-    from corporate.models import (
-        Customer,
-        CustomerPlan,
+    from onehash_corporate.models import (
+        Customers,
+        CustomerPlans,
         get_current_plan_by_realm,
         get_customer_by_realm,
     )
@@ -151,8 +171,8 @@ VALID_BILLING_METHODS = [
 
 @dataclass
 class PlanData:
-    customer: Optional["Customer"] = None
-    current_plan: Optional["CustomerPlan"] = None
+    customer: Optional["Customers"] = None
+    current_plan: Optional["CustomerPlans"] = None
     licenses: Optional[int] = None
     licenses_used: Optional[int] = None
 
@@ -185,7 +205,115 @@ def support(
         context["success_message"] = request.session["success_message"]
         del request.session["success_message"]
 
-    if settings.BILLING_ENABLED and request.method == "POST":
+    # if settings.BILLING_ENABLED and request.method == "POST":
+    #     # We check that request.POST only has two keys in it: The
+    #     # realm_id and a field to change.
+    #     keys = set(request.POST.keys())
+    #     if "csrfmiddlewaretoken" in keys:
+    #         keys.remove("csrfmiddlewaretoken")
+    #     if len(keys) != 2:
+    #         raise JsonableError(_("Invalid parameters"))
+
+    #     assert realm_id is not None
+    #     realm = Realm.objects.get(id=realm_id)
+
+    #     acting_user = request.user
+    #     assert isinstance(acting_user, UserProfile)
+    #     if plan_type is not None:
+    #         current_plan_type = realm.plan_type
+    #         do_change_realm_plan_type(realm, plan_type, acting_user=acting_user)
+    #         msg = f"Plan type of {realm.string_id} changed from {get_plan_name(current_plan_type)} to {get_plan_name(plan_type)} "
+    #         context["success_message"] = msg
+    #     elif org_type is not None:
+    #         current_realm_type = realm.org_type
+    #         do_change_realm_org_type(realm, org_type, acting_user=acting_user)
+    #         msg = f"Org type of {realm.string_id} changed from {get_org_type_display_name(current_realm_type)} to {get_org_type_display_name(org_type)} "
+    #         context["success_message"] = msg
+    #     elif discount is not None:
+    #         current_discount = get_discount_for_realm(realm) or 0
+    #         attach_discount_to_realm(realm, discount, acting_user=acting_user)
+    #         context[
+    #             "success_message"
+    #         ] = f"Discount of {realm.string_id} changed to {discount}% from {current_discount}%."
+    #     elif new_subdomain is not None:
+    #         old_subdomain = realm.string_id
+    #         try:
+    #             check_subdomain_available(new_subdomain)
+    #         except ValidationError as error:
+    #             context["error_message"] = error.message
+    #         else:
+    #             do_change_realm_subdomain(realm, new_subdomain, acting_user=acting_user)
+    #             request.session[
+    #                 "success_message"
+    #             ] = f"Subdomain changed from {old_subdomain} to {new_subdomain}"
+    #             return HttpResponseRedirect(
+    #                 reverse("support") + "?" + urlencode({"q": new_subdomain})
+    #             )
+    #     elif status is not None:
+    #         if status == "active":
+    #             do_send_realm_reactivation_email(realm, acting_user=acting_user)
+    #             context[
+    #                 "success_message"
+    #             ] = f"Realm reactivation email sent to admins of {realm.string_id}."
+    #         elif status == "deactivated":
+    #             do_deactivate_realm(realm, acting_user=acting_user)
+    #             context["success_message"] = f"{realm.string_id} deactivated."
+    #     elif billing_method is not None:
+    #         if billing_method == "send_invoice":
+    #             update_billing_method_of_current_plan(
+    #                 realm, charge_automatically=False, acting_user=acting_user
+    #             )
+    #             context[
+    #                 "success_message"
+    #             ] = f"Billing method of {realm.string_id} updated to pay by invoice."
+    #         elif billing_method == "charge_automatically":
+    #             update_billing_method_of_current_plan(
+    #                 realm, charge_automatically=True, acting_user=acting_user
+    #             )
+    #             context[
+    #                 "success_message"
+    #             ] = f"Billing method of {realm.string_id} updated to charge automatically."
+    #     elif sponsorship_pending is not None:
+    #         if sponsorship_pending:
+    #             update_sponsorship_status(realm, True, acting_user=acting_user)
+    #             context["success_message"] = f"{realm.string_id} marked as pending sponsorship."
+    #         else:
+    #             update_sponsorship_status(realm, False, acting_user=acting_user)
+    #             context["success_message"] = f"{realm.string_id} is no longer pending sponsorship."
+    #     elif approve_sponsorship:
+    #         do_approve_sponsorship(realm, acting_user=acting_user)
+    #         context["success_message"] = f"Sponsorship approved for {realm.string_id}"
+    #     elif modify_plan is not None:
+    #         if modify_plan == "downgrade_at_billing_cycle_end":
+    #             downgrade_at_the_end_of_billing_cycle(realm)
+    #             context[
+    #                 "success_message"
+    #             ] = f"{realm.string_id} marked for downgrade at the end of billing cycle"
+    #         elif modify_plan == "downgrade_now_without_additional_licenses":
+    #             downgrade_now_without_creating_additional_invoices(realm)
+    #             context[
+    #                 "success_message"
+    #             ] = f"{realm.string_id} downgraded without creating additional invoices"
+    #         elif modify_plan == "downgrade_now_void_open_invoices":
+    #             downgrade_now_without_creating_additional_invoices(realm)
+    #             voided_invoices_count = void_all_open_invoices(realm)
+    #             context[
+    #                 "success_message"
+    #             ] = f"{realm.string_id} downgraded and voided {voided_invoices_count} open invoices"
+    #         elif modify_plan == "upgrade_to_plus":
+    #             switch_realm_from_standard_to_plus_plan(realm)
+    #             context["success_message"] = f"{realm.string_id} upgraded to Plus"
+    #     elif scrub_realm:
+    #         do_scrub_realm(realm, acting_user=acting_user)
+    #         context["success_message"] = f"{realm.string_id} scrubbed."
+    #     elif delete_user_by_id:
+    #         user_profile_for_deletion = get_user_profile_by_id(delete_user_by_id)
+    #         user_email = user_profile_for_deletion.delivery_email
+    #         assert user_profile_for_deletion.realm == realm
+    #         do_delete_user_preserving_messages(user_profile_for_deletion)
+    #         context["success_message"] = f"{user_email} in {realm.subdomain} deleted."
+    
+    if settings.ONEHASH_BILLING_ENABLED and request.method == "POST":
         # We check that request.POST only has two keys in it: The
         # realm_id and a field to change.
         keys = set(request.POST.keys())

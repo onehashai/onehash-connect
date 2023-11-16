@@ -91,7 +91,9 @@ export const page_params: {
     translation_data: Record<string, string>;
     user_id: number | undefined;
     zulip_merge_base: string;
-    zulip_plan_is_not_limited: boolean;
+    // zulip_plan_is_not_limited: boolean;
+    // For OneHash Billing
+    connect_plan_is_not_free: boolean;
     zulip_version: string;
 } = $("#page-params").remove().data("params");
 const t2 = performance.now();

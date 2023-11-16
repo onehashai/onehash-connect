@@ -685,7 +685,7 @@ class StripeTest(StripeTestCase):
 
     def test_billing_not_enabled(self) -> None:
         iago = self.example_user("iago")
-        with self.settings(BILLING_ENABLED=False):
+        with self.settings(ONEHASH_BILLING_ENABLED=False):
             self.login_user(iago)
             response = self.client_get("/upgrade/", follow=True)
             self.assertEqual(response.status_code, 404)
@@ -742,10 +742,10 @@ class StripeTest(StripeTestCase):
         self.assertEqual(charge.amount, 8000 * self.seat_count)
         # TODO: fix Decimal
         self.assertEqual(
-            charge.description, f"Upgrade to Connect Cloud Standard, $80.0 x {self.seat_count}"
+            charge.description, f"Upgrade to Connect Standard, $80.0 x {self.seat_count}"
         )
         self.assertEqual(charge.receipt_email, user.delivery_email)
-        self.assertEqual(charge.statement_descriptor, "Zulip Cloud Standard")
+        self.assertEqual(charge.statement_descriptor, "Connect Standard")
         # Check Invoices in Stripe
         [invoice] = stripe.Invoice.list(customer=stripe_customer.id)
         self.assertIsNotNone(invoice.status_transitions.finalized_at)
@@ -765,7 +765,7 @@ class StripeTest(StripeTestCase):
         [item0, item1] = invoice.lines
         line_item_params = {
             "amount": 8000 * self.seat_count,
-            "description": "Zulip Cloud Standard",
+            "description": "Connect Standard",
             "discountable": False,
             "period": {
                 "end": datetime_to_timestamp(self.next_year),
@@ -852,7 +852,7 @@ class StripeTest(StripeTestCase):
             response = self.client_get("/billing/")
         self.assert_not_in_success_response(["Pay annually"], response)
         for substring in [
-            "Zulip Cloud Standard",
+            "Connect Standard",
             str(self.seat_count),
             "You are using",
             f"{self.seat_count} of {self.seat_count} licenses",
@@ -906,7 +906,7 @@ class StripeTest(StripeTestCase):
             "attempt_count": 0,
             "auto_advance": True,
             "collection_method": "send_invoice",
-            "statement_descriptor": "Zulip Cloud Standard",
+            "statement_descriptor": "Connect Standard",
             "status": "open",
             "total": 8000 * 123,
         }
@@ -916,7 +916,7 @@ class StripeTest(StripeTestCase):
         [item] = invoice.lines
         line_item_params = {
             "amount": 8000 * 123,
-            "description": "Zulip Cloud Standard",
+            "description": "Connect Standard",
             "discountable": False,
             "period": {
                 "end": datetime_to_timestamp(self.next_year),
@@ -990,7 +990,7 @@ class StripeTest(StripeTestCase):
             response = self.client_get("/billing/")
         self.assert_not_in_success_response(["Pay annually", "Update card"], response)
         for substring in [
-            "Zulip Cloud Standard",
+            "Connect Standard",
             str(123),
             "You are using",
             f"{self.seat_count} of {123} licenses",
@@ -1110,7 +1110,7 @@ class StripeTest(StripeTestCase):
                 response = self.client_get("/billing/")
             self.assert_not_in_success_response(["Pay annually"], response)
             for substring in [
-                "Zulip Cloud Standard",
+                "Connect Standard",
                 "Free Trial",
                 str(self.seat_count),
                 "You are using",
@@ -1177,7 +1177,7 @@ class StripeTest(StripeTestCase):
             [invoice_item] = invoice.get("lines")
             invoice_item_params = {
                 "amount": 15 * 80 * 100,
-                "description": "Zulip Cloud Standard - renewal",
+                "description": "Connect Standard - renewal",
                 "plan": None,
                 "quantity": 15,
                 "subscription": None,
@@ -1373,7 +1373,7 @@ class StripeTest(StripeTestCase):
                 response = self.client_get("/billing/")
             self.assert_not_in_success_response(["Pay annually"], response)
             for substring in [
-                "Zulip Cloud Standard",
+                "Connect Standard",
                 "Free Trial",
                 str(self.seat_count),
                 "You are using",
@@ -1418,7 +1418,7 @@ class StripeTest(StripeTestCase):
             [invoice_item] = invoice.get("lines")
             invoice_item_params = {
                 "amount": 123 * 80 * 100,
-                "description": "Zulip Cloud Standard - renewal",
+                "description": "Connect Standard - renewal",
                 "plan": None,
                 "quantity": 123,
                 "subscription": None,
@@ -2315,11 +2315,11 @@ class StripeTest(StripeTestCase):
         self.login_user(self.example_user("hamlet"))
         response = self.client_get("/billing/")
         self.assert_in_success_response(
-            ["Your organization is fully sponsored and is on the <b>Zulip Cloud Standard</b>"],
+            ["Your organization is fully sponsored and is on the <b>Connect Standard</b>"],
             response,
         )
         self.assert_in_success_response(
-            ['<a href="mailto:support@zulip.com">Contact Zulip support</a> for billing history.'],
+            ['<a href="mailto:support@onehash.ai">Contact Connect support</a> for billing history.'],
             response,
         )
 
@@ -2546,8 +2546,8 @@ class StripeTest(StripeTestCase):
         self.assertEqual(realm.plan_type, Realm.PLAN_TYPE_STANDARD_FREE)
 
         expected_message = (
-            "Your organization's request for sponsored hosting has been approved! You have been upgraded to Zulip Cloud Standard, free of charge. :tada:"
-            "\n\nIf you could [list Zulip as a sponsor on your website](/help/linking-to-zulip-website), we would really appreciate it!"
+            "Your organization's request for sponsored hosting has been approved! You have been upgraded to Connect Standard, free of charge. :tada:"
+            "\n\nIf you could [list Connect as a sponsor on your website](/help/linking-to-zulip-website), we would really appreciate it!"
         )
         sender = get_system_bot(settings.NOTIFICATION_BOT, user.realm_id)
         recipient_id = self.example_user("desdemona").recipient_id
@@ -2923,7 +2923,7 @@ class StripeTest(StripeTestCase):
 
         annual_plan_invoice_item_params = {
             "amount": 20 * 80 * 100,
-            "description": "Zulip Cloud Standard - renewal",
+            "description": "Connect Standard - renewal",
             "plan": None,
             "quantity": 20,
             "subscription": None,
@@ -2984,7 +2984,7 @@ class StripeTest(StripeTestCase):
         [invoice_item] = invoice0.get("lines")
         annual_plan_invoice_item_params = {
             "amount": 30 * 80 * 100,
-            "description": "Zulip Cloud Standard - renewal",
+            "description": "Connect Standard - renewal",
             "plan": None,
             "quantity": 30,
             "subscription": None,
@@ -3073,7 +3073,7 @@ class StripeTest(StripeTestCase):
         [invoice_item] = invoice0.get("lines")
         annual_plan_invoice_item_params = {
             "amount": num_licenses * 80 * 100,
-            "description": "Zulip Cloud Standard - renewal",
+            "description": "Connect Standard - renewal",
             "plan": None,
             "quantity": num_licenses,
             "subscription": None,
@@ -3097,7 +3097,7 @@ class StripeTest(StripeTestCase):
         [invoice_item] = invoice0.get("lines")
         annual_plan_invoice_item_params = {
             "amount": num_licenses * 80 * 100,
-            "description": "Zulip Cloud Standard - renewal",
+            "description": "Connect Standard - renewal",
             "plan": None,
             "quantity": num_licenses,
             "subscription": None,
@@ -3326,7 +3326,7 @@ class StripeTest(StripeTestCase):
             "attempt_count": 0,
             "auto_advance": True,
             "collection_method": "send_invoice",
-            "statement_descriptor": "Zulip Cloud Standard",
+            "statement_descriptor": "Connect Standard",
             "status": "open",
             "total": 8000 * 150 + 8000 * 50,
         }
@@ -3335,7 +3335,7 @@ class StripeTest(StripeTestCase):
         [renewal_item, extra_license_item] = invoice.lines
         line_item_params = {
             "amount": 8000 * 150,
-            "description": "Zulip Cloud Standard - renewal",
+            "description": "Connect Standard - renewal",
             "discountable": False,
             "period": {
                 "end": datetime_to_timestamp(self.next_year + timedelta(days=365)),
@@ -3376,7 +3376,7 @@ class StripeTest(StripeTestCase):
             "attempt_count": 0,
             "auto_advance": True,
             "collection_method": "send_invoice",
-            "statement_descriptor": "Zulip Cloud Standard",
+            "statement_descriptor": "Connect Standard",
             "status": "open",
             "total": 8000 * 120,
         }
@@ -3385,7 +3385,7 @@ class StripeTest(StripeTestCase):
         [renewal_item] = invoice.lines
         line_item_params = {
             "amount": 8000 * 120,
-            "description": "Zulip Cloud Standard - renewal",
+            "description": "Connect Standard - renewal",
             "discountable": False,
             "period": {
                 "end": datetime_to_timestamp(self.next_year + timedelta(days=2 * 365)),
@@ -3625,7 +3625,7 @@ class StripeTest(StripeTestCase):
         stripe.InvoiceItem.create(
             currency="usd",
             customer=zulip_customer.stripe_customer_id,
-            description="Zulip Cloud Standard upgrade",
+            description="Connect Standard upgrade",
             discountable=False,
             unit_amount=800,
             quantity=8,
@@ -3635,7 +3635,7 @@ class StripeTest(StripeTestCase):
             collection_method="send_invoice",
             customer=zulip_customer.stripe_customer_id,
             days_until_due=30,
-            statement_descriptor="Zulip Cloud Standard",
+            statement_descriptor="Connect Standard",
         )
         stripe.Invoice.finalize_invoice(stripe_invoice)
 
@@ -3643,7 +3643,7 @@ class StripeTest(StripeTestCase):
         stripe.InvoiceItem.create(
             currency="usd",
             customer=lear_customer.stripe_customer_id,
-            description="Zulip Cloud Standard upgrade",
+            description="Connect Standard upgrade",
             discountable=False,
             unit_amount=800,
             quantity=8,
@@ -3653,7 +3653,7 @@ class StripeTest(StripeTestCase):
             collection_method="send_invoice",
             customer=lear_customer.stripe_customer_id,
             days_until_due=30,
-            statement_descriptor="Zulip Cloud Standard",
+            statement_descriptor="Connect Standard",
         )
         stripe.Invoice.finalize_invoice(stripe_invoice)
 
@@ -3684,7 +3684,7 @@ class StripeTest(StripeTestCase):
                 amount=10000,
                 currency="usd",
                 customer=customer.stripe_customer_id,
-                description="Zulip Cloud Standard",
+                description="Connect Standard",
                 discountable=False,
             )
             invoice = stripe.Invoice.create(
@@ -3692,7 +3692,7 @@ class StripeTest(StripeTestCase):
                 collection_method="send_invoice",
                 customer=customer.stripe_customer_id,
                 days_until_due=DEFAULT_INVOICE_DAYS_UNTIL_DUE,
-                statement_descriptor="Zulip Cloud Standard",
+                statement_descriptor="Connect Standard",
             )
             stripe.Invoice.finalize_invoice(invoice)
             invoices.append(invoice)
@@ -3938,7 +3938,7 @@ class StripeTest(StripeTestCase):
             result = self.client_get("/billing/")
         # Sanity assert to make sure we're testing the subscribed billing page.
         self.assert_in_success_response(
-            ["Your current plan is <strong>Zulip Cloud Standard</strong>."], result
+            ["Your current plan is <strong>Connect Standard</strong>."], result
         )
 
         self.assert_in_success_response(["Request sponsorship"], result)
@@ -4158,13 +4158,13 @@ class EventStatusTest(StripeTestCase):
 
         stripe_session_id = "cs_test_9QCz62mPTJQUwvhcwZHBpJMHmMZiLU512AQHU9g5znkx6NweU3j7kJvY"
         response = self.client_get(
-            "/billing/event_status/", {"stripe_session_id": stripe_session_id}
+            "/settings/billing/event_status/", {"stripe_session_id": stripe_session_id}
         )
         self.assert_in_success_response([f'data-stripe-session-id="{stripe_session_id}"'], response)
 
         stripe_payment_intent_id = "pi_1JGLpnA4KHR4JzRvUfkF9Tn7"
         response = self.client_get(
-            "/billing/event_status/", {"stripe_payment_intent_id": stripe_payment_intent_id}
+            "/settings/billing/event_status/", {"stripe_payment_intent_id": stripe_payment_intent_id}
         )
         self.assert_in_success_response(
             [f'data-stripe-payment-intent-id="{stripe_payment_intent_id}"'], response
@@ -4885,7 +4885,7 @@ class InvoiceTest(StripeTestCase):
             self.assertEqual(item0.get(key), value)
         line_item_params = {
             "amount": 8000 * (self.seat_count + 1),
-            "description": "Zulip Cloud Standard - renewal",
+            "description": "Connect Standard - renewal",
             "discountable": False,
             "period": {
                 "start": datetime_to_timestamp(self.now + timedelta(days=366)),
@@ -4928,7 +4928,7 @@ class InvoiceTest(StripeTestCase):
         [item] = invoice0.lines
         line_item_params = {
             "amount": 100,
-            "description": "Zulip Cloud Standard - renewal",
+            "description": "Connect Standard - renewal",
             "discountable": False,
             "period": {
                 "start": datetime_to_timestamp(self.next_year),

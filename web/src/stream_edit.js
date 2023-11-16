@@ -248,7 +248,9 @@ export function show_settings_for(node) {
         stream_privacy_policy_values: settings_config.stream_privacy_policy_values,
         stream_privacy_policy: stream_data.get_stream_privacy_policy(stream_id),
         check_default_stream: stream_data.is_default_stream_id(stream_id),
-        zulip_plan_is_not_limited: page_params.zulip_plan_is_not_limited,
+        // zulip_plan_is_not_limited: page_params.zulip_plan_is_not_limited,
+        // For OneHash Billing
+        connect_plan_is_not_free: page_params.connect_plan_is_not_free,
         upgrade_text_for_wide_organization_logo:
             page_params.upgrade_text_for_wide_organization_logo,
         is_business_type_org:

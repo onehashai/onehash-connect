@@ -189,7 +189,9 @@ def do_create_realm(
             # Realms with LIMITED plan cannot have spectators enabled.
             # assert plan_type != Realm.PLAN_TYPE_LIMITED
             assert plan_type != Realm.PLAN_TYPE_ONEHASH_FREE
-            assert plan_type is not None or not settings.BILLING_ENABLED
+            # assert plan_type is not None or not settings.BILLING_ENABLED
+            assert plan_type is not None or not settings.ONEHASH_BILLING_ENABLED
+
         kwargs["enable_spectator_access"] = enable_spectator_access
 
     if date_created is not None:
@@ -285,9 +287,13 @@ def do_create_realm(
 
     realm.save(update_fields=["notifications_stream", "signup_notifications_stream"])
 
-    if plan_type is None and settings.BILLING_ENABLED:
+    # if plan_type is None and settings.BILLING_ENABLED:
+    #     # We use acting_user=None for setting the initial plan type.
+    #     # do_change_realm_plan_type(realm, Realm.PLAN_TYPE_LIMITED, acting_user=None)
+    #     do_change_realm_plan_type(realm, Realm.PLAN_TYPE_ONEHASH_FREE, acting_user=None)
+    if plan_type is None and settings.ONEHASH_BILLING_ENABLED:
         # We use acting_user=None for setting the initial plan type.
-        # do_change_realm_plan_type(realm, Realm.PLAN_TYPE_LIMITED, acting_user=None)
+        # do_change_realm_plan_type(realm, Realm.PLAN_TYPE_ONEHASH_FREE, acting_user=None)
         do_change_realm_plan_type(realm, Realm.PLAN_TYPE_ONEHASH_FREE, acting_user=None)
 
     if prereg_realm is not None:

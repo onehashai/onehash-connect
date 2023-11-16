@@ -613,7 +613,9 @@ export function setup_page(callback) {
             stream_privacy_policy,
             stream_post_policy_values: settings_config.stream_post_policy_values,
             check_default_stream: false,
-            zulip_plan_is_not_limited: page_params.zulip_plan_is_not_limited,
+            // zulip_plan_is_not_limited: page_params.zulip_plan_is_not_limited,
+            // For OneHash Billing
+            connect_plan_is_not_free: page_params.connect_plan_is_not_free,
             org_level_message_retention_setting:
                 stream_edit.get_display_text_for_realm_message_retention_setting(),
             upgrade_text_for_wide_organization_logo:
@@ -621,7 +623,9 @@ export function setup_page(callback) {
             is_business_type_org:
                 page_params.realm_org_type === settings_config.all_org_type_values.business.code,
             disable_message_retention_setting:
-                !page_params.zulip_plan_is_not_limited || !page_params.is_owner,
+                // !page_params.zulip_plan_is_not_limited || !page_params.is_owner,
+                !page_params.connect_plan_is_not_free || !page_params.is_owner,
+
         };
 
         const rendered = render_stream_settings_overlay(template_data);
