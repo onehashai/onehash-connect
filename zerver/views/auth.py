@@ -394,7 +394,7 @@ def login_or_register_remote_user(request: HttpRequest, result: ExternalAuthResu
     #     if is_free_trial_offer_enabled():
     #         redirect_to = "{}?onboarding=true".format(reverse("initial_upgrade"))
     if is_realm_creation is not None and settings.ONEHASH_BILLING_ENABLED:
-        from corporate.lib.stripe import is_free_trial_offer_enabled
+        from onehash_corporate.lib.stripe import is_free_trial_offer_enabled
 
         if is_free_trial_offer_enabled():
             redirect_to = "{}?onboarding=true".format(reverse("initial_upgrade"))
