@@ -560,7 +560,7 @@ def do_send_realm_reactivation_email(realm: Realm, *, acting_user: Optional[User
         "confirmation_url": url,
         "realm_uri": realm.uri,
         "realm_name": realm.name,
-        "corporate_enabled": settings.CORPORATE_ENABLED,
+        # "corporate_enabled": settings.CORPORATE_ENABLED,
         "onehash_corporate_enabled": settings.ONEHASH_CORPORATE_ENABLED,
 
     }
