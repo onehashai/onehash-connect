@@ -109,7 +109,13 @@
                     <i class="fa fa-circle-o" aria-hidden="true"></i>{{t 'About Connect' }}
                 </a>
             </li>
-            {{#if corporate_enabled}}
+            {{!-- {{#if corporate_enabled}}
+            <li role="presentation">
+                <a href="/help/contact-support" target="_blank" rel="noopener noreferrer" role="menuitem">
+                    <i class="fa fa-envelope" aria-hidden="true"></i> {{t 'Contact support' }}
+                </a>
+            </li> --}}
+            {{#if onehash_corporate_enabled}}
             <li role="presentation">
                 <a href="/help/contact-support" target="_blank" rel="noopener noreferrer" role="menuitem">
                     <i class="fa fa-envelope" aria-hidden="true"></i> {{t 'Contact support' }}
@@ -135,19 +141,13 @@
                     <i class="fa fa-sitemap" aria-hidden="true"></i> {{t 'API documentation' }}
                 </a>
             </li>
-            {{!-- {{#if show_billing}}
+            {{#if show_billing}}
             <li role="presentation" class="hidden-for-spectators">
-                <a href="/billing/" target="_blank" rel="noopener noreferrer" role="menuitem">
-                    <i class="fa fa-credit-card" aria-hidden="true"></i> {{t 'Billing' }}
-                </a>
-            </li>
-            {{/if}} --}}
-             {{!-- Billing --}}
-             {{!-- <li role="presentation" class="hidden-for-spectators">
                 <a href="/settings/billing/" target="_blank" rel="noopener noreferrer" role="menuitem">
                     <i class="fa fa-credit-card" aria-hidden="true"></i> {{t 'Billing' }}
                 </a>
-            </li> --}}
+            </li>
+            {{/if}}
             {{#if promote_sponsoring_zulip}}
             <li role="presentation" class="hidden-for-spectators">
                 <a target="_blank" rel="noopener noreferrer" role="menuitem">

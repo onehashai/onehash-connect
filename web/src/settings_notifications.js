@@ -112,7 +112,12 @@ export function set_enable_digest_emails_visibility($container, for_realm_settin
 
 export function set_enable_marketing_emails_visibility() {
     const $container = $("#user-notification-settings");
-    if (page_params.corporate_enabled) {
+    // if (page_params.corporate_enabled) {
+    //     $container.find(".enable_marketing_emails_label").parent().show();
+    // } else {
+    //     $container.find(".enable_marketing_emails_label").parent().hide();
+    // }
+    if (page_params.onehash_corporate_enabled) {
         $container.find(".enable_marketing_emails_label").parent().show();
     } else {
         $container.find(".enable_marketing_emails_label").parent().hide();

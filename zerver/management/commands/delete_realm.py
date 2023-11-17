@@ -33,16 +33,28 @@ realms used for testing; consider using deactivate_realm instead."""
 
         print(f"This realm has {user_count} users and {message_count} messages.\n")
 
-        if settings.BILLING_ENABLED:
+        # if settings.BILLING_ENABLED:
+        #     # Deleting a Realm object also deletes associating billing
+        #     # metadata in an invariant-violating way, so we should
+        #     # never use this tool for a realm with billing set up.
+        #     from corporate.models import CustomerPlan, get_customer_by_realm
+
+        #     customer = get_customer_by_realm(realm)
+        #     if customer and (
+        #         customer.stripe_customer_id
+        #         or CustomerPlan.objects.filter(customer=customer).exists()
+        #     ):
+        #         raise CommandError("This realm has had a billing relationship associated with it!")
+        if settings.ONEHASH_BILLING_ENABLED:
             # Deleting a Realm object also deletes associating billing
             # metadata in an invariant-violating way, so we should
             # never use this tool for a realm with billing set up.
-            from corporate.models import CustomerPlan, get_customer_by_realm
+            from onehash_corporate.models import CustomerPlans, get_customer_by_realm
 
             customer = get_customer_by_realm(realm)
             if customer and (
                 customer.stripe_customer_id
-                or CustomerPlan.objects.filter(customer=customer).exists()
+                or CustomerPlans.objects.filter(customer=customer).exists()
             ):
                 raise CommandError("This realm has had a billing relationship associated with it!")
 

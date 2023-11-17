@@ -200,12 +200,18 @@ export function get_gear_menu_content_context() {
         is_business_org: page_params.realm_org_type === 10,
         is_education_org: page_params.realm_org_type === 30 || page_params.realm_org_type === 35,
         standard_plan_name: "Zulip Cloud Standard",
+        // For OneHash Billing
+        is_plan_onehash_free: page_params.realm_plan_type === 11,
+        is_plan_onehash_standard: page_params.realm_plan_type === 12,
+        onehash_standard_plan_name: "Connect Standard",
         server_needs_upgrade: page_params.server_needs_upgrade,
         version_display_string: gear_menu_util.version_display_string(),
         apps_page_url: page_params.apps_page_url,
         can_create_multiuse_invite: settings_data.user_can_create_multiuse_invite(),
         can_invite_users_by_email: settings_data.user_can_invite_users_by_email(),
         corporate_enabled: page_params.corporate_enabled,
+        // For OneHash Billing
+        onehash_corporate_enabled: page_params.onehash_corporate_enabled,
         is_guest: page_params.is_guest,
         login_link: page_params.development_environment ? "/devlogin/" : "/login/",
         promote_sponsoring_zulip: page_params.promote_sponsoring_zulip,

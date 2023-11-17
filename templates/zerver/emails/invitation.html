@@ -16,7 +16,7 @@
     <a class="button" href="{{ activate_url }}">{{ _("Complete registration") }}</a>
 </p>
 <p>
-    {% if corporate_enabled %}
+    {% if onehash_corporate_enabled %}
         {{macros.contact_us_zulip_cloud(support_email)}}
     {% else %}
         {{macros.contact_us_self_hosted(support_email)}}

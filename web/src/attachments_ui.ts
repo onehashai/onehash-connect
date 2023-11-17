@@ -82,7 +82,8 @@ function set_upload_space_stats(): void {
         return;
     }
     const args = {
-        show_upgrade_message: page_params.realm_plan_type === 2,
+        // show_upgrade_message: page_params.realm_plan_type === 2,
+        show_upgrade_message: page_params.realm_plan_type === 11,
         percent_used: percentage_used_space(upload_space_used),
         upload_quota: bytes_to_size(page_params.realm_upload_quota_mib, true),
     };

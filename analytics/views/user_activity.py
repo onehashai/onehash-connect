@@ -13,7 +13,9 @@ from analytics.views.activity_common import (
 from zerver.decorator import require_server_admin
 from zerver.models import UserActivity, UserProfile, get_user_profile_by_id
 
-if settings.BILLING_ENABLED:
+# if settings.BILLING_ENABLED:
+#     pass
+if settings.ONEHASH_BILLING_ENABLED:
     pass
 
 

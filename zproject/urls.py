@@ -823,7 +823,15 @@ if not settings.CORPORATE_ENABLED:  # nocoverage
     # urls.py is not readily reloaded in Django tests. See the block
     # comment inside apps_view for details.
     urls += [
-        path("apps/", RedirectView.as_view(url="https://zulip.com/apps/", permanent=True)),
+        path("apps/", RedirectView.as_view(url="https://www.onehash.ai/", permanent=True)),
+    ]
+
+if not settings.ONEHASH_CORPORATE_ENABLED:  # nocoverage
+    # This conditional behavior cannot be tested directly, since
+    # urls.py is not readily reloaded in Django tests. See the block
+    # comment inside apps_view for details.
+    urls += [
+        path("apps/", RedirectView.as_view(url="https://www.onehash.ai/", permanent=True)),
     ]
 
 # Two-factor URLs
@@ -846,3 +854,4 @@ urls += [path("health", health)]
 # reverse URL mapping points to i18n URLs which causes the frontend
 # tests to fail
 urlpatterns = i18n_patterns(*i18n_urls) + urls + legacy_urls
+

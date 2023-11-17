@@ -15,6 +15,8 @@ def is_reserved_subdomain(subdomain: str) -> bool:
         return True
     if settings.CORPORATE_ENABLED and ("zulip" in subdomain or "kandra" in subdomain):
         return True
+    if settings.ONEHASH_CORPORATE_ENABLED and ("onehash" in subdomain):
+        return True
     return False
 
 

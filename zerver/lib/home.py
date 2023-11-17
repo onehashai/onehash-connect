@@ -77,19 +77,33 @@ def promote_sponsoring_zulip_in_realm(realm: Realm) -> bool:
 def get_billing_info(user_profile: Optional[UserProfile]) -> BillingInfo:
     show_billing = False
     show_plans = False
-    if settings.CORPORATE_ENABLED and user_profile is not None:
+    # if settings.CORPORATE_ENABLED and user_profile is not None:
+    #     if user_profile.has_billing_access:
+    #         from corporate.models import CustomerPlan, get_customer_by_realm
+
+    #         customer = get_customer_by_realm(user_profile.realm)
+    #         if customer is not None:
+    #             if customer.sponsorship_pending:
+    #                 show_billing = True
+    #             elif CustomerPlan.objects.filter(customer=customer).exists():
+    #                 show_billing = True
+
+    #     if not user_profile.is_guest and user_profile.realm.plan_type == Realm.PLAN_TYPE_LIMITED:
+    #         show_plans = True
+    if settings.ONEHASH_CORPORATE_ENABLED and user_profile is not None:
         if user_profile.has_billing_access:
-            from corporate.models import CustomerPlan, get_customer_by_realm
+            from onehash_corporate.models import CustomerPlans, get_customer_by_realm
 
             customer = get_customer_by_realm(user_profile.realm)
             if customer is not None:
                 if customer.sponsorship_pending:
                     show_billing = True
-                elif CustomerPlan.objects.filter(customer=customer).exists():
+                elif CustomerPlans.objects.filter(customer=customer).exists():
                     show_billing = True
 
-        if not user_profile.is_guest and user_profile.realm.plan_type == Realm.PLAN_TYPE_LIMITED:
+        if not user_profile.is_guest and user_profile.realm.plan_type == Realm.PLAN_TYPE_ONEHASH_FREE:
             show_plans = True
+
 
     return BillingInfo(
         show_billing=show_billing,
@@ -190,6 +204,8 @@ def build_page_params_for_home_page_load(
         warn_no_email=settings.WARN_NO_EMAIL,
         # Only show marketing email settings if on Zulip Cloud
         corporate_enabled=settings.CORPORATE_ENABLED,
+        # For OneHash Billing
+        onehash_corporate_enabled=settings.ONEHASH_CORPORATE_ENABLED,
         ## Misc. extra data.
         language_list=get_language_list(),
         needs_tutorial=needs_tutorial,

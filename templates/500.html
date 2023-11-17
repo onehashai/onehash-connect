@@ -28,7 +28,7 @@
                         {% trans %}
                         This page will reload automatically when service is restored.
                         {% endtrans %}
-                        {% if corporate_enabled %}
+                        {% if onehash_corporate_enabled %}
                             {% trans %}
                             In the meantime, you can <a href="mailto:{{support_email}}">contact OneHash Connect support</a>.
                             {% endtrans %}
@@ -39,9 +39,9 @@
                             {% endtrans %}
                         {% endif %}
                     </p>
-                    {% if not corporate_enabled %}
+                    {% if not onehash_corporate_enabled %}
                         <p>
-                            {% trans troubleshooting_url="https://zulip.readthedocs.io/en/latest/production/troubleshooting.html" %}
+                            {% trans troubleshooting_url="https://www.onehash.ai" %}
                             If you administer this server, you may want to check out the
                             <a href="{{troubleshooting_url}}">OneHash Connect server troubleshooting guide</a>.
                             {% endtrans %}

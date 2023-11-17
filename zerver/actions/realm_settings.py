@@ -38,8 +38,10 @@ from zerver.models import (
 )
 from zerver.tornado.django_api import send_event, send_event_on_commit
 
-if settings.BILLING_ENABLED:
-    from corporate.lib.stripe import downgrade_now_without_creating_additional_invoices
+# if settings.BILLING_ENABLED:
+#     from corporate.lib.stripe import downgrade_now_without_creating_additional_invoices
+if settings.ONEHASH_BILLING_ENABLED:
+    from onehash_corporate.lib.stripe import downgrade_now_without_creating_additional_invoices
 
 
 def active_humans_in_realm(realm: Realm) -> QuerySet[UserProfile]:
@@ -308,7 +310,9 @@ def do_deactivate_realm(realm: Realm, *, acting_user: Optional[UserProfile]) -> 
     realm.deactivated = True
     realm.save(update_fields=["deactivated"])
 
-    if settings.BILLING_ENABLED:
+    # if settings.BILLING_ENABLED:
+    #     downgrade_now_without_creating_additional_invoices(realm)
+    if settings.ONEHASH_BILLING_ENABLED:
         downgrade_now_without_creating_additional_invoices(realm)
 
     event_time = timezone_now()
@@ -388,7 +392,9 @@ def do_delete_all_realm_attachments(realm: Realm, *, batch_size: int = 1000) -> 
 
 
 def do_scrub_realm(realm: Realm, *, acting_user: Optional[UserProfile]) -> None:
-    if settings.BILLING_ENABLED:
+    # if settings.BILLING_ENABLED:
+    #     downgrade_now_without_creating_additional_invoices(realm)
+    if settings.ONEHASH_BILLING_ENABLED:
         downgrade_now_without_creating_additional_invoices(realm)
 
     users = UserProfile.objects.filter(realm=realm)
@@ -469,8 +475,11 @@ def do_change_realm_plan_type(
 ) -> None:
     old_value = realm.plan_type
 
-    if plan_type == Realm.PLAN_TYPE_LIMITED:
-        # We do not allow public access on limited plans.
+    # if plan_type == Realm.PLAN_TYPE_LIMITED:
+    #     # We do not allow public access on limited plans.
+    #     do_set_realm_property(realm, "enable_spectator_access", False, acting_user=acting_user)
+    if plan_type == Realm.PLAN_TYPE_ONEHASH_FREE:
+        # We do not allow public access on free plans.
         do_set_realm_property(realm, "enable_spectator_access", False, acting_user=acting_user)
 
     realm.plan_type = plan_type
@@ -502,6 +511,16 @@ def do_change_realm_plan_type(
     elif plan_type == Realm.PLAN_TYPE_LIMITED:
         realm.max_invites = settings.INVITES_DEFAULT_REALM_DAILY_MAX
         realm.message_visibility_limit = Realm.MESSAGE_VISIBILITY_LIMITED
+        realm.upload_quota_gb = Realm.UPLOAD_QUOTA_LIMITED
+    # Onehash Free Plan limit
+    elif plan_type == Realm.PLAN_TYPE_ONEHASH_FREE:
+        realm.max_invites = settings.INVITES_DEFAULT_REALM_DAILY_MAX
+        realm.message_visibility_limit = Realm.MESSAGE_VISIBILITY_LIMITED
+        realm.upload_quota_gb = Realm.UPLOAD_QUOTA_LIMITED
+    #OneHash Standard Plan limit
+    elif plan_type == Realm.PLAN_TYPE_ONEHASH_STANDARD:
+        realm.max_invites = settings.INVITES_DEFAULT_REALM_DAILY_MAX
+        realm.message_visibility_limit = None
         realm.upload_quota_gb = Realm.UPLOAD_QUOTA_LIMITED
     else:
         raise AssertionError("Invalid plan type")
@@ -542,6 +561,8 @@ def do_send_realm_reactivation_email(realm: Realm, *, acting_user: Optional[User
         "realm_uri": realm.uri,
         "realm_name": realm.name,
         "corporate_enabled": settings.CORPORATE_ENABLED,
+        "onehash_corporate_enabled": settings.ONEHASH_CORPORATE_ENABLED,
+
     }
     language = realm.default_language
     send_email_to_admins(

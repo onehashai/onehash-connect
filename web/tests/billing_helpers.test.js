@@ -13,7 +13,7 @@ const $ = require("./lib/zjquery");
 const {page_params} = require("./lib/zpage_billing_params");
 
 const template = fs.readFileSync(
-    path.resolve(__dirname, "../../templates/onehash_billing/connect_upgrade.html"),
+    path.resolve(__dirname, "../../templates/onehash_corporate/connect_upgrade.html"),
     "utf8",
 );
 const dom = new JSDOM(template, {

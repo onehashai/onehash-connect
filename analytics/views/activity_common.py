@@ -23,9 +23,10 @@ else:  # nocoverage
 eastern_tz = zoneinfo.ZoneInfo("America/New_York")
 
 
-if settings.BILLING_ENABLED:
+# if settings.BILLING_ENABLED:
+#     pass
+if settings.ONEHASH_BILLING_ENABLED:
     pass
-
 
 def make_table(
     title: str, cols: Sequence[str], rows: Sequence[Any], has_row_class: bool = False

@@ -115,14 +115,14 @@ THE SOFTWARE.
 }
 .btn-info {
   color: #fff;
-  background-color: #5bc0de;
-  border-color: #46b8da;
+  background-color: #007ee5;
+  border-color: #171717;
 }
 .btn-info:hover,
 .btn-info:focus,
 .btn-info:active {
   color: #fff;
-  background-color: #39b3d7;
+  background-color: #0d6cba;
   border-color: #269abc;
 }
 .btn-warning {

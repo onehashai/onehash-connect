@@ -50,9 +50,10 @@ from zerver.models import (
 )
 from zerver.tornado.django_api import send_event_on_commit
 
-if settings.BILLING_ENABLED:
-    from corporate.lib.stripe import update_license_ledger_if_needed
-
+# if settings.BILLING_ENABLED:
+#     from corporate.lib.stripe import update_license_ledger_if_needed
+if settings.ONEHASH_BILLING_ENABLED:
+    from onehash_corporate.lib.stripe import update_license_ledger_if_needed
 
 MAX_NUM_ONBOARDING_MESSAGES = 1000
 MAX_NUM_ONBOARDING_UNREAD_MESSAGES = 20
@@ -107,8 +108,20 @@ def notify_new_user(user_profile: UserProfile) -> None:
                 user=silent_mention_syntax_for_user(user_profile), user_count=user_count
             )
 
-        if settings.BILLING_ENABLED:
-            from corporate.lib.registration import generate_licenses_low_warning_message_if_required
+        # if settings.BILLING_ENABLED:
+        #     from corporate.lib.registration import generate_licenses_low_warning_message_if_required
+
+        #     licenses_low_warning_message = generate_licenses_low_warning_message_if_required(
+        #         user_profile.realm
+        #     )
+        #     if licenses_low_warning_message is not None:
+        #         message += "\n"
+        #         message += licenses_low_warning_message
+
+        # send_message_to_signup_notification_stream(sender, user_profile.realm, message)
+
+        if settings.ONEHASH_BILLING_ENABLED:
+            from onehash_corporate.lib.registration import generate_licenses_low_warning_message_if_required
 
             licenses_low_warning_message = generate_licenses_low_warning_message_if_required(
                 user_profile.realm
@@ -118,6 +131,7 @@ def notify_new_user(user_profile: UserProfile) -> None:
                 message += licenses_low_warning_message
 
         send_message_to_signup_notification_stream(sender, user_profile.realm, message)
+
 
 
 def set_up_streams_for_new_human_user(
@@ -473,7 +487,9 @@ def do_create_user(
             user_profile.is_bot,
             event_time,
         )
-        if settings.BILLING_ENABLED:
+        # if settings.BILLING_ENABLED:
+        #     update_license_ledger_if_needed(user_profile.realm, event_time)
+        if settings.ONEHASH_BILLING_ENABLED:
             update_license_ledger_if_needed(user_profile.realm, event_time)
 
         system_user_group = get_system_user_group_for_user(user_profile)
@@ -583,7 +599,9 @@ def do_activate_mirror_dummy_user(
             user_profile.is_bot,
             event_time,
         )
-        if settings.BILLING_ENABLED:
+        # if settings.BILLING_ENABLED:
+        #     update_license_ledger_if_needed(user_profile.realm, event_time)
+        if settings.ONEHASH_BILLING_ENABLED:
             update_license_ledger_if_needed(user_profile.realm, event_time)
 
     notify_created_user(user_profile)
@@ -635,7 +653,9 @@ def do_reactivate_user(user_profile: UserProfile, *, acting_user: Optional[UserP
         user_profile.is_bot,
         event_time,
     )
-    if settings.BILLING_ENABLED:
+    # if settings.BILLING_ENABLED:
+    #     update_license_ledger_if_needed(user_profile.realm, event_time)
+    if settings.ONEHASH_BILLING_ENABLED:
         update_license_ledger_if_needed(user_profile.realm, event_time)
 
     notify_created_user(user_profile)

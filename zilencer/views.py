@@ -18,7 +18,8 @@ from django.views.decorators.csrf import csrf_exempt
 from pydantic import BaseModel, ConfigDict
 
 from analytics.lib.counts import COUNT_STATS
-from corporate.lib.stripe import do_deactivate_remote_server
+# from corporate.lib.stripe import do_deactivate_remote_server
+from onehash_corporate.lib.stripe import do_deactivate_remote_server
 from zerver.decorator import require_post
 from zerver.lib.exceptions import JsonableError
 from zerver.lib.push_notifications import (

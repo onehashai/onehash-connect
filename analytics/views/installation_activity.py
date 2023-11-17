@@ -29,12 +29,16 @@ from zerver.lib.request import has_request_variables
 from zerver.lib.timestamp import timestamp_to_datetime
 from zerver.models import Realm, UserActivityInterval, get_org_type_display_name
 
-if settings.BILLING_ENABLED:
-    from corporate.lib.stripe import (
+# if settings.BILLING_ENABLED:
+#     from corporate.lib.stripe import (
+#         estimate_annual_recurring_revenue_by_realm,
+#         get_realms_to_default_discount_dict,
+#     )
+if settings.ONEHASH_BILLING_ENABLED:
+    from onehash_corporate.lib.stripe import (
         estimate_annual_recurring_revenue_by_realm,
         get_realms_to_default_discount_dict,
     )
-
 
 def get_realm_day_counts() -> Dict[str, Dict[str, Markup]]:
     # Uses index: zerver_message_date_sent_3b5b05d8
@@ -204,7 +208,32 @@ def realm_summary_table(realm_minutes: Dict[str, float]) -> str:
 
     # estimate annual subscription revenue
     total_arr = 0
-    if settings.BILLING_ENABLED:
+    # if settings.BILLING_ENABLED:
+    #     estimated_arrs = estimate_annual_recurring_revenue_by_realm()
+    #     realms_to_default_discount = get_realms_to_default_discount_dict()
+
+    #     for row in rows:
+    #         row["plan_type_string"] = get_plan_name(row["plan_type"])
+
+    #         string_id = row["string_id"]
+
+    #         if string_id in estimated_arrs:
+    #             row["arr"] = estimated_arrs[string_id]
+
+    #         if row["plan_type"] in [Realm.PLAN_TYPE_STANDARD, Realm.PLAN_TYPE_PLUS]:
+    #             row["effective_rate"] = 100 - int(realms_to_default_discount.get(string_id, 0))
+    #         elif row["plan_type"] == Realm.PLAN_TYPE_STANDARD_FREE:
+    #             row["effective_rate"] = 0
+    #         elif (
+    #             row["plan_type"] == Realm.PLAN_TYPE_LIMITED
+    #             and string_id in realms_to_default_discount
+    #         ):
+    #             row["effective_rate"] = 100 - int(realms_to_default_discount[string_id])
+    #         else:
+    #             row["effective_rate"] = ""
+
+    #     total_arr += sum(estimated_arrs.values())
+    if settings.ONEHASH_BILLING_ENABLED:
         estimated_arrs = estimate_annual_recurring_revenue_by_realm()
         realms_to_default_discount = get_realms_to_default_discount_dict()
 
@@ -290,7 +319,9 @@ def realm_summary_table(realm_minutes: Dict[str, float]) -> str:
             rows=rows,
             num_active_sites=num_active_sites,
             utctime=now.strftime("%Y-%m-%d %H:%M %Z"),
-            billing_enabled=settings.BILLING_ENABLED,
+            # billing_enabled=settings.BILLING_ENABLED,
+            billing_enabled=settings.ONEHASH_BILLING_ENABLED,
+
         ),
     )
     return content

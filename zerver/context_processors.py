@@ -46,6 +46,7 @@ def common_context(user: UserProfile) -> Dict[str, Any]:
         "external_host": settings.EXTERNAL_HOST,
         "user_name": user.full_name,
         "corporate_enabled": settings.CORPORATE_ENABLED,
+        "onehash_corporate_enabled": settings.ONEHASH_CORPORATE_ENABLED,
     }
 
 
@@ -76,9 +77,13 @@ def get_valid_realm_from_request(request: HttpRequest) -> Realm:
 
 
 def get_apps_page_url() -> str:
-    if settings.CORPORATE_ENABLED:
+    # if settings.CORPORATE_ENABLED:
+    #     return "/apps/"
+    # return "https://zulip.com/apps/"
+
+    if settings.ONEHASH_CORPORATE_ENABLED:
         return "/apps/"
-    return "https://zulip.com/apps/"
+    return "https://www.onehash.ai/"
 
 
 def is_isolated_page(request: HttpRequest) -> bool:
@@ -133,7 +138,7 @@ def zulip_default_context(request: HttpRequest) -> Dict[str, Any]:
 
     # Used to remove links to Zulip docs and landing page from footer of self-hosted pages.
     corporate_enabled = settings.CORPORATE_ENABLED
-
+    onehash_corporate_enabled = settings.ONEHASH_CORPORATE_ENABLED
     support_email = FromAddress.SUPPORT
     support_email_html_tag = SafeString(
         f'<a href="mailto:{escape(support_email)}">{escape(support_email)}</a>'
@@ -187,6 +192,8 @@ def zulip_default_context(request: HttpRequest) -> Dict[str, Any]:
         "is_isolated_page": is_isolated_page(request),
         "default_page_params": default_page_params,
         "corporate_enabled": corporate_enabled,
+        "onehash_corporate_enabled": onehash_corporate_enabled,
+
     }
 
     context["PAGE_METADATA_URL"] = f"{realm_uri}{request.path}"

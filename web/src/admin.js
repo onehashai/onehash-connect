@@ -156,7 +156,9 @@ export function build_page() {
         realm_digest_emails_enabled: page_params.realm_digest_emails_enabled,
         realm_digest_weekday: page_params.realm_digest_weekday,
         development: page_params.development_environment,
-        zulip_plan_is_not_limited: page_params.zulip_plan_is_not_limited,
+        // zulip_plan_is_not_limited: page_params.zulip_plan_is_not_limited,
+        // For OneHash Billing
+        connect_plan_is_not_free: page_params.connect_plan_is_not_free,
         upgrade_text_for_wide_organization_logo:
             page_params.upgrade_text_for_wide_organization_logo,
         realm_default_external_accounts: page_params.realm_default_external_accounts,
@@ -201,7 +203,9 @@ export function build_page() {
             settings_config.create_web_public_stream_policy_values,
         disable_enable_spectator_access_setting:
             !page_params.server_web_public_streams_enabled ||
-            !page_params.zulip_plan_is_not_limited,
+            // !page_params.zulip_plan_is_not_limited,
+            // For OneHash Billing
+            !page_params.connect_plan_is_not_free,
         realm_push_notifications_enabled: page_params.realm_push_notifications_enabled,
         realm_org_type_values: settings_org.get_org_type_dropdown_options(),
         realm_want_advertise_in_communities_directory:

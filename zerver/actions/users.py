@@ -44,8 +44,10 @@ from zerver.models import (
 )
 from zerver.tornado.django_api import send_event, send_event_on_commit
 
-if settings.BILLING_ENABLED:
-    from corporate.lib.stripe import update_license_ledger_if_needed
+# if settings.BILLING_ENABLED:
+#     from corporate.lib.stripe import update_license_ledger_if_needed
+if settings.ONEHASH_BILLING_ENABLED:
+    from onehash_corporate.lib.stripe import update_license_ledger_if_needed
 
 
 def do_delete_user(user_profile: UserProfile, *, acting_user: Optional[UserProfile]) -> None:
@@ -294,7 +296,9 @@ def do_deactivate_user(
             event_time,
             increment=-1,
         )
-        if settings.BILLING_ENABLED:
+        # if settings.BILLING_ENABLED:
+        #     update_license_ledger_if_needed(user_profile.realm, event_time)
+        if settings.ONEHASH_BILLING_ENABLED:
             update_license_ledger_if_needed(user_profile.realm, event_time)
 
         transaction.on_commit(lambda: delete_user_sessions(user_profile))

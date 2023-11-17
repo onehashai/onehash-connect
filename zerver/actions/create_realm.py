@@ -35,9 +35,11 @@ from zerver.models import (
 )
 from zproject.backends import all_implemented_backend_names
 
-if settings.CORPORATE_ENABLED:
-    from corporate.lib.support import get_support_url
+# if settings.CORPORATE_ENABLED:
+#     from corporate.lib.support import get_support_url
 
+if settings.ONEHASH_CORPORATE_ENABLED:
+    from onehash_corporate.lib.support import get_support_url
 
 def do_change_realm_subdomain(
     realm: Realm,
@@ -187,8 +189,11 @@ def do_create_realm(
     if enable_spectator_access is not None:
         if enable_spectator_access:
             # Realms with LIMITED plan cannot have spectators enabled.
-            assert plan_type != Realm.PLAN_TYPE_LIMITED
-            assert plan_type is not None or not settings.BILLING_ENABLED
+            # assert plan_type != Realm.PLAN_TYPE_LIMITED
+            assert plan_type != Realm.PLAN_TYPE_ONEHASH_FREE
+            # assert plan_type is not None or not settings.BILLING_ENABLED
+            assert plan_type is not None or not settings.ONEHASH_BILLING_ENABLED
+
         kwargs["enable_spectator_access"] = enable_spectator_access
 
     if date_created is not None:
@@ -284,9 +289,14 @@ def do_create_realm(
 
     realm.save(update_fields=["notifications_stream", "signup_notifications_stream"])
 
-    if plan_type is None and settings.BILLING_ENABLED:
+    # if plan_type is None and settings.BILLING_ENABLED:
+    #     # We use acting_user=None for setting the initial plan type.
+    #     # do_change_realm_plan_type(realm, Realm.PLAN_TYPE_LIMITED, acting_user=None)
+    #     do_change_realm_plan_type(realm, Realm.PLAN_TYPE_ONEHASH_FREE, acting_user=None)
+    if plan_type is None and settings.ONEHASH_BILLING_ENABLED:
         # We use acting_user=None for setting the initial plan type.
-        do_change_realm_plan_type(realm, Realm.PLAN_TYPE_LIMITED, acting_user=None)
+        # do_change_realm_plan_type(realm, Realm.PLAN_TYPE_ONEHASH_FREE, acting_user=None)
+        do_change_realm_plan_type(realm, Realm.PLAN_TYPE_ONEHASH_FREE, acting_user=None)
 
     if prereg_realm is not None:
         prereg_realm.status = confirmation_settings.STATUS_USED
@@ -294,7 +304,7 @@ def do_create_realm(
         prereg_realm.save(update_fields=["status", "created_realm"])
 
     # Send a notification to the admin realm when a new organization registers.
-    if settings.CORPORATE_ENABLED:
+    if settings.ONEHASH_CORPORATE_ENABLED:
         admin_realm = get_realm(settings.SYSTEM_BOT_REALM)
         sender = get_system_bot(settings.NOTIFICATION_BOT, admin_realm.id)
 
@@ -323,6 +333,6 @@ def do_create_realm(
             # If the signups stream hasn't been created in the admin
             # realm, don't auto-create it to send to it; just do nothing.
             pass
-
+    
     setup_realm_internal_bots(realm)
     return realm

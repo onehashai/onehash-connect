@@ -111,15 +111,15 @@ export function update_charged_amount(prices: Prices, schedule: keyof Prices): v
 
 export function update_discount_details(organization_type: keyof DiscountDetails): void {
     let discount_notice =
-        "Your organization may be eligible for a discount on Zulip Cloud Standard. Organizations whose members are not employees are generally eligible.";
+        "Your organization may be eligible for a discount on Connect Standard. Organizations whose members are not employees are generally eligible.";
     const discount_details: DiscountDetails = {
-        opensource: "Zulip Cloud Standard is free for open-source projects.",
-        research: "Zulip Cloud Standard is free for academic research.",
-        nonprofit: "Zulip Cloud Standard is discounted 85%+ for registered non-profits.",
-        event: "Zulip Cloud Standard is free for academic conferences and most non-profit events.",
-        education: "Zulip Cloud Standard is discounted 85% for education.",
+        opensource: "Connect Standard is free for open-source projects.",
+        research: "Connect Standard is free for academic research.",
+        nonprofit: "Connect Standard is discounted 85%+ for registered non-profits.",
+        event: "Connect Standard is free for academic conferences and most non-profit events.",
+        education: "Connect Standard is discounted 85% for education.",
         education_nonprofit:
-            "Zulip Cloud Standard is discounted 90% for education non-profits with online purchase.",
+            "Connect Standard is discounted 90% for education non-profits with online purchase.",
     };
     if (discount_details[organization_type]) {
         discount_notice = discount_details[organization_type];

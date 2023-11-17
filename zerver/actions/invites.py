@@ -65,6 +65,7 @@ def do_send_confirmation_email(
         "activate_url": activation_url,
         "referrer_realm_name": referrer.realm.name,
         "corporate_enabled": settings.CORPORATE_ENABLED,
+        "onehash_corporate_enabled": settings.ONEHASH_CORPORATE_ENABLED,
     }
     send_email(
         "zerver/emails/invitation",
@@ -95,7 +96,9 @@ def too_many_recent_realm_invites(realm: Realm, num_invitees: int) -> bool:
     if num_invitees + recent_invites > realm.max_invites:
         return True
 
-    if realm.plan_type != Realm.PLAN_TYPE_LIMITED:
+    # if realm.plan_type != Realm.PLAN_TYPE_LIMITED:
+    #     return False
+    if realm.plan_type != Realm.PLAN_TYPE_ONEHASH_FREE:
         return False
     if realm.max_invites != settings.INVITES_DEFAULT_REALM_DAILY_MAX:
         return False
@@ -220,8 +223,19 @@ def do_invite_users(
     num_invites = len(invitee_emails)
 
     check_invite_limit(user_profile.realm, num_invites)
-    if settings.BILLING_ENABLED:
-        from corporate.lib.registration import check_spare_licenses_available_for_inviting_new_users
+    # if settings.BILLING_ENABLED:
+    #     from corporate.lib.registration import check_spare_licenses_available_for_inviting_new_users
+
+    #     if invite_as == PreregistrationUser.INVITE_AS["GUEST_USER"]:
+    #         check_spare_licenses_available_for_inviting_new_users(
+    #             user_profile.realm, extra_guests_count=num_invites
+    #         )
+    #     else:
+    #         check_spare_licenses_available_for_inviting_new_users(
+    #             user_profile.realm, extra_non_guests_count=num_invites
+    #         )
+    if settings.ONEHASH_BILLING_ENABLED:
+        from onehash_corporate.lib.registration import check_spare_licenses_available_for_inviting_new_users
 
         if invite_as == PreregistrationUser.INVITE_AS["GUEST_USER"]:
             check_spare_licenses_available_for_inviting_new_users(

@@ -343,7 +343,7 @@ SYSTEM_BOT_REALM = "zulipinternal"
 # Structurally, we will probably eventually merge
 # analytics into part of the main server, rather
 # than a separate app.
-EXTRA_INSTALLED_APPS = ["analytics"]
+EXTRA_INSTALLED_APPS = ["analytics","corporate","zilencer","onehash_corporate"]
 
 # Used to construct URLs to point to the Zulip server.  Since we
 # only support HTTPS in production, this is just for development.
@@ -535,6 +535,8 @@ ARCHIVED_DATA_VACUUMING_DELAY_DAYS = 30
 # Enables billing pages and plan-based feature gates. If False, all features
 # are available to all realms.
 BILLING_ENABLED = False
+# OneHash Billing
+ONEHASH_BILLING_ENABLED = True
 
 FREE_TRIAL_DAYS: Optional[int] = int(get_secret("free_trial_days", "0"))
 
@@ -591,3 +593,5 @@ TYPING_STOPPED_WAIT_PERIOD_MILLISECONDS = 5000
 # How often a client should send start notifications to the server to
 # indicate that the user is still interacting with the compose UI.
 TYPING_STARTED_WAIT_PERIOD_MILLISECONDS = 10000
+
+STAFF_SUBDOMAIN = "onehash"
