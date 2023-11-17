@@ -593,3 +593,5 @@ TYPING_STOPPED_WAIT_PERIOD_MILLISECONDS = 5000
 # How often a client should send start notifications to the server to
 # indicate that the user is still interacting with the compose UI.
 TYPING_STARTED_WAIT_PERIOD_MILLISECONDS = 10000
+
+STAFF_SUBDOMAIN = "zulip"
