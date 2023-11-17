@@ -203,7 +203,7 @@ export function get_gear_menu_content_context() {
         // For OneHash Billing
         is_plan_onehash_free: page_params.realm_plan_type === 11,
         is_plan_onehash_standard: page_params.realm_plan_type === 12,
-        onehash_standard_plan_name: "Connect Cloud Standard",
+        onehash_standard_plan_name: "Connect Standard",
         server_needs_upgrade: page_params.server_needs_upgrade,
         version_display_string: gear_menu_util.version_display_string(),
         apps_page_url: page_params.apps_page_url,

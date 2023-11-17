@@ -168,7 +168,7 @@ run_test("initialize", ({override_rewire}) => {
     helpers.update_discount_details("other");
     assert.equal(
         $("#sponsorship-discount-details").text(),
-        "Your organization may be eligible for a discount on Zulip Cloud Standard. Organizations whose members are not employees are generally eligible.",
+        "Your organization may be eligible for a discount on Connect Standard. Organizations whose members are not employees are generally eligible.",
     );
 });
 

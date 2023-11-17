@@ -262,9 +262,9 @@ class CustomerPlans(models.Model):
     @property
     def name(self) -> str:
         return {
-            CustomerPlans.STANDARD: "Zulip Cloud Standard",
-            CustomerPlans.PLUS: "Zulip Plus",
-            CustomerPlans.ENTERPRISE: "Zulip Enterprise",
+            CustomerPlans.STANDARD: "Connect Standard",
+            CustomerPlans.PLUS: "Connect Plus",
+            CustomerPlans.ENTERPRISE: "Connect Enterprise",
         }[self.tier]
 
     def get_plan_status_as_text(self) -> str:
