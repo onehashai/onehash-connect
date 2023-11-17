@@ -90,7 +90,7 @@ def get_billing_info(user_profile: Optional[UserProfile]) -> BillingInfo:
 
     #     if not user_profile.is_guest and user_profile.realm.plan_type == Realm.PLAN_TYPE_LIMITED:
     #         show_plans = True
-    if user_profile is not None:
+    if settings.ONEHASH_CORPORATE_ENABLED and user_profile is not None:
         if user_profile.has_billing_access:
             from onehash_corporate.models import CustomerPlans, get_customer_by_realm
 

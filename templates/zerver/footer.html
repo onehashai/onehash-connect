@@ -1,5 +1,5 @@
 <footer id="footer">
-    {% if corporate_enabled %}
+    {% if onehash_corporate_enabled %}
     <!-- <div class='footer__container'>
         <div class="footer__section">
             <h3 class="footer__section-title">
@@ -99,25 +99,17 @@
     {% endif %}
     <div class="footer__legal {% if not onehash_corporate_enabled %}footer__legal_not_corporate{% endif %}">
         <div class="footer__legal-container">
-            <!-- {% if corporate_enabled %}
-            <div class="copyright">© Kandra Labs, Inc. (“Zulip”)</div> -->
             {% if onehash_corporate_enabled %}
-            <div class="copyright">© OneHash Connect</div>
+            <div class="copyright">© OneHash</div>
             {% else %}
-            <div class="copyright">{% trans %}Powered by <a href="https://www.onehash.ai">OneHash Connect</a>{% endtrans %}</div>
+            <div class="copyright">{% trans %}Powered by <a href="https://www.onehash.ai/">OneHash Connect</a>{% endtrans %}</div>
             {% endif %}
             <div class="footer__legal-spacer"></div>
-            <!-- {% if not corporate_enabled %}
-            <a href="/help/">{{ _("Help center") }}</a>
-            {% endif %} -->
             {% if not onehash_corporate_enabled %}
             <a href="/help/">{{ _("Help center") }}</a>
             {% endif %}
             <a href="{{ root_domain_url }}/policies/terms">{{ _("Terms of Service") }}</a>
             <a href="{{ root_domain_url }}/policies/privacy">{{ _("Privacy policy") }}</a>
-            <!-- {% if corporate_enabled %}
-            <a href="https://zulip.com/attribution/">{{ _("Website attributions") }}</a>
-            {% endif %} -->
             {% if onehash_corporate_enabled %}
             <a href="https://www.onehash.ai">{{ _("Website attributions") }}</a>
             {% endif %}
