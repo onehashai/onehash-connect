@@ -202,8 +202,8 @@ input::placeholder {
         }
 
         &.sea-green {
-            color: hsl(156deg 41% 40%);
-            border-color: hsl(156deg 28% 70%);
+            color: hsl(206.7, 100%, 45.5%);
+            border-color: hsl(0deg 0% 95%);
 
             &:hover,
             &:focus {
@@ -904,9 +904,9 @@ div.overlay {
         }
 
         &.primary {
-            background-color: hsl(156deg 30% 50%);
+            background-color: hsl(206.7, 100%, 45.5%);
             color: hsl(0deg 0% 100%);
-            border: 1px solid hsl(155deg 30% 50%);
+            border: 1px solid hsl(0deg 0% 61%);
 
             &:hover,
             &:focus {
