@@ -45,7 +45,7 @@ def support_request(request: HttpRequest) -> HttpResponse:
             send_email(
                 "zerver/emails/support_request",
                 to_emails=[FromAddress.SUPPORT],
-                from_name="Zulip Support",
+                from_name="OneHash Support",
                 from_address=FromAddress.tokenized_no_reply_address(),
                 reply_to_email=user.delivery_email,
                 context=email_context,
