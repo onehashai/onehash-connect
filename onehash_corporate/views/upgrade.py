@@ -142,7 +142,6 @@ def setup_upgrade_checkout_session_and_payment_intent(
         mode="setup",
         payment_method_types=["card"],
         metadata=metadata,
-        billing_address_collection="required",
         setup_intent_data={"metadata": metadata},
         success_url=f"{user.realm.uri}/settings/billing/event_status?stripe_session_id={{CHECKOUT_SESSION_ID}}",
     )
