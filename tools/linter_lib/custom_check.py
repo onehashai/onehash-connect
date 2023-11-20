@@ -544,7 +544,7 @@ html_rules: List["Rule"] = [
         "description": "`placeholder` value should be translatable.",
         "exclude_line": {
             ("templates/zerver/realm_creation_form.html", 'placeholder="acme"'),
-            ("templates/zerver/realm_creation_form.html", 'placeholder="Acme or Ακμή"'),
+            ("templates/zerver/realm_creation_form.html", 'placeholder="Acme"'),
         },
         "exclude": {
             "templates/analytics/support.html",
