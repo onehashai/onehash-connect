@@ -84,7 +84,7 @@ export function redraw_title() {
         " - " +
         page_params.realm_name +
         " - " +
-        "Zulip";
+        "OneHash";
 
     document.title = new_title;
 }
