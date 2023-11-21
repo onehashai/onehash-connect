@@ -1045,7 +1045,7 @@ input.new-organization-button {
 }
 
 .error_page .lead {
-    color: hsl(163deg 49% 44%);
+    color: hsl(0, 0%, 0%);
     font-size: 35px;
     margin-bottom: 20px;
     line-height: normal;
