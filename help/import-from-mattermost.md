@@ -170,7 +170,7 @@ Replace `<username>` and `<server_ip>` with the appropriate values below.
 
 {start_tabs}
 
-{tab|connect-cloud}
+{tab|zulip-cloud}
 
 {!import-into-a-zulip-cloud-organization.md!}
 

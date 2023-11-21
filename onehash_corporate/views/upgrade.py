@@ -142,7 +142,6 @@ def setup_upgrade_checkout_session_and_payment_intent(
         mode="setup",
         payment_method_types=["card"],
         metadata=metadata,
-        billing_address_collection="required",
         setup_intent_data={"metadata": metadata},
         success_url=f"{user.realm.uri}/settings/billing/event_status?stripe_session_id={{CHECKOUT_SESSION_ID}}",
     )
@@ -369,7 +368,7 @@ def sponsorship(
         send_email(
             "zerver/emails/sponsorship_request",
             to_emails=[FromAddress.SUPPORT],
-            from_name="Zulip sponsorship",
+            from_name="OneHash sponsorship",
             from_address=FromAddress.tokenized_no_reply_address(),
             reply_to_email=user.delivery_email,
             context=context,

@@ -37,7 +37,7 @@ html {
     font-size: 0.9em;
 
     & a {
-        color: hsl(164deg 100% 23%);
+        color: hsl(206.6, 100%, 44.9%);
 
         &:hover {
             text-decoration: none;
