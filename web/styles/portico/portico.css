@@ -1002,7 +1002,7 @@ input.new-organization-button {
 .error_page {
     min-height: calc(100vh - 290px);
     height: 100%;
-    background-color: hsl(163deg 42% 85%);
+    background-color: hsl(206.6, 100%, 44.9%);
     font-family: "Source Sans 3 VF", sans-serif;
 }
 
