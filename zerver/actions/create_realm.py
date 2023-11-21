@@ -304,7 +304,7 @@ def do_create_realm(
         prereg_realm.save(update_fields=["status", "created_realm"])
 
     # Send a notification to the admin realm when a new organization registers.
-    if settings.ONEHASH_CORPORATE_ENABLED:
+    if not settings.ONEHASH_CORPORATE_ENABLED:
         admin_realm = get_realm(settings.SYSTEM_BOT_REALM)
         sender = get_system_bot(settings.NOTIFICATION_BOT, admin_realm.id)
 

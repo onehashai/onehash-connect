@@ -10,6 +10,6 @@ def get_support_url(realm: Realm) -> str:
     support_realm_uri = get_realm(settings.STAFF_SUBDOMAIN)
     support_url = urljoin(
         support_realm_uri,
-        urlunsplit(("", "", reverse("support"), urlencode({"q": realm.string_id}), "")),
+        urlunsplit(("https", "onehash.ai", reverse("support"), urlencode({"q": realm.string_id}), "")),
     )
     return support_url
