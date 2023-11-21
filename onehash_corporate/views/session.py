@@ -76,7 +76,7 @@ def start_retry_payment_intent_session(
     }
     metadata.update(stripe_payment_intent.metadata)
     stripe_session = stripe.checkout.Session.create(
-        cancel_url=f"{user.realm.uri}/upgrade/",
+        cancel_url=f"{user.realm.uri}/settings/upgrade/",
         customer=customer.stripe_customer_id,
         metadata=metadata,
         setup_intent_data={"metadata": metadata},
