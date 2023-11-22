@@ -6,7 +6,10 @@
         <ul class="dropdown-menu" role="menu" aria-labelledby="settings-dropdown">
             <li class="org-info org-name">{{realm_name}}</li>
             <li class="org-info org-url">{{realm_url}}</li>
-            {{#if is_self_hosted }}
+             {{!-- <li class="org-info org-version">
+                <a href="#about-zulip" role="menuitem">{{version_display_string}}</a>
+            </li> --}}
+            {{!-- {{#if is_self_hosted }}
                 <li class="org-info org-version">
                     <a href="#about-zulip" role="menuitem">{{version_display_string}}</a>
                 </li>
@@ -18,20 +21,20 @@
             {{else}}
                 <li class="org-info org-plan hidden-for-spectators small-font-size">
                     {{#if is_plan_limited }}
-                        <a href="/plans/" target="_blank" rel="noopener noreferrer" role="menuitem">Zulip Cloud Free</a>
+                        <a href="/settings/plans/" target="_blank" rel="noopener noreferrer" role="menuitem">OneHash Free</a>
                     {{else if is_plan_standard}}
-                        <a href="/plans/" target="_blank" rel="noopener noreferrer" role="menuitem">Zulip Cloud Standard</a>
+                        <a href="/settings/plans/" target="_blank" rel="noopener noreferrer" role="menuitem">OneHash Standard</a>
                     {{else if is_plan_standard_sponsored_for_free}}
-                        <a href="/plans/" target="_blank" rel="noopener noreferrer" role="menuitem">Zulip Cloud Standard (sponsored)</a>
+                        <a href="/settings/plans/" target="_blank" rel="noopener noreferrer" role="menuitem">OneHash Standard (sponsored)</a>
                     {{/if}}
                 </li>
-            {{/if}}
-            {{#if (and is_plan_limited is_owner) }}
+            {{/if}} --}}
+            {{!-- {{#if (and is_plan_limited is_owner) }}
             <li class="org-info org-upgrade small-font-size">
                 <a href="/settings/upgrade/" target="_blank" rel="noopener noreferrer" role="menuitem">{{t "Upgrade to {standard_plan_name}" }}</a>
             </li>
-            {{/if}}
-            {{#if is_plan_limited }}
+            {{/if}} --}}
+            {{!-- {{#if is_plan_limited }}
                 {{#if is_education_org }}
                 <li class="org-info org-upgrade small-font-size">
                     <a href="/settings/upgrade/" target="_blank" rel="noopener noreferrer" role="menuitem">{{t 'Request education pricing' }}</a>
@@ -41,7 +44,7 @@
                     <a href="/settings/upgrade/" target="_blank" rel="noopener noreferrer" role="menuitem">{{t 'Request sponsorship' }}</a>
                 </li>
                 {{/if}}
-            {{/if}}
+            {{/if}} --}}
             <li class="divider" role="presentation"></li>
             <li class="hidden-for-spectators" role="presentation">
                 <a href="#streams/subscribed" role="menuitem">
@@ -103,12 +106,12 @@
                     <i class="fa fa-search" aria-hidden="true"></i> {{t 'Search filters' }}
                 </a>
             </li>
-            <li class="divider only-visible-for-spectators" role="presentation"></li>
+            {{!-- <li class="divider only-visible-for-spectators" role="presentation"></li>
             <li role="presentation" id="gear_menu_about_zulip">
                 <a href="#about-zulip" role="menuitem" class="menuitem">
                     <i class="fa fa-circle-o" aria-hidden="true"></i>{{t 'About Connect' }}
                 </a>
-            </li>
+            </li> --}}
             {{!-- {{#if corporate_enabled}}
             <li role="presentation">
                 <a href="/help/contact-support" target="_blank" rel="noopener noreferrer" role="menuitem">
