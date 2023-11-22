@@ -419,8 +419,7 @@ html {
         box-sizing: border-box;
         outline: none;
         color: hsl(0deg 0% 100%);
-        background-color: hsl(213deg 23% 25%);
-
+        background-color: hsl(213, 100%, 47.3%);
         margin: 25px 0 5px;
         height: 50px;
 
