@@ -52,7 +52,7 @@ def plans_view(request: HttpRequest) -> HttpResponse:
     realm = get_realm_from_request(request)
     free_trial_days = settings.FREE_TRIAL_DAYS
     sponsorship_pending = False
-    sponsorship_url = "/upgrade/#sponsorship"
+    sponsorship_url = "/settings/upgrade/#sponsorship"
     if is_subdomain_root_or_alias(request):
         # If we're on the root domain, we make this link first ask you which organization.
         sponsorship_url = f"/accounts/go/?{urlencode({'next': sponsorship_url})}"
@@ -60,9 +60,9 @@ def plans_view(request: HttpRequest) -> HttpResponse:
 
     if realm is not None:
         if realm.plan_type == Realm.PLAN_TYPE_SELF_HOSTED and settings.PRODUCTION:
-            return HttpResponseRedirect("https://zulip.com/plans/")
+            return HttpResponseRedirect("https://www.onehash.ai/")
         if not request.user.is_authenticated:
-            return redirect_to_login(next="/plans/")
+            return redirect_to_login(next="/settings/plans/")
         if request.user.is_guest:
             return TemplateResponse(request, "404.html", status=404)
         customer = get_customer_by_realm(realm)
@@ -86,7 +86,7 @@ def plans_view(request: HttpRequest) -> HttpResponse:
 @add_google_analytics
 def team_view(request: HttpRequest) -> HttpResponse:
     if not settings.ZILENCER_ENABLED:
-        return HttpResponseRedirect("https://zulip.com/team/", status=301)
+        return HttpResponseRedirect("https://www.onehash.ai/", status=301)
 
     try:
         with open(settings.CONTRIBUTOR_DATA_FILE_PATH, "rb") as f:

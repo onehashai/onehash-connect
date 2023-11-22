@@ -594,4 +594,4 @@ TYPING_STOPPED_WAIT_PERIOD_MILLISECONDS = 5000
 # indicate that the user is still interacting with the compose UI.
 TYPING_STARTED_WAIT_PERIOD_MILLISECONDS = 10000
 
-STAFF_SUBDOMAIN = "zulip"
+STAFF_SUBDOMAIN = "internal"
