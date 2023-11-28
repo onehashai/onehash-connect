@@ -1015,13 +1015,13 @@ def approve_sponsorship(realm: Realm, *, acting_user: Optional[UserProfile]) -> 
             message = _(
                 "Your organization's request for sponsored hosting has been approved! "
                 "You have been upgraded to {plan_name}, free of charge. {emoji}\n\n"
-                "If you could {begin_link}list Zulip as a sponsor on your website{end_link}, "
+                "If you could {begin_link}list Connect as a sponsor on your website{end_link}, "
                 "we would really appreciate it!"
             ).format(
                 plan_name="Connect Standard",
                 emoji=":tada:",
                 begin_link="[",
-                end_link="](/help/linking-to-zulip-website)",
+                end_link="](/help/linking-to-connect-website)",
             )
             internal_send_private_message(notification_bot, user, message)
 

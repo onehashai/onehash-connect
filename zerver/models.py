@@ -635,7 +635,7 @@ class Realm(models.Model):  # type: ignore[django-manager-missing] # django-stub
         choices=[(t["id"], t["name"]) for t in ORG_TYPES.values()],
     )
 
-    UPGRADE_TEXT_STANDARD = gettext_lazy("Available on Connect Cloud Standard. Upgrade to access.")
+    UPGRADE_TEXT_STANDARD = gettext_lazy("Available on Connect Standard. Upgrade to access.")
     # plan_type controls various features around resource/feature
     # limitations for a Zulip organization on multi-tenant installations
     # like Zulip Cloud.

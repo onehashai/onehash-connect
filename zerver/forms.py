@@ -59,8 +59,8 @@ if settings.ONEHASH_BILLING_ENABLED:
 MIT_VALIDATION_ERROR = Markup(
     "That user does not exist at MIT or is a"
     ' <a href="https://ist.mit.edu/email-lists">mailing list</a>.'
-    " If you want to sign up an alias for Zulip,"
-    ' <a href="mailto:support@zulip.com">contact us</a>.'
+    " If you want to sign up an alias for Connect,"
+    ' <a href="mailto:support@onehash.ai">contact us</a>.'
 )
 
 DEACTIVATED_ACCOUNT_ERROR = gettext_lazy(
