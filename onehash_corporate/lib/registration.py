@@ -26,24 +26,24 @@ def generate_licenses_low_warning_message_if_required(realm: Realm) -> Optional[
 
     if licenses_remaining <= 0:
         return _(
-            "Your organization has no Zulip licenses remaining and can no longer accept new users. "
+            "Your organization has no Connect licenses remaining and can no longer accept new users. "
             "Please [increase the number of licenses]({billing_page_link}) or "
             "[deactivate inactive users]({deactivate_user_help_page_link}) to allow new users to join."
         ).format(**format_kwargs)
 
     return {
         1: _(
-            "Your organization has only one Zulip license remaining. You can "
+            "Your organization has only one Connect license remaining. You can "
             "[increase the number of licenses]({billing_page_link}) or [deactivate inactive users]({deactivate_user_help_page_link}) "
             "to allow more than one user to join."
         ),
         2: _(
-            "Your organization has only two Zulip licenses remaining. You can "
+            "Your organization has only two Connect licenses remaining. You can "
             "[increase the number of licenses]({billing_page_link}) or [deactivate inactive users]({deactivate_user_help_page_link}) "
             "to allow more than two users to join."
         ),
         3: _(
-            "Your organization has only three Zulip licenses remaining. You can "
+            "Your organization has only three Connect licenses remaining. You can "
             "[increase the number of licenses]({billing_page_link}) or [deactivate inactive users]({deactivate_user_help_page_link}) "
             "to allow more than three users to join."
         ),
@@ -54,7 +54,7 @@ def send_user_unable_to_signup_message_to_signup_notification_stream(
     realm: Realm, user_email: str
 ) -> None:
     message = _(
-        "A new member ({email}) was unable to join your organization because all Zulip licenses "
+        "A new member ({email}) was unable to join your organization because all Connect licenses "
         "are in use. Please [increase the number of licenses]({billing_page_link}) or "
         "[deactivate inactive users]({deactivate_user_help_page_link}) to allow new members to join."
     ).format(
@@ -106,9 +106,9 @@ def check_spare_licenses_available_for_inviting_new_users(
         )
     except LicenseLimitError:
         if num_invites == 1:
-            message = _("All Zulip licenses for this organization are currently in use.")
+            message = _("All Connect licenses for this organization are currently in use.")
         else:
             message = _(
-                "Your organization does not have enough unused Zulip licenses to invite {num_invites} users."
+                "Your organization does not have enough unused Connect licenses to invite {num_invites} users."
             ).format(num_invites=num_invites)
         raise InvitationError(message, [], sent_invitations=False, license_limit_reached=True)

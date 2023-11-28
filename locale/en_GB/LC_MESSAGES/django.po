@@ -3523,8 +3523,8 @@ msgid "Open Zulip to see the spoiler content"
 msgstr "Open Zulip to see the spoiler content"
 
 #: zerver/lib/email_notifications.py:574
-msgid "Zulip notifications"
-msgstr "Zulip notifications"
+msgid "OneHash Connect notifications"
+msgstr "OneHash Connect notifications"
 
 #: zerver/lib/email_validation.py:100
 msgid "Invalid address."
