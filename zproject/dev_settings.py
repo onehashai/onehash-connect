@@ -29,7 +29,7 @@ if external_host_env is None:
     else:
         # For local development environments, we use localhost by
         # default, via the "zulipdev.com" hostname.
-        EXTERNAL_HOST = "zulipdev.com:9991"
+        EXTERNAL_HOST = "dev.zulipdev.com:9991"
         # Serve the main dev realm at the literal name "localhost",
         # so it works out of the box even when not on the Internet.
         REALM_HOSTS = {
