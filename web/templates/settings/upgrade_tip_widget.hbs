@@ -9,9 +9,9 @@
     {{else}}
         <div class="upgrade-or-sponsorship-tip">
             {{#tr}}
-                Available on OneHash Cloud Standard. <z-link-upgrade>Upgrade.</z-link-upgrade>
-                {{#*inline "z-link-upgrade"}}<a href="/settings/upgrade/" target="_blank" rel="noopener noreferrer">{{> @partial-block}}</a>{{/inline}}
-                {{#*inline "z-link-sponsorship"}}<a href="/settings/upgrade/#sponsorship" target="_blank" rel="noopener noreferrer">{{> @partial-block}}</a>{{/inline}}
+                Available on Connect Standard. <z-link-upgrade>Upgrade</z-link-upgrade> or <z-link-sponsorship>request sponsorship</z-link-sponsorship> to access.
+                {{#*inline "z-link-upgrade"}}<a href="/upgrade/" target="_blank" rel="noopener noreferrer">{{> @partial-block}}</a>{{/inline}}
+                {{#*inline "z-link-sponsorship"}}<a href="/sponsorship/" target="_blank" rel="noopener noreferrer">{{> @partial-block}}</a>{{/inline}}
             {{/tr}}
         </div>
     {{/if}}

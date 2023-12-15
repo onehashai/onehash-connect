@@ -12,15 +12,21 @@ export let loaded = false;
 type MutedUserItem = {
     user_id: number;
     user_name: string;
+    date_muted: number;
     date_muted_str: string;
 };
 
 export function populate_list(): void {
-    const all_muted_users = muted_users.get_muted_users().map((user) => ({
-        user_id: user.id,
-        user_name: people.get_full_name(user.id),
-        date_muted_str: user.date_muted_str,
-    }));
+    const all_muted_users = muted_users.get_muted_users().map((user) => {
+        const muted_user = people.get_user_by_id_assert_valid(user.id);
+        return {
+            user_id: user.id,
+            user_name: muted_user.full_name,
+            date_muted: user.date_muted,
+            date_muted_str: user.date_muted_str,
+            can_unmute: !muted_user.is_inaccessible_user,
+        };
+    });
     const $muted_users_table = $("#muted_users_table");
     const $search_input = $<HTMLInputElement>("input#muted_users_search");
 

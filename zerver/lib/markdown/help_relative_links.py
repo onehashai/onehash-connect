@@ -19,31 +19,32 @@ gear_info = {
     # key is from REGEXP: `{relative|gear|key}`
     # name is what the item is called in the gear menu: `Select **name**.`
     # link is used for relative links: `Select [name](link).`
-    "manage-streams": ['<i class="fa fa-exchange"></i> Manage streams', "/#streams/subscribed"],
-    "settings": ['<i class="fa fa-wrench"></i> Personal Settings', "/#settings/profile"],
+    "stream-settings": [
+        '<i class="zulip-icon zulip-icon-hash"></i> Stream settings',
+        "/#streams/subscribed",
+    ],
+    "settings": [
+        '<i class="zulip-icon zulip-icon-tool"></i> Personal Settings',
+        "/#settings/profile",
+    ],
     "organization-settings": [
-        '<i class="fa fa-bolt"></i> Organization settings',
+        '<i class="zulip-icon zulip-icon-building"></i> Organization settings',
         "/#organization/organization-profile",
     ],
-    "integrations": ['<i class="fa fa-github"></i> Integrations', "/integrations/"],
-    "stats": ['<i class="fa fa-bar-chart"></i> Usage statistics', "/stats"],
-    "plans": ['<i class="fa fa-rocket"></i> Plans and pricing', "/settings/plans/"],
-    "billing": ['<i class="fa fa-credit-card"></i> Billing', "/settings/billing/"],
-    "keyboard-shortcuts": [
-        '<i class="fa fa-keyboard-o"></i> Keyboard shortcuts (?)',
-        "/#keyboard-shortcuts",
+    "group-settings": [
+        '<i class="zulip-icon zulip-icon-user-cog"></i> Group settings',
+        "/#groups/your",
     ],
-    "message-formatting": [
-        '<i class="fa fa-pencil"></i> Message formatting',
-        "/#message-formatting",
-    ],
-    "search-filters": ['<i class="fa fa-search"></i> Search filters', "/#search-operators"],
+    "stats": ['<i class="zulip-icon zulip-icon-bar-chart"></i> Usage statistics', "/stats"],
+    "integrations": ['<i class="zulip-icon-git-pull-request"></i> Integrations', "/integrations/"],
+    "plans": ['<i class="zulip-icon zulip-icon-rocket"></i> Plans and pricing', "/plans/"],
+    "billing": ['<i class="zulip-icon zulip-icon-credit-card"></i> Billing', "/billing/"],
     "about-zulip": ["About Zulip", "/#about-zulip"],
 }
 
 gear_instructions = """
-1. Click on the **gear** (<i class="fa fa-cog"></i>) icon in the upper
-   right corner of the web or desktop app.
+1. Click on the **gear** (<i class="zulip-icon zulip-icon-gear"></i>) icon in
+   the upper right corner of the web or desktop app.
 
 1. Select {item}.
 """
@@ -57,25 +58,87 @@ def gear_handle_match(key: str) -> str:
     return gear_instructions.format(item=item)
 
 
-stream_info = {
-    "all": ["All streams", "/#streams/all"],
-    "subscribed": ["Subscribed streams", "/#streams/subscribed"],
+help_info = {
+    # The pattern is key: [name, link]
+    # key is from REGEXP: `{relative|help|key}`
+    # name is what the item is called in the help menu: `Select **name**.`
+    # link is used for relative links: `Select [name](link).`
+    "keyboard-shortcuts": [
+        '<i class="zulip-icon zulip-icon-keyboard"></i> Keyboard shortcuts',
+        "/#keyboard-shortcuts",
+    ],
+    "message-formatting": [
+        '<i class="zulip-icon zulip-icon-edit"></i> Message formatting',
+        "/#message-formatting",
+    ],
+    "search-filters": [
+        '<i class="zulip-icon zulip-icon-manage-search"></i> Search filters',
+        "/#search-operators",
+    ],
+    "about-zulip": [
+        '<i class="zulip-icon zulip-icon-info"></i> About Zulip',
+        "/#about-zulip",
+    ],
 }
 
-stream_instructions_no_link = """
-1. Click on the **gear** (<i class="fa fa-cog"></i>) icon in the upper
-   right corner of the web or desktop app.
+help_instructions = """
+1. Click on the **Help menu** (<i class="zulip-icon zulip-icon-help"></i>) icon
+   in the upper right corner of the app.
 
-1. Click **Manage streams**.
+1. Select {item}.
+"""
+
+
+def help_handle_match(key: str) -> str:
+    if relative_help_links:
+        item = f"[{help_info[key][0]}]({help_info[key][1]})"
+    else:
+        item = f"**{help_info[key][0]}**"
+    return help_instructions.format(item=item)
+
+
+stream_info = {
+    "all": ["All streams", "/#streams/all"],
+}
+
+stream_all_instructions = """
+1. Click on the **gear** (<i class="zulip-icon zulip-icon-gear"></i>) icon in
+   the upper right corner of the web or desktop app.
+
+1. Select <i class="zulip-icon zulip-icon-hash"></i> **Stream settings**.
+
+1. Click {item} in the upper left.
 """
 
 
 def stream_handle_match(key: str) -> str:
     if relative_help_links:
-        return f"1. Go to [{stream_info[key][0]}]({stream_info[key][1]})."
-    if key == "all":
-        return stream_instructions_no_link + "\n\n1. Click **All streams** in the upper left."
-    return stream_instructions_no_link
+        item = f"[{stream_info[key][0]}]({stream_info[key][1]})"
+    else:
+        item = f"**{stream_info[key][0]}**"
+    return stream_all_instructions.format(item=item)
+
+
+group_info = {
+    "all": ["All groups", "/#groups/all"],
+}
+
+group_all_instructions = """
+1. Click on the **gear** (<i class="zulip-icon zulip-icon-gear"></i>) icon in
+   the upper right corner of the web or desktop app.
+
+1. Select <i class="zulip-icon zulip-icon-user-cog"></i> **Group settings**.
+
+1. Click {item} in the upper left.
+"""
+
+
+def group_handle_match(key: str) -> str:
+    if relative_help_links:
+        item = f"[{group_info[key][0]}]({group_info[key][1]})"
+    else:
+        item = f"**{group_info[key][0]}**"
+    return group_all_instructions.format(item=item)
 
 
 draft_instructions = """
@@ -136,6 +199,8 @@ LINK_TYPE_HANDLERS = {
     "gear": gear_handle_match,
     "stream": stream_handle_match,
     "message": message_handle_match,
+    "help": help_handle_match,
+    "group": group_handle_match,
 }
 
 

@@ -1,4 +1,4 @@
-import datetime
+from datetime import timedelta
 from email.headerregistry import Address
 from typing import Any, Optional, Set
 from unittest import mock
@@ -54,6 +54,7 @@ from zerver.models import (
     Recipient,
     Stream,
     Subscription,
+    SystemGroups,
     UserGroup,
     UserMessage,
     UserProfile,
@@ -410,7 +411,7 @@ class MessagePOSTTest(ZulipTestCase):
         self.login_user(admin_profile)
 
         do_set_realm_property(admin_profile.realm, "waiting_period_threshold", 10, acting_user=None)
-        admin_profile.date_joined = timezone_now() - datetime.timedelta(days=9)
+        admin_profile.date_joined = timezone_now() - timedelta(days=9)
         admin_profile.save()
         self.assertTrue(admin_profile.is_provisional_member)
         self.assertTrue(admin_profile.is_realm_admin)
@@ -434,7 +435,7 @@ class MessagePOSTTest(ZulipTestCase):
         non_admin_profile = self.example_user("hamlet")
         self.login_user(non_admin_profile)
 
-        non_admin_profile.date_joined = timezone_now() - datetime.timedelta(days=9)
+        non_admin_profile.date_joined = timezone_now() - timedelta(days=9)
         non_admin_profile.save()
         self.assertTrue(non_admin_profile.is_provisional_member)
         self.assertFalse(non_admin_profile.is_realm_admin)
@@ -453,7 +454,7 @@ class MessagePOSTTest(ZulipTestCase):
             non_admin_owned_bot, stream_name, "New members cannot send to this stream."
         )
 
-        non_admin_profile.date_joined = timezone_now() - datetime.timedelta(days=11)
+        non_admin_profile.date_joined = timezone_now() - timedelta(days=11)
         non_admin_profile.save()
         self.assertFalse(non_admin_profile.is_provisional_member)
 
@@ -478,7 +479,7 @@ class MessagePOSTTest(ZulipTestCase):
         )
 
         moderator_profile = self.example_user("shiva")
-        moderator_profile.date_joined = timezone_now() - datetime.timedelta(days=9)
+        moderator_profile.date_joined = timezone_now() - timedelta(days=9)
         moderator_profile.save()
         self.assertTrue(moderator_profile.is_moderator)
         self.assertFalse(moderator_profile.is_provisional_member)
@@ -491,7 +492,7 @@ class MessagePOSTTest(ZulipTestCase):
             full_name="whatever3",
             user_profile=moderator_profile,
         )
-        moderator_owned_bot.date_joined = timezone_now() - datetime.timedelta(days=11)
+        moderator_owned_bot.date_joined = timezone_now() - timedelta(days=11)
         moderator_owned_bot.save()
         self._send_and_verify_message(moderator_owned_bot, stream_name)
 
@@ -775,6 +776,75 @@ class MessagePOSTTest(ZulipTestCase):
             },
         )
         self.assert_json_error(result, f"'{othello.email}' is no longer using Zulip.")
+
+    def test_personal_message_to_inaccessible_users(self) -> None:
+        othello = self.example_user("othello")
+        cordelia = self.example_user("cordelia")
+        hamlet = self.example_user("hamlet")
+        iago = self.example_user("iago")
+
+        self.set_up_db_for_testing_user_access()
+        self.login("polonius")
+
+        result = self.client_post(
+            "/json/messages",
+            {
+                "type": "direct",
+                "content": "Test direct message",
+                "to": orjson.dumps([othello.id]).decode(),
+            },
+        )
+        self.assert_json_error(
+            result, "You do not have permission to access some of the recipients."
+        )
+
+        result = self.client_post(
+            "/json/messages",
+            {
+                "type": "direct",
+                "content": "Test direct message",
+                "to": orjson.dumps([hamlet.id]).decode(),
+            },
+        )
+        self.assert_json_success(result)
+        msg = self.get_last_message()
+        self.assertEqual(msg.content, "Test direct message")
+
+        result = self.client_post(
+            "/json/messages",
+            {
+                "type": "direct",
+                "content": "Test group direct message",
+                "to": orjson.dumps([othello.id, cordelia.id]).decode(),
+            },
+        )
+        self.assert_json_error(
+            result, "You do not have permission to access some of the recipients."
+        )
+
+        result = self.client_post(
+            "/json/messages",
+            {
+                "type": "direct",
+                "content": "Test group direct message",
+                "to": orjson.dumps([hamlet.id, cordelia.id]).decode(),
+            },
+        )
+        self.assert_json_error(
+            result, "You do not have permission to access some of the recipients."
+        )
+
+        result = self.client_post(
+            "/json/messages",
+            {
+                "type": "direct",
+                "content": "Test group direct message",
+                "to": orjson.dumps([hamlet.id, iago.id]).decode(),
+            },
+        )
+        self.assert_json_success(result)
+        msg = self.get_last_message()
+        self.assertEqual(msg.content, "Test group direct message")
 
     def test_invalid_type(self) -> None:
         """
@@ -1205,7 +1275,7 @@ class MessagePOSTTest(ZulipTestCase):
         self.subscribe(user, "IRCland")
 
         # Simulate a mirrored message with a slightly old timestamp.
-        fake_date_sent = timezone_now() - datetime.timedelta(minutes=37)
+        fake_date_sent = timezone_now() - timedelta(minutes=37)
         fake_timestamp = datetime_to_timestamp(fake_date_sent)
 
         result = self.api_post(
@@ -1228,7 +1298,7 @@ class MessagePOSTTest(ZulipTestCase):
         self.assertEqual(int(datetime_to_timestamp(msg.date_sent)), int(fake_timestamp))
 
         # Now test again using forged=yes
-        fake_date_sent = timezone_now() - datetime.timedelta(minutes=22)
+        fake_date_sent = timezone_now() - timedelta(minutes=22)
         fake_timestamp = datetime_to_timestamp(fake_date_sent)
 
         result = self.api_post(
@@ -1490,6 +1560,7 @@ class StreamMessagesTest(ZulipTestCase):
             self.subscribe(user_profile, "Denmark")
 
         sender = self.example_user("hamlet")
+        user = self.example_user("othello")
         sending_client = make_client(name="test suite")
         stream_name = "Denmark"
         topic_name = "foo"
@@ -1573,6 +1644,54 @@ class StreamMessagesTest(ZulipTestCase):
                 body=content,
             )
 
+        realm = get_realm("zulip")
+        subscribers = self.users_subscribed_to_stream(stream_name, realm)
+
+        for user in subscribers:
+            do_change_user_setting(
+                user_profile=user,
+                setting_name="automatically_follow_topics_where_mentioned",
+                setting_value=True,
+                acting_user=None,
+            )
+        # There will be an increase in the query count of 5 while sending
+        # a message with a mention to a topic if visibility policy for the
+        # mentioned user is other than FOLLOWED.
+        # 1 to get the user_id of the mentioned user + 1 to check if the topic
+        # is already followed + 3 queries to follow the topic.
+        flush_per_request_caches()
+        with self.assert_database_query_count(22):
+            check_send_stream_message(
+                sender=sender,
+                client=sending_client,
+                stream_name=stream_name,
+                topic="topic 2",
+                body="@**" + user.full_name + "**",
+            )
+        # If the topic is already FOLLOWED, there will be an increase in the query
+        # count of 2.
+        # 1 to get the user_id of the mentioned user + 1 to check if the topic is
+        # already followed.
+        flush_per_request_caches()
+        with self.assert_database_query_count(19):
+            check_send_stream_message(
+                sender=sender,
+                client=sending_client,
+                stream_name=stream_name,
+                topic="topic 2",
+                body="@**" + user.full_name + "**",
+            )
+
+        flush_per_request_caches()
+        with self.assert_database_query_count(16):
+            check_send_stream_message(
+                sender=sender,
+                client=sending_client,
+                stream_name=stream_name,
+                topic="topic 2",
+                body="@**all**",
+            )
+
     def test_stream_message_dict(self) -> None:
         user_profile = self.example_user("iago")
         self.subscribe(user_profile, "Denmark")
@@ -1582,7 +1701,12 @@ class StreamMessagesTest(ZulipTestCase):
         message = most_recent_message(user_profile)
         row = MessageDict.get_raw_db_rows([message.id])[0]
         dct = MessageDict.build_dict_from_raw_db_row(row)
-        MessageDict.post_process_dicts([dct], apply_markdown=True, client_gravatar=False)
+        MessageDict.post_process_dicts(
+            [dct],
+            apply_markdown=True,
+            client_gravatar=False,
+            realm=user_profile.realm,
+        )
         self.assertEqual(dct["display_recipient"], "Denmark")
 
         stream = get_stream("Denmark", user_profile.realm)
@@ -1713,11 +1837,14 @@ class StreamMessagesTest(ZulipTestCase):
         self.assertTrue(user_message.flags.mentioned)
 
     def send_and_verify_topic_wildcard_mention_message(
-        self, sender_name: str, test_fails: bool = False, sub_count: int = 16
+        self, sender_name: str, test_fails: bool = False, topic_participant_count: int = 20
     ) -> None:
         sender = self.example_user(sender_name)
         content = "@**topic** test topic wildcard mention"
-        with mock.patch("zerver.lib.message.num_subscribers_for_stream_id", return_value=sub_count):
+        participants_user_ids = set(range(topic_participant_count))
+        with mock.patch(
+            "zerver.actions.message_send.participants_for_topic", return_value=participants_user_ids
+        ):
             if not test_fails:
                 msg_id = self.send_stream_message(sender, "test_stream", content)
                 result = self.api_get(sender, "/api/v1/messages/" + str(msg_id))
@@ -1726,7 +1853,7 @@ class StreamMessagesTest(ZulipTestCase):
             else:
                 with self.assertRaisesRegex(
                     JsonableError,
-                    "You do not have permission to use wildcard mentions in this stream.",
+                    "You do not have permission to use topic wildcard mentions in this topic.",
                 ):
                     self.send_stream_message(sender, "test_stream", content)
 
@@ -1758,8 +1885,8 @@ class StreamMessagesTest(ZulipTestCase):
             acting_user=None,
         )
         self.send_and_verify_topic_wildcard_mention_message("polonius", test_fails=True)
-        # There is no restriction on small streams.
-        self.send_and_verify_topic_wildcard_mention_message("polonius", sub_count=10)
+        # There is no restriction on topics with less than 'Realm.WILDCARD_MENTION_THRESHOLD' participants.
+        self.send_and_verify_topic_wildcard_mention_message("polonius", topic_participant_count=10)
         self.send_and_verify_topic_wildcard_mention_message("cordelia")
 
         do_set_realm_property(
@@ -1776,12 +1903,12 @@ class StreamMessagesTest(ZulipTestCase):
         cordelia.date_joined = timezone_now()
         cordelia.save()
         self.send_and_verify_topic_wildcard_mention_message("cordelia", test_fails=True)
-        self.send_and_verify_topic_wildcard_mention_message("cordelia", sub_count=10)
+        self.send_and_verify_topic_wildcard_mention_message("cordelia", topic_participant_count=10)
         # Administrators and moderators can use wildcard mentions even if they are new.
         self.send_and_verify_topic_wildcard_mention_message("iago")
         self.send_and_verify_topic_wildcard_mention_message("shiva")
 
-        cordelia.date_joined = timezone_now() - datetime.timedelta(days=11)
+        cordelia.date_joined = timezone_now() - timedelta(days=11)
         cordelia.save()
         self.send_and_verify_topic_wildcard_mention_message("cordelia")
 
@@ -1792,7 +1919,7 @@ class StreamMessagesTest(ZulipTestCase):
             acting_user=None,
         )
         self.send_and_verify_topic_wildcard_mention_message("cordelia", test_fails=True)
-        self.send_and_verify_topic_wildcard_mention_message("cordelia", sub_count=10)
+        self.send_and_verify_topic_wildcard_mention_message("cordelia", topic_participant_count=10)
         self.send_and_verify_topic_wildcard_mention_message("shiva")
 
         cordelia.date_joined = timezone_now()
@@ -1801,15 +1928,15 @@ class StreamMessagesTest(ZulipTestCase):
             realm, "wildcard_mention_policy", Realm.WILDCARD_MENTION_POLICY_ADMINS, acting_user=None
         )
         self.send_and_verify_topic_wildcard_mention_message("shiva", test_fails=True)
-        # There is no restriction on small streams.
-        self.send_and_verify_topic_wildcard_mention_message("shiva", sub_count=10)
+        # There is no restriction on topics with less than 'Realm.WILDCARD_MENTION_THRESHOLD' participants.
+        self.send_and_verify_topic_wildcard_mention_message("shiva", topic_participant_count=10)
         self.send_and_verify_topic_wildcard_mention_message("iago")
 
         do_set_realm_property(
             realm, "wildcard_mention_policy", Realm.WILDCARD_MENTION_POLICY_NOBODY, acting_user=None
         )
         self.send_and_verify_topic_wildcard_mention_message("iago", test_fails=True)
-        self.send_and_verify_topic_wildcard_mention_message("iago", sub_count=10)
+        self.send_and_verify_topic_wildcard_mention_message("iago", topic_participant_count=10)
 
     def send_and_verify_stream_wildcard_mention_message(
         self, sender_name: str, test_fails: bool = False, sub_count: int = 16
@@ -1825,7 +1952,7 @@ class StreamMessagesTest(ZulipTestCase):
             else:
                 with self.assertRaisesRegex(
                     JsonableError,
-                    "You do not have permission to use wildcard mentions in this stream.",
+                    "You do not have permission to use stream wildcard mentions in this stream.",
                 ):
                     self.send_stream_message(sender, "test_stream", content)
 
@@ -1880,7 +2007,7 @@ class StreamMessagesTest(ZulipTestCase):
         self.send_and_verify_stream_wildcard_mention_message("iago")
         self.send_and_verify_stream_wildcard_mention_message("shiva")
 
-        cordelia.date_joined = timezone_now() - datetime.timedelta(days=11)
+        cordelia.date_joined = timezone_now() - timedelta(days=11)
         cordelia.save()
         self.send_and_verify_stream_wildcard_mention_message("cordelia")
 
@@ -1910,8 +2037,8 @@ class StreamMessagesTest(ZulipTestCase):
         self.send_and_verify_stream_wildcard_mention_message("iago", test_fails=True)
         self.send_and_verify_stream_wildcard_mention_message("iago", sub_count=10)
 
-    def test_wildcard_mentioned_flag_topic_wildcard_mention(self) -> None:
-        # For topic wildcard mentions, the 'wildcard_mentioned' flag should be
+    def test_topic_wildcard_mentioned_flag(self) -> None:
+        # For topic wildcard mentions, the 'topic_wildcard_mentioned' flag should be
         # set for all the user messages for topic participants, irrespective of
         # their notifications settings.
         cordelia = self.example_user("cordelia")
@@ -1933,7 +2060,7 @@ class StreamMessagesTest(ZulipTestCase):
         self.assertTrue(
             UserMessage.objects.get(
                 user_profile=cordelia, message=message
-            ).flags.wildcard_mentioned.is_set
+            ).flags.topic_wildcard_mentioned.is_set
         )
 
         self.send_stream_message(hamlet, "Denmark", content="test", topic_name="topic-2")
@@ -1943,7 +2070,7 @@ class StreamMessagesTest(ZulipTestCase):
         self.assertTrue(
             UserMessage.objects.get(
                 user_profile=hamlet, message=message
-            ).flags.wildcard_mentioned.is_set
+            ).flags.topic_wildcard_mentioned.is_set
         )
 
         do_change_user_setting(iago, "wildcard_mentions_notify", True, acting_user=None)
@@ -1952,7 +2079,7 @@ class StreamMessagesTest(ZulipTestCase):
         self.assertFalse(
             UserMessage.objects.get(
                 user_profile=iago, message=message
-            ).flags.wildcard_mentioned.is_set
+            ).flags.topic_wildcard_mentioned.is_set
         )
 
     def test_invalid_wildcard_mention_policy(self) -> None:
@@ -1980,7 +2107,7 @@ class StreamMessagesTest(ZulipTestCase):
         support = check_add_user_group(othello.realm, "support", [othello], acting_user=None)
 
         moderators_system_group = UserGroup.objects.get(
-            realm=iago.realm, name=UserGroup.MODERATORS_GROUP_NAME, is_system_group=True
+            realm=iago.realm, name=SystemGroups.MODERATORS, is_system_group=True
         )
 
         content = "Test mentioning user group @*leadership*"
@@ -2831,7 +2958,7 @@ class CheckMessageTest(ZulipTestCase):
         # after; this should send an error to the bot owner that the
         # stream doesn't exist
         assert sender.last_reminder is not None
-        sender.last_reminder = sender.last_reminder - datetime.timedelta(hours=1)
+        sender.last_reminder = sender.last_reminder - timedelta(hours=1)
         sender.save(update_fields=["last_reminder"])
         ret = check_message(sender, client, addressee, message_content)
 

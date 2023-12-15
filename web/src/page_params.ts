@@ -1,5 +1,7 @@
 import $ from "jquery";
 
+import type {GroupPermissionSetting} from "./types";
+
 const t1 = performance.now();
 export const page_params: {
     apps_page_url: string;
@@ -11,6 +13,15 @@ export const page_params: {
     }[];
     corporate_enabled: boolean;
     onehash_corporate_enabled: boolean;
+    custom_profile_fields: {
+        display_in_profile_summary?: boolean;
+        field_data: string;
+        hint: string;
+        id: number;
+        name: string;
+        order: number;
+        type: number;
+    }[];
     delivery_email: string;
     development_environment: boolean;
     is_admin: boolean;
@@ -42,11 +53,14 @@ export const page_params: {
         big_blue_button?: {name: string; id: number};
     };
     realm_avatar_changes_disabled: boolean;
+    realm_bot_domain: string;
+    realm_can_access_all_users_group: number;
     realm_create_multiuse_invite_group: number;
     realm_create_private_stream_policy: number;
     realm_create_public_stream_policy: number;
     realm_create_web_public_stream_policy: number;
     realm_delete_own_message_policy: number;
+    realm_description: string;
     realm_edit_topic_policy: number;
     realm_email_changes_disabled: boolean;
     realm_enable_spectator_access: boolean;
@@ -85,10 +99,16 @@ export const page_params: {
     server_sentry_environment: string | undefined;
     server_sentry_sample_rate: number | undefined;
     server_sentry_trace_rate: number | undefined;
+    server_supported_permission_settings: {
+        realm: Record<string, GroupPermissionSetting>;
+        stream: Record<string, GroupPermissionSetting>;
+        group: Record<string, GroupPermissionSetting>;
+    };
     server_web_public_streams_enabled: boolean;
     show_billing: boolean;
     show_plans: boolean;
     show_webathena: boolean;
+    sponsorship_pending: boolean;
     translation_data: Record<string, string>;
     user_id: number | undefined;
     zulip_merge_base: string;

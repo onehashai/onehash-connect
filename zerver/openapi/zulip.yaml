@@ -257,6 +257,10 @@ paths:
                                     - $ref: "#/components/schemas/EventTypeSchema"
                                     - enum:
                                         - update_display_settings
+                                user:
+                                  type: string
+                                  description: |
+                                    The Zulip API email of the user.
                                 setting_name:
                                   type: string
                                   description: |
@@ -278,6 +282,7 @@ paths:
                               example:
                                 {
                                   "type": "update_display_settings",
+                                  "user": "iago@zulip.com",
                                   "setting_name": "high_contrast_mode",
                                   "setting": false,
                                   "id": 0,
@@ -302,6 +307,10 @@ paths:
                                     - $ref: "#/components/schemas/EventTypeSchema"
                                     - enum:
                                         - update_global_notifications
+                                user:
+                                  type: string
+                                  description: |
+                                    The Zulip API email of the user.
                                 notification_name:
                                   type: string
                                   description: |
@@ -317,6 +326,7 @@ paths:
                               example:
                                 {
                                   "type": "update_global_notifications",
+                                  "user": "iago@zulip.com",
                                   "notification_name": "enable_sounds",
                                   "setting": true,
                                   "id": 0,
@@ -369,8 +379,11 @@ paths:
                                 }
                             - type: object
                               description: |
-                                Event sent generally to all users in an organization for changes
-                                in the set of users or those users metadata.
+                                Event sent generally to all users who can access the modified
+                                user for changes in the set of users or those users metadata.
+
+                                **Changes**: Prior to Zulip 8.0 (feature level 228), this event
+                                was sent to all users in the organization.
                               properties:
                                 id:
                                   $ref: "#/components/schemas/EventIdSchema"
@@ -584,6 +597,25 @@ paths:
                                             should update any data structures associated
                                             with this user to use this new value as the
                                             user's Connect API email address.
+                                    - type: object
+                                      additionalProperties: false
+                                      description: |
+                                        When a user is deactivated or reactivated.
+
+                                        **Changes**: New in Connect 8.0 (feature level
+                                        222). Previously the server sent a `realm_user` event with
+                                        `op` field set to `remove` when deactivating a user and a
+                                        `realm_user` event with `op` field set to `add` when
+                                        reactivating a user.
+                                      properties:
+                                        user_id:
+                                          type: integer
+                                          description: |
+                                            The ID of the user affected by this change.
+                                        is_active:
+                                          type: boolean
+                                          description: |
+                                            A boolean describing whether the user account has been deactivated.
                               additionalProperties: false
                               example:
                                 {
@@ -621,6 +653,9 @@ paths:
                                     A list of dictionaries where each dictionary contains
                                     information about one of the subscribed streams.
 
+                                    **Changes**: Removed `email_address` field from the dictionary
+                                    in Zulip 8.0 (feature level 226).
+
                                     **Changes**: Removed `role` field from the dictionary
                                     in Connect 6.0 (feature level 133).
                                   items:
@@ -653,7 +688,6 @@ paths:
                                         "push_notifications": null,
                                         "wildcard_mentions_notify": null,
                                         "in_home_view": true,
-                                        "email_address": "test_stream.af64447e9e39374841063747ade8e6b0.show-sender@testserver",
                                         "stream_weekly_traffic": null,
                                         "can_remove_subscribers_group": 2,
                                         "subscribers": [10],
@@ -772,8 +806,12 @@ paths:
                                 to see a given stream's subscriber list, they will receive this event
                                 for the existing subscriptions to the stream.
 
-                                **Changes**: Prior to Connect 8.0 (feature level 205), this event was not
-                                sent when a user gained access to a stream due to their [role
+                                **Changes**: Prior to Connect 8.0 (feature level 220), this event was
+                                incorrectly not sent to guest users when subscribers to web-public
+                                streams and subscribed public streams changed.
+
+                                Prior to Connect 8.0 (feature level 205), this event was not sent when
+                                a user gained access to a stream due to their [role
                                 changing](/help/roles-and-permissions).
 
                                 Prior to Connect 6.0 (feature level 134), this event was not sent when a
@@ -831,10 +869,13 @@ paths:
                                 from streams. Sent to all users if the stream is public or to only
                                 the existing subscribers if the stream is private.
 
-                                **Changes**: In Connect 4.0 (feature level 35), the singular
-                                `user_id` and `stream_id` integers included in this event
-                                were replaced with plural `user_ids` and `stream_ids` integer
-                                arrays.
+                                **Changes**: Prior to Connect 8.0 (feature level 220), this event was
+                                incorrectly not sent to guest users when subscribers to web-public
+                                streams and subscribed public streams changed.
+
+                                In Connect 4.0 (feature level 35), the singular `user_id` and
+                                `stream_id` integers included in this event were replaced
+                                with plural `user_ids` and `stream_ids` integer arrays.
 
                                 In Connect 3.0 (feature level 19), the `stream_id` field was
                                 added to identify the stream the user unsubscribed from,
@@ -906,6 +947,14 @@ paths:
                                     sent by the current user, and more subtle scenarios can result
                                     in a new message that the server has already marked as read for
                                     the user.
+
+                                    **Changes**: In Zulip 8.0 (feature level 224), the `wildcard_mentioned` flag
+                                    was deprecated in favor of the `stream_wildcard_mentioned` and `topic_wildcard_mentioned`
+                                    flags. The `wildcard_mentioned` flag exists for backwards compatibility with
+                                    older clients and equals `stream_wildcard_mentioned` || `topic_wildcard_mentioned`.
+                                    Clients interacting with older servers should treat this field as an old name
+                                    for `stream_wildcard_mentioned`. @topic mentions were not available prior to
+                                    this feature level.
 
                                     [message-flags]: /api/update-message-flags#available-flags
                                   items:
@@ -987,8 +1036,29 @@ paths:
                             - type: object
                               description: |
                                 Event sent to all users in a Connect organization when a new
-                                user joins. Processing this event is important to being able
-                                to display basic details on other users given only their ID.
+                                user joins or when a guest user gains access to a user.
+                                Processing this event is important to being able to display
+                                basic details on other users given only their ID.
+
+                                If the current user is a guest whose access to a newly created user
+                                is limited by a `can_access_all_users_group` policy, and the event
+                                queue was registered with the `user_list_incomplete` client
+                                capability, then the event queue will not receive an event for such
+                                a new user. If a newly created user is inaccessible to the current
+                                user via such a policy, but the client lacks `user_list_incomplete`
+                                client capability, then this event will be delivered to the queue,
+                                with an "Unknown user" object with the usual format but placeholder
+                                data whose only variable content is the user ID.
+
+                                **Changes**: Before Connect 8.0 (feature level 232), the
+                                `user_list_incomplete` client capability did not exist, and so all
+                                clients whose access to a new user was prevented by
+                                `can_access_all_users_group` policy would receive a fake "Unknown
+                                user" event for such a user.
+
+                                **Changes**: Starting with Connect 8.0 (feature level 228),
+                                this event is also sent when a guest user gains access to
+                                a user.
                               properties:
                                 id:
                                   $ref: "#/components/schemas/EventIdSchema"
@@ -1031,8 +1101,14 @@ paths:
                                 }
                             - type: object
                               description: |
-                                Event sent to all users in a Connect organization when
-                                a user is deactivated.
+                                Event sent to guest users when they lose access to a user.
+
+                                **Changes**: Prior to Connect 8.0 (feature level 228), this event was deprecated.
+
+                                **Changes**: Deprecated and no longer sent since Connect 8.0 (feature level 222).
+
+                                Previously, this event was sent to all users in a Connect organization when a
+                                user was deactivated.
                               properties:
                                 id:
                                   $ref: "#/components/schemas/EventIdSchema"
@@ -1080,6 +1156,13 @@ paths:
                                 confusing users when someone comes online and immediately sends
                                 a message (one wouldn't want them to still appear offline at
                                 that point!).
+
+                                If the `CAN_ACCESS_ALL_USERS_GROUP_LIMITS_PRESENCE` server-level
+                                setting is set to `true`, then the event is only sent to users
+                                who can access the user who came back online.
+
+                                **Changes**: Prior to Zulip 8.0 (feature level 228), this event
+                                was sent to all users in the organization.
                               properties:
                                 id:
                                   $ref: "#/components/schemas/EventIdSchema"
@@ -1187,9 +1270,11 @@ paths:
                                 Note that organization administrators who are not subscribed will
                                 not be able to see content on the stream; just that it exists.
 
-                                **Changes**: Prior to Connect 8.0 (feature level 205), this event was
-                                not sent when a user gained access to a stream due to their role
-                                changing.
+                                **Changes**: Prior to Connect 8.0 (feature level 220), this event was
+                                incorrectly not sent to guest users a web-public stream was created.
+
+                                Prior to Connect 8.0 (feature level 205), this event was not sent
+                                when a user gained access to a stream due to their role changing.
 
                                 Prior to Connect 8.0 (feature level 192), this event was not sent
                                 when guest users gained access to a public stream by being
@@ -1247,8 +1332,9 @@ paths:
                                 Event sent to all users who can see a stream when it is deactivated.
 
                                 This event is also sent when a user loses access to a stream they
-                                previously [could access](/help/stream-permissions) because their
-                                [role](/help/roles-and-permissions) has changed.
+                                previously [could access](/help/stream-permissions) because they
+                                are unsubscribed from a private stream or their [role](/help/roles-and-permissions)
+                                has changed.
 
                                 **Changes**: Prior to Connect 8.0 (feature level 205), this event was
                                 not sent when a user lost access to a stream due to their role
@@ -1388,7 +1474,7 @@ paths:
                                 Event sent when a reaction is added to a message.
                                 Sent to all users who were recipients of the message.
                               allOf:
-                                - $ref: "#/components/schemas/EmojiReactionBase"
+                                - $ref: "#/components/schemas/EmojiReactionEvent"
                                 - additionalProperties: false
                                   properties:
                                     id:
@@ -1434,7 +1520,7 @@ paths:
                                 Event sent when a reaction is removed from a message.
                                 Sent to all users who were recipients of the message.
                               allOf:
-                                - $ref: "#/components/schemas/EmojiReactionBase"
+                                - $ref: "#/components/schemas/EmojiReactionEvent"
                                 - additionalProperties: false
                                   properties:
                                     id:
@@ -1646,8 +1732,11 @@ paths:
                             - type: object
                               additionalProperties: false
                               description: |
-                                Event sent to all users in a Connect organization when the
-                                status of a user changes.
+                                Event sent to all users who can access the modified
+                                user when the status of a user changes.
+
+                                **Changes**: Prior to Connect 8.0 (feature level 228),
+                                this event was sent to all users in the organization.
                               properties:
                                 id:
                                   $ref: "#/components/schemas/EventIdSchema"
@@ -1951,9 +2040,16 @@ paths:
                                 Event sent when a message has been deleted.
                                 Sent to all users who received the message.
 
+                                This event is also sent when the user loses access to a message,
+                                such as when it is [moved to a stream][message-move-stream] that
+                                the user does not [have permission to access][stream-access].
+
                                 **Changes**: Before Connect 5.0 (feature level 77), events
                                 for direct messages contained additional `sender_id` and
                                 `recipient_id` fields.
+
+                                [message-move-stream]: /help/move-content-to-another-stream
+                                [stream-access]: /help/stream-permissions
                               properties:
                                 id:
                                   $ref: "#/components/schemas/EventIdSchema"
@@ -2092,11 +2188,15 @@ paths:
 
                                     - 0 = None. Used to indicate that the user no
                                       longer has a special visibility policy for this topic.
-                                    - 1 = Muted. Used to record muted topics.
+                                    - 1 = Muted. Used to record [muted topics](/help/mute-a-topic).
                                     - 2 = Unmuted. Used to record unmuted topics.
+                                    - 3 = Followed. Used to record [followed topics](/help/follow-a-topic).
 
-                                    **Changes**: In Connect 7.0 (feature level 170), added unmuted as
+                                    **Changes**: In Connect 7.0 (feature level 219), added followed as
                                     a visibility policy option.
+
+                                    In Connect 7.0 (feature level 170), added unmuted as a visibility
+                                    policy option.
                               additionalProperties: false
                               example:
                                 {
@@ -2172,11 +2272,14 @@ paths:
                             - type: object
                               additionalProperties: false
                               description: |
-                                Event sent when the set of onboarding "hotspots" to show for
+                                Event sent when the set of onboarding steps to show for
                                 the current user have changed (E.g. because the user dismissed one).
 
                                 Clients that feature a similar tutorial experience to the Connect
                                 web app may want to handle these events.
+
+                                **Changes**: Before Zulip 8.0 (feature level 233), this was named
+                                as `Hotspots`. One-time notice wasn't available earlier.
                               properties:
                                 id:
                                   $ref: "#/components/schemas/EventIdSchema"
@@ -2184,24 +2287,29 @@ paths:
                                   allOf:
                                     - $ref: "#/components/schemas/EventTypeSchema"
                                     - enum:
-                                        - hotspots
-                                hotspots:
+                                        - onboarding_steps
+                                onboarding_steps:
                                   type: array
                                   description: |
                                     An array of dictionaries where each
-                                    dictionary contains details about a single hotspot.
+                                    dictionary contains details about a single onboarding step.
+
+                                    **Changes**: Before Zulip 8.0 (feature level 233), this array
+                                    was named as `hotspots`. One-time notice wasn't available earlier.
                                   items:
-                                    $ref: "#/components/schemas/Hotspot"
+                                    $ref: "#/components/schemas/OnboardingStep"
                               example:
                                 {
-                                  "type": "hotspots",
-                                  "hotspots":
+                                  "type": "onboarding_steps",
+                                  "onboarding_steps":
                                     [
                                       {
+                                        "type": "hotspot",
                                         "name": "intro_streams",
                                         "title": "Catch up on a stream",
                                         "description": "Messages sent to a stream are seen by everyone subscribed to that stream. Try clicking on one of the stream links below.",
                                         "delay": 0.5,
+                                        "has_trigger": false,
                                       },
                                     ],
                                   "id": 0,
@@ -2293,6 +2401,14 @@ paths:
                                     A client application should compare these to the original flags
                                     to identify cases where a mention or alert word was added by the
                                     edit.
+
+                                    **Changes**: In Zulip 8.0 (feature level 224), the `wildcard_mentioned` flag
+                                    was deprecated in favor of the `stream_wildcard_mentioned` and `topic_wildcard_mentioned`
+                                    flags. The `wildcard_mentioned` flag exists for backwards compatibility with
+                                    older clients and equals `stream_wildcard_mentioned` || `topic_wildcard_mentioned`.
+                                    Clients interacting with older servers should treat this field as an old name
+                                    for `stream_wildcard_mentioned`. @topic mentions were not available prior to
+                                    this feature level.
 
                                     [message-flags]: /api/update-message-flags#available-flags
                                   items:
@@ -2738,7 +2854,44 @@ paths:
                                 Event sent to a user when [message flags][message-flags] are added
                                 to messages.
 
+                                This can reflect a direct user action, or can be the indirect
+                                consequence of another action. Whatever the cause, if there's a change
+                                in the set of message flags that the user has for a message, then an
+                                `update_message_flags` event will be sent with the change. Note
+                                that this applies when the user already had access to the message, and
+                                continues to have access to it. When a message newly appears or
+                                disappears, a [`message`][message-event] or
+                                [`delete_message`][message-delete] event is sent instead.
+
+                                Some examples of actions that trigger an `update_message_flags`
+                                event:
+
+                                - The `"starred"` flag is added when the user chooses to [star a
+                                  message](/help/star-a-message).
+                                - The `"read"` flag is added when the user marks messages as read by
+                                  scrolling through them, or uses [Mark all messages as read][all-read]
+                                  on a conversation.
+                                - The `"read"` flag is added when the user [mutes](/help/mute-a-user) a
+                                  message's sender.
+                                - The `"read"` flag is added after the user unsubscribes from a stream,
+                                  or messages are moved to a not-subscribed stream, provided the user
+                                  can still access the messages at all. Note a
+                                  [`delete_message`][message-delete] event is sent in the case where the
+                                  user can no longer access the messages.
+
+                                In some cases, a change in message flags that's caused by another change
+                                may happen a short while after the original change, rather than
+                                simultaneously. For example, when messages that were unread are moved to
+                                a stream where the user is not subscribed, the resulting change in
+                                message flags (and the corresponding `update_message_flags` event with
+                                flag `"read"`) may happen later than the message move itself. The delay
+                                in that example is typically at most a few hundred milliseconds and can
+                                in rare cases be minutes or longer.
+
                                 [message-flags]: /api/update-message-flags#available-flags
+                                [message-event]: /api/get-events#message
+                                [message-delete]: /api/get-events#delete_message
+                                [all-read]: /help/marking-messages-as-read#mark-all-messages-as-read
                               properties:
                                 id:
                                   $ref: "#/components/schemas/EventIdSchema"
@@ -2796,6 +2949,10 @@ paths:
                               description: |
                                 Event sent to a user when [message flags][message-flags] are
                                 removed from messages.
+
+                                See the description for the [`update_message_flags` op:
+                                `add`](/api/get-events#update_message_flags-add) event for
+                                more details about these events.
 
                                 [message-flags]: /api/update-message-flags#available-flags
                               properties:
@@ -3648,6 +3805,11 @@ paths:
                               additionalProperties: false
                               description: |
                                 Event sent to all users when a bot has been deactivated.
+
+                                **Changes**: Deprecated and no longer sent since Zulip 8.0 (feature level 222).
+
+                                Previously, this event was sent to all users in a Zulip organization when a
+                                bot was deactivated.
                               properties:
                                 id:
                                   $ref: "#/components/schemas/EventIdSchema"
@@ -4432,6 +4594,37 @@ paths:
                                         guest users to prominently highlight their status.
 
                                         **Changes**: New in Connect 8.0 (feature level 216).
+                                    can_access_all_users_group:
+                                      type: integer
+                                      description: |
+                                        The ID of the [user group](/api/get-user-groups) whose members
+                                        are allowed to access all users in the organization.
+
+                                        This setting can currently only be set to `"role:everyone"`
+                                        system group.
+
+                                        **Changes**: New in Connect 8.0 (feature level 225).
+                                    push_notifications_enabled:
+                                      type: boolean
+                                      description: |
+                                        Whether push notifications are enabled for this organization. Typically
+                                        `true` for Connect Cloud and self-hosted realms that have a valid
+                                        registration for the [Mobile push notifications
+                                        service](https://zulip.readthedocs.io/en/latest/production/mobile-push-notifications.html),
+                                        and `false` for self-hosted servers that do not.
+
+                                        **Changes**: New in Connect 8.0 (feature level 231).
+                                        Previously, this value was never updated via events.
+                                    push_notifications_enabled_end_timestamp:
+                                      type: integer
+                                      nullable: true
+                                      description: |
+                                        If the server expects the realm's push notifications access to end at a
+                                        definite time in the future, the time at which this is expected to happen.
+                                        Mobile clients should use this field to display warnings to users when the
+                                        indicated timestamp is near.
+
+                                        **Changes**: New in Zulip 8.0 (feature level 231).
                                   additionalProperties: false
                               example:
                                 {
@@ -4843,6 +5036,7 @@ paths:
                       An example JSON response for when the supplied stream does not exist:
   /mark_all_as_read:
     post:
+      deprecated: true
       operationId: mark-all-as-read
       summary: Mark all messages as read
       tags: ["messages"]
@@ -4856,7 +5050,11 @@ paths:
         response. If all messages were marked as read, then the success response
         will return `"complete": true`.
 
-        **Changes**: Before Connect 8.0 (feature level 211), if the server's
+        **Changes**: Deprecated; clients should use the [update personal message
+        flags for narrow](/api/update-message-flags-for-narrow) endpoint instead
+        as this endpoint will be removed in a future release.
+
+        Before Connect 8.0 (feature level 211), if the server's
         processing was interrupted by a timeout, but some messages were marked
         as read, then it would return `"result": "partially_completed"`, along
         with a `code` field for an error string, in the success response to
@@ -4895,11 +5093,16 @@ paths:
                     example: {"msg": "", "result": "success", "complete": true}
   /mark_stream_as_read:
     post:
+      deprecated: true
       operationId: mark-stream-as-read
       summary: Mark messages in a stream as read
       tags: ["messages"]
       description: |
         Mark all the unread messages in a stream as read.
+
+        **Changes**: Deprecated; clients should use the [update personal message
+        flags for narrow](/api/update-message-flags-for-narrow) endpoint instead
+        as this endpoint will be removed in a future release.
       parameters:
         - name: stream_id
           in: query
@@ -4914,11 +5117,16 @@ paths:
           $ref: "#/components/responses/SimpleSuccess"
   /mark_topic_as_read:
     post:
+      deprecated: true
       operationId: mark-topic-as-read
       summary: Mark messages in a topic as read
       tags: ["messages"]
       description: |
         Mark all the unread messages in a topic as read.
+
+        **Changes**: Deprecated; clients should use the [update personal message
+        flags for narrow](/api/update-message-flags-for-narrow) endpoint instead
+        as this endpoint will be removed in a future release.
       parameters:
         - name: stream_id
           in: query
@@ -5015,8 +5223,8 @@ paths:
           description: |
             The ID of the attachment to be deleted.
           schema:
-            type: string
-          example: "1"
+            type: integer
+          example: 1
           required: true
       responses:
         "200":
@@ -5398,6 +5606,17 @@ paths:
             in UTC seconds.
           required: true
           example: 3165826990
+        - name: read_by_sender
+          in: query
+          schema:
+            type: boolean
+          description: |
+            Whether the message should be initially marked read by its
+            sender. If unspecified, the server uses a heuristic based
+            on the client name and the recipient.
+
+            **Changes**: New in Connect 8.0 (feature level 236).
+          example: true
       responses:
         "200":
           description: Success.
@@ -5907,15 +6126,15 @@ paths:
                       found_newest:
                         type: boolean
                         description: |
-                          Whether the `messages` list includes the very newest messages matching
-                          the narrow (used by clients that paginate their requests to decide
-                          whether there are more messages to fetch).
+                          Whether the server promises that the `messages` list includes the very
+                          newest messages matching the narrow (used by clients that paginate their
+                          requests to decide whether there may be more messages to fetch).
                       found_oldest:
                         type: boolean
                         description: |
-                          Whether the `messages` list includes the very oldest messages matching
-                          the narrow (used by clients that paginate their requests to decide
-                          whether there are more messages to fetch).
+                          Whether the server promises that the `messages` list includes the very
+                          oldest messages matching the narrow (used by clients that paginate their
+                          requests to decide whether there may be more messages to fetch).
                       found_anchor:
                         type: boolean
                         description: |
@@ -5970,6 +6189,14 @@ paths:
                                   type: array
                                   description: |
                                     The user's [message flags][message-flags] for the message.
+
+                                    **Changes**: In Zulip 8.0 (feature level 224), the `wildcard_mentioned` flag
+                                    was deprecated in favor of the `stream_wildcard_mentioned` and `topic_wildcard_mentioned`
+                                    flags. The `wildcard_mentioned` flag exists for backwards compatibility with
+                                    older clients and equals `stream_wildcard_mentioned` || `topic_wildcard_mentioned`.
+                                    Clients interacting with older servers should treat this field as an old name
+                                    for `stream_wildcard_mentioned`. @topic mentions were not available prior to
+                                    this feature level.
 
                                     [message-flags]: /api/update-message-flags#available-flags
                                   items:
@@ -6157,6 +6384,17 @@ paths:
             chosen freely by the client; the server will pass it back to the client without
             inspecting it, as described in the `queue_id` description.
           example: "100.01"
+        - name: read_by_sender
+          in: query
+          schema:
+            type: boolean
+          description: |
+            Whether the message should be initially marked read by its
+            sender. If unspecified, the server uses a heuristic based
+            on the client name.
+
+            **Changes**: New in Zulip 8.0 (feature level 236).
+          example: true
       responses:
         "200":
           description: Success.
@@ -6190,13 +6428,18 @@ paths:
 
                           Only present if the sender's visibility was in fact changed.
 
-                          Intended to be used by clients where it is important to explicitly display a
-                          notice that the topic's visibility policy has changed automatically due to
-                          the message sent. The information is also important to correctly decide whether to
-                          display a warning or notice suggesting to unmute the topic after sending a message
-                          to a muted stream. Such a notice might feel confusing in the event that the act of
-                          sending the message had already resulted in the user unmuting or following the topic
-                          in question.
+                          The value can be either [unmuted or followed](/api/update-user-topic#parameter-visibility_policy).
+
+                          Clients will also be notified about the change in policy via a
+                          `user_topic` event as usual. This field is intended to be used by clients
+                          to explicitly inform the user when a topic's visibility policy was changed
+                          automatically due to sending a message.
+
+                          For example, the Zulip web application uses this field to decide whether
+                          to display a warning or notice suggesting to unmute the topic after
+                          sending a message to a muted stream. Such a notice would be confusing in
+                          the event that the act of sending the message had already resulted in the
+                          user automatically unmuting or following the topic in question.
 
                           **Changes**: New in Connect 8.0 (feature level 218).
                     example:
@@ -6228,6 +6471,38 @@ paths:
                         description: |
                           A typical failed JSON response for when a direct message is sent to a user
                           that does not exist:
+                  - allOf:
+                      - $ref: "#/components/schemas/CodedError"
+                      - example:
+                          {
+                            "result": "error",
+                            "msg": "You do not have permission to use stream wildcard mentions in this stream.",
+                            "code": "STREAM_WILDCARD_MENTION_NOT_ALLOWED",
+                          }
+                        description: |
+                          An example JSON error response for when the message was rejected because
+                          of the organization's `wildcard_mention_policy` and large number of
+                          subscribers to the stream.
+
+                          **Changes**: New in Zulip 8.0 (feature level 229). Previously, this
+                          error returned the `"BAD_REQUEST"` code.
+                  - allOf:
+                      - $ref: "#/components/schemas/CodedError"
+                      - example:
+                          {
+                            "result": "error",
+                            "msg": "You do not have permission to use topic wildcard mentions in this topic.",
+                            "code": "TOPIC_WILDCARD_MENTION_NOT_ALLOWED",
+                          }
+                        description: |
+                          An example JSON error response for when the message was rejected because
+                          the message contains a topic wildcard mention, but the user doesn't have
+                          permission to use such a mention in this topic due to the
+                          `wildcard_mention_policy` (and large number of participants in this
+                          specific topic).
+
+                          **Changes**: New in Zulip 8.0 (feature level 229). Previously,
+                          `wildcard_mention_policy` was not enforced for topic mentions.
   /messages/{message_id}/history:
     get:
       operationId: get-message-history
@@ -6395,9 +6670,6 @@ paths:
 
         See also the endpoint for [updating flags on a range of
         messages within a narrow](/api/update-message-flags-for-narrow).
-        For updating the `read` flag on common collections of messages, see also
-        the
-        [special endpoints for marking message as read in bulk](/api/mark-all-as-read).
       x-parameter-description: |
         ## Available flags
         <div>
@@ -6440,13 +6712,42 @@ paths:
                     <tr>
                         <td><code>wildcard_mentioned</code></td>
                         <td>
-                            Whether this message contained
-                            <a href="/help/mention-a-user-or-group#mention-everyone-on-a-stream">wildcard mention</a>
-                            like @**all**. Cannot be changed by the user directly, but
-                            can change if the message is edited to add/remove
-                            a wildcard mention.
+                            Whether this message contained either a
+                            <a href="/help/mention-a-user-or-group#mention-everyone-on-a-stream">stream wildcard mention</a>
+                            like @**all** or a topic wildcard mention (@**topic**). Cannot be changed
+                            by the user directly, but can change if the message is edited to add/remove
+                            a stream or/and topic wildcard mention.
+
+                            **Changes**: In Zulip 8.0 (feature level 224), the `wildcard_mentioned` flag
+                            was deprecated in favor of the `stream_wildcard_mentioned` and `topic_wildcard_mentioned`
+                            flags. The `wildcard_mentioned` flag exists for backwards compatibility with
+                            older clients and equals `stream_wildcard_mentioned` || `topic_wildcard_mentioned`.
+                            Clients interacting with older servers should treat this field as an old name
+                            for `stream_wildcard_mentioned`. @topic mentions were not available prior to
+                            this feature level.
                         </td>
                     </tr>
+                    <tr>
+                        <td><code>stream_wildcard_mentioned</code></td>
+                        <td>
+                            Whether this message contained a
+                            <a href="/help/mention-a-user-or-group#mention-everyone-on-a-stream">stream wildcard mention</a>
+                            like @**all**. Cannot be changed by the user directly, but
+                            can change if the message is edited to add/remove
+                            a stream wildcard mention.
+
+                            **Changes**: New in Zulip 8.0 (feature level 224).
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>topic_wildcard_mentioned</code></td>
+                        <td>
+                            Whether this message contained a topic wildcard mention (@**topic**).
+                            Cannot be changed by the user directly, but can change if
+                            the message is edited to add/remove a topic wildcard mention.
+
+                            **Changes**: New in Zulip 8.0 (feature level 224).
+                        </td>
                     <tr>
                         <td><code>has_alert_word</code></td>
                         <td>
@@ -7142,6 +7443,14 @@ paths:
                                 description: |
                                   The user's [message flags][message-flags] for the message.
 
+                                  **Changes**: In Zulip 8.0 (feature level 224), the `wildcard_mentioned` flag
+                                  was deprecated in favor of the `stream_wildcard_mentioned` and `topic_wildcard_mentioned`
+                                  flags. The `wildcard_mentioned` flag exists for backwards compatibility with
+                                  older clients and equals `stream_wildcard_mentioned` || `topic_wildcard_mentioned`.
+                                  Clients interacting with older servers should treat this field as an old name
+                                  for `stream_wildcard_mentioned`. @topic mentions were not available prior to
+                                  this feature level.
+
                                   [message-flags]: /api/update-message-flags#available-flags
                                 items:
                                   type: string
@@ -7458,6 +7767,38 @@ paths:
                           dialog.
 
                           **Changes**: New in Connect 7.0 (feature level 172).
+                  - allOf:
+                      - $ref: "#/components/schemas/CodedError"
+                      - example:
+                          {
+                            "result": "error",
+                            "msg": "You do not have permission to use stream wildcard mentions in this stream.",
+                            "code": "STREAM_WILDCARD_MENTION_NOT_ALLOWED",
+                          }
+                        description: |
+                          An example JSON error response for when the message was rejected because
+                          of the organization's `wildcard_mention_policy` and large number of
+                          subscribers to the stream.
+
+                          **Changes**: New in Connect 8.0 (feature level 229). Previously, this
+                          error returned the `"BAD_REQUEST"` code.
+                  - allOf:
+                      - $ref: "#/components/schemas/CodedError"
+                      - example:
+                          {
+                            "result": "error",
+                            "msg": "You do not have permission to use topic wildcard mentions in this topic.",
+                            "code": "TOPIC_WILDCARD_MENTION_NOT_ALLOWED",
+                          }
+                        description: |
+                          An example JSON error response for when the message was rejected because
+                          the message contains a topic wildcard mention, but the user doesn't have
+                          permission to use such a mention in this topic due to the
+                          `wildcard_mention_policy` (and large number of participants in this
+                          specific topic).
+
+                          **Changes**: New in Zulip 8.0 (feature level 229). Previously,
+                          `wildcard_mention_policy` was not enforced for topic mentions.
     delete:
       operationId: delete-message
       summary: Delete a message
@@ -8602,6 +8943,9 @@ paths:
                           A list of dictionaries where each dictionary contains
                           information about one of the subscribed streams.
 
+                          **Changes**: Removed `email_address` field from the dictionary
+                          in Zulip 8.0 (feature level 226).
+
                           **Changes**: Removed `role` field from the dictionary
                           in Connect 6.0 (feature level 133).
                         items:
@@ -8617,7 +8961,6 @@ paths:
                               "color": "#e79ab5",
                               "description": "A Scandinavian country",
                               "desktop_notifications": true,
-                              "email_address": "Denmark+187b4125ed36d6af8b5d03ef4f65c0cf@zulipdev.com:9981",
                               "is_muted": false,
                               "invite_only": false,
                               "name": "Denmark",
@@ -8631,7 +8974,6 @@ paths:
                               "color": "#e79ab5",
                               "description": "Located in the United Kingdom",
                               "desktop_notifications": true,
-                              "email_address": "Scotland+f5786390183e60a1ccb18374f9d05649@zulipdev.com:9981",
                               "is_muted": false,
                               "invite_only": false,
                               "name": "Scotland",
@@ -9104,6 +9446,7 @@ paths:
                       A typical failed JSON response for when the target stream does not exist:
   /users/me/subscriptions/muted_topics:
     patch:
+      deprecated: true
       operationId: mute-topic
       summary: Topic muting
       tags: ["streams"]
@@ -9176,18 +9519,24 @@ paths:
   /mobile_push/test_notification:
     post:
       operationId: test-notify
-      summary: Sends a test notifications to the user's mobile device(s)
+      summary: Sends a test notification to the user's mobile device(s)
       tags: ["mobile"]
       description: |
         This endpoint allows a user to trigger a test push notification to their
-        selected mobile devices, or all their mobile devices.
+        selected mobile device, or all their mobile devices.
 
-        **Changes**: New in Connect 8.0 (feature level 217).
+        **Changes**: Starting with Connect 8.0 (feature level 234), test
+        notifications sent via this endpoint use `test` rather than
+        `test-by-device-token` in the `event` field. (All mobile push
+        notifications also now include a `realm_name` field as well as
+        of this feature level).
+
+        New in Connect 8.0 (feature level 217).
       parameters:
         - name: token
           in: query
           description: |
-            The push token for the device to send the test notification to.
+            The push token for the device to which to send the test notification.
 
             If this parameter is not submitted, the test notification will be sent to all of the
             user's devices registered on the server.
@@ -9257,9 +9606,13 @@ paths:
             - 0 = None. Removes the visibility policy previously set for the topic.
             - 1 = Muted. [Mutes the topic](/help/mute-a-topic) in a stream.
             - 2 = Unmuted. [Unmutes the topic](/help/mute-a-topic) in a muted stream.
+            - 3 = Followed. [Follows the topic](/help/follow-a-topic).
 
             In an unmuted stream, a topic visibility policy of unmuted will have the
             same effect as the "None" visibility policy.
+
+            **Changes**: In Zulip 7.0 (feature level 219), added followed as
+            a visibility policy option.
           schema:
             type: integer
             enum:
@@ -9562,7 +9915,11 @@ paths:
       description: |
         Get the presence information of all the users in an organization.
 
-        See [OneHash Connect's developer documentation][subsystems-presence]
+        If the `CAN_ACCESS_ALL_USERS_GROUP_LIMITS_PRESENCE` server-level
+        setting is set to `true`, presence information of only accessible
+        users are returned.
+
+        See [Connect's developer documentation][subsystems-presence]
         for details on the data model for presence in Connect.
 
         [subsystems-presence]: https://zulip.readthedocs.io/en/latest/subsystems/presence.html
@@ -10004,25 +10361,29 @@ paths:
           schema:
             type: boolean
           example: false
-        - name: default_view
+        - name: web_home_view
           in: query
           description: |
-            The [default view](/help/configure-home-view) used when opening a new
+            The [home view](/help/configure-home-view) used when opening a new
             Connect web app window or hitting the `Esc` keyboard shortcut repeatedly.
 
             - "recent_topics" - Recent conversations view
             - "inbox" - Inbox view
             - "all_messages" - All messages view
+
+            **Changes**: New in Connect 8.0 (feature level 219). Previously, this was
+            called `default_view`, which was new in Connect 4.0 (feature level 42).
           schema:
             type: string
           example: all_messages
-        - name: escape_navigates_to_default_view
+        - name: web_escape_navigates_to_home_view
           in: query
           description: |
             Whether the escape key navigates to the
-            [configured default view](/help/configure-home-view).
+            [configured home view](/help/configure-home-view).
 
-            **Changes**: New in Connect 5.0 (feature level 107).
+            **Changes**: New in Connect 8.0 (feature level 219). Previously, this was called
+            `escape_navigates_to_default_view`, which was new in Connect 5.0 (feature level 107).
           schema:
             type: boolean
           example: true
@@ -10261,15 +10622,20 @@ paths:
           description: |
             Unread count badge (appears in desktop sidebar and browser tab)
 
-            - 1 - All unreads
-            - 2 - Direct messages and mentions
-            - 3 - None
+            - 1 - All unread messages
+            - 2 - DMs, mentions, and followed topics
+            - 3 - DMs and mentions
+            - 4 - None
+
+            **Changes**: In Zulip 8.0 (feature level 227), added `DMs, mentions, and followed
+            topics` option, renumbering the options to insert it in order.
           schema:
             type: integer
             enum:
               - 1
               - 2
               - 3
+              - 4
           example: 1
         - name: realm_name_in_email_notifications_policy
           in: query
@@ -10329,6 +10695,16 @@ paths:
               - 3
               - 4
           example: 1
+        - name: automatically_follow_topics_where_mentioned
+          in: query
+          description: |
+            Whether the server will automatically mark the user as following
+            topics where the user is mentioned.
+
+            **Changes**: New in Zulip 8.0 (feature level 235).
+          schema:
+            type: boolean
+          example: true
         - name: presence_enabled
           in: query
           description: |
@@ -11306,6 +11682,13 @@ paths:
               **Changes**: New in Connect 7.0 (feature level 176). This capability
               is for backwards-compatibility.
 
+            - `user_list_incomplete`: Boolean for whether the client supports not having an
+              incomplete user database. If true, then the `realm_users` array in the `register`
+              response will not include data for inaccessible users and clients of guest users will
+              not receive `realm_user op:add` events for newly created users that are not accessible
+              to the current user. **Changes**: New in Zulip 8.0 (feature level 232). This
+              capability is for backwards-compatibility.
+
             [help-linkifiers]: /help/add-a-custom-linkifier
             [rfc6570]: https://www.rfc-editor.org/rfc/rfc6570.html
             [events-linkifiers]: /api/get-events#realm_linkifiers
@@ -11476,17 +11859,17 @@ paths:
                           array will be empty if `enable_drafts_synchronization` is set to `false`.
                         items:
                           $ref: "#/components/schemas/Draft"
-                      hotspots:
+                      onboarding_steps:
                         type: array
                         description: |
-                          Present if `hotspots` is present in `fetch_event_types`.
+                          Present if `onboarding_steps` is present in `fetch_event_types`.
 
                           An array of dictionaries, where each dictionary contains details about
-                          a single onboarding hotspot that should be shown to new users.
+                          a single onboarding step that should be shown to new users.
 
                           We expect that only official Connect clients will interact with these data.
                         items:
-                          $ref: "#/components/schemas/Hotspot"
+                          $ref: "#/components/schemas/OnboardingStep"
                       max_message_id:
                         type: integer
                         deprecated: true
@@ -11921,6 +12304,9 @@ paths:
                           of a stream the user is subscribed to (as well as that user's
                           personal per-stream settings).
 
+                          **Changes**: Removed `email_address` field from the dictionary
+                          in Zulip 8.0 (feature level 226).
+
                           **Changes**: Removed `role` field from the dictionary
                           in Connect 6.0 (feature level 133).
                       unsubscribed:
@@ -11936,6 +12322,9 @@ paths:
 
                           Unlike `never_subscribed`, the user might have messages in their personal
                           message history that were sent to these streams.
+
+                          **Changes**: Removed `email_address` field from the dictionary
+                          in Zulip 8.0 (feature level 226).
 
                           **Changes**: Removed `role` field from the dictionary
                           in Connect 6.0 (feature level 133).
@@ -12049,7 +12438,8 @@ paths:
                                   type: array
                                   description: |
                                     The message IDs of the recent unread direct messages sent
-                                    by either user in this one-on-one direct message conversation.
+                                    by either user in this one-on-one direct message conversation,
+                                    sorted in ascending order.
                                   items:
                                     type: integer
                           streams:
@@ -12077,7 +12467,8 @@ paths:
                                 unread_message_ids:
                                   type: array
                                   description: |
-                                    The message IDs of the recent unread messages sent in this stream.
+                                    The message IDs of the recent unread messages sent in this stream,
+                                    sorted in ascending order.
                                   items:
                                     type: integer
                           huddles:
@@ -12100,7 +12491,7 @@ paths:
                                   type: array
                                   description: |
                                     The message IDs of the recent unread messages which have been sent in
-                                    this group direct message conversation.
+                                    this group direct message conversation, sorted in ascending order.
                                   items:
                                     type: integer
                           mentions:
@@ -12339,22 +12730,27 @@ paths:
 
                               The value needs to be a standard language code that the Connect server has
                               translation data for; for example, `"en"` for English or `"de"` for German.
-                          default_view:
+                          web_home_view:
                             type: string
                             description: |
-                              The [default view](/help/configure-home-view) used when opening a new
+                              The [home view](/help/configure-home-view) used when opening a new
                               Connect web app window or hitting the `Esc` keyboard shortcut repeatedly.
 
                               - "recent_topics" - Recent conversations view
                               - "inbox" - Inbox view
                               - "all_messages" - All messages view
-                          escape_navigates_to_default_view:
+
+                              **Changes**: New in Connect 8.0 (feature level 219). Previously, this was
+                              called `default_view`, which was new in Connect 4.0 (feature level 42).
+                          web_escape_navigates_to_home_view:
                             type: boolean
                             description: |
                               Whether the escape key navigates to the
-                              [configured default view](/help/configure-home-view).
+                              [configured home view](/help/configure-home-view).
 
-                              **Changes**: New in Connect 5.0 (feature level 107).
+                              **Changes**: New in Connect 8.0 (feature level 219). Previously, this
+                              was called `escape_navigates_to_default_view`, which was new in Connect
+                              5.0 (feature level 107).
                           left_side_userlist:
                             type: boolean
                             description: |
@@ -12529,9 +12925,14 @@ paths:
                             description: |
                               Unread count badge (appears in desktop sidebar and browser tab)
 
-                              - 1 - All unreads
-                              - 2 - Direct messages and mentions
-                              - 3 - None
+                              - 1 - All unread messages
+                              - 2 - DMs, mentions, and followed topics
+                              - 3 - DMs and mentions
+                              - 4 - None
+
+                              **Changes**: In Zulip 8.0 (feature level 227), added `DMs, mentions,
+                              and followed topics` option, renumbering the options to insert it in
+                              order.
                           realm_name_in_email_notifications_policy:
                             type: integer
                             description: |
@@ -12567,6 +12968,13 @@ paths:
                               - 4 - Never
 
                               **Changes**: New in Connect 8.0 (feature level 214).
+                          automatically_follow_topics_where_mentioned:
+                            type: boolean
+                            description: |
+                              Whether the server will automatically mark the user as following
+                              topics where the user is mentioned.
+
+                              **Changes**: New in Connect 8.0 (feature level 235).
                           presence_enabled:
                             type: boolean
                             description: |
@@ -12666,9 +13074,13 @@ paths:
 
                                 - 1 = Muted. Used to record [muted topics](/help/mute-a-topic).
                                 - 2 = Unmuted. Used to record [unmuted topics](/help/mute-a-topic).
+                                - 3 = Followed. Used to record [followed topics](/help/follow-a-topic).
 
-                                **Changes**: In Connect 7.0 (feature level 170), added unmuted as
+                                **Changes**: In Connect 7.0 (feature level 219), added followed as
                                 a visibility policy option.
+
+                                In Zulip 7.0 (feature level 170), added unmuted as a visibility
+                                policy option.
                       has_zoom_token:
                         type: boolean
                         description: |
@@ -13187,7 +13599,7 @@ paths:
                           client capability and access the `user_settings` object instead.
 
                           [capabilities]: /api/register-queue#parameter-client_capabilities
-                      default_view:
+                      web_home_view:
                         deprecated: true
                         type: string
                         description: |
@@ -13195,7 +13607,7 @@ paths:
                           and only for clients that did not include `user_settings_object` in
                           their [`client_capabilities`][capabilities] when registering the event queue.
 
-                          The [default view](/help/configure-home-view) in Connect, represented
+                          The [home view](/help/configure-home-view) in Connect, represented
                           as the URL suffix after `#` to be rendered when Connect loads.
 
                           Currently supported values are `all_messages` and `recent_topics`.
@@ -13203,9 +13615,12 @@ paths:
                           See [PATCH /settings](/api/update-settings) for details on
                           the meaning of this setting.
 
-                          **Changes**: Deprecated in Connect 5.0 (feature level 89). Clients
-                          connecting to newer servers should declare the `user_settings_object`
-                          client capability and access the `user_settings` object instead.
+                          **Changes**: New in Connect 8.0 (feature level 219). Previously, this was
+                          called `default_view`, which was new in Connect 4.0 (feature level 42).
+
+                          **Deprecated** in Connect 5.0 (feature level 89). Clients connecting to newer
+                          servers should declare the `user_settings_object` client capability and
+                          access the `user_settings` object instead.
 
                           [capabilities]: /api/register-queue#parameter-client_capabilities
                       high_contrast_mode:
@@ -14106,8 +14521,26 @@ paths:
                           Present if `realm` is present in `fetch_event_types`.
 
                           Whether push notifications are enabled for this organization. Typically
-                          `false` for self-hosted servers that have not configured the
-                          [Mobile push notifications service](https://zulip.readthedocs.io/en/latest/production/mobile-push-notifications.html).
+                          `true` for Zulip Cloud and self-hosted realms that have a valid
+                          registration for the [Mobile push notifications
+                          service](https://zulip.readthedocs.io/en/latest/production/mobile-push-notifications.html),
+                          and `false` for self-hosted servers that do not.
+
+                          **Changes**: Before Zulip 8.0 (feature level 231), this incorrectly was
+                          `true` for servers that were partly configured to use the Mobile Push
+                          Notifications Service but not properly registered.
+                      realm_push_notifications_enabled_end_timestamp:
+                        type: integer
+                        nullable: true
+                        description: |
+                          Present if `realm` is present in `fetch_event_types`.
+
+                          If the server expects the realm's push notifications access to end at a
+                          definite time in the future, the time at which this is expected to happen.
+                          Mobile clients should use this field to display warnings to users when the
+                          indicated timestamp is near.
+
+                          **Changes**: New in Zulip 8.0 (feature level 231).
                       realm_upload_quota_mib:
                         type: integer
                         nullable: true
@@ -14168,6 +14601,16 @@ paths:
                           guest users to prominently highlight their status.
 
                           **Changes**: New in Connect 8.0 (feature level 216).
+                      realm_can_access_all_users_group:
+                        type: integer
+                        description: |
+                          The ID of the [user group](/api/get-user-groups) whose members
+                          are allowed to access all users in the organization.
+
+                          This setting can currently only be set to `"role:members"`
+                          and `"role:everyone"` system groups.
+
+                          **Changes**: New in Connect 8.0 (feature level 225).
                       zulip_plan_is_not_limited:
                         type: boolean
                         description: |
@@ -14532,22 +14975,27 @@ paths:
 
                               The value needs to be a standard language code that the Connect server has
                               translation data for; for example, `"en"` for English or `"de"` for German.
-                          default_view:
+                          web_home_view:
                             type: string
                             description: |
-                              The [default view](/help/configure-home-view) used when opening a new
+                              The [home view](/help/configure-home-view) used when opening a new
                               Connect web app window or hitting the `Esc` keyboard shortcut repeatedly.
 
                               - "recent_topics" - Recent conversations view
                               - "inbox" - Inbox view
                               - "all_messages" - All messages view
-                          escape_navigates_to_default_view:
+
+                              **Changes**: New in Connect 8.0 (feature level 219). Previously, this was
+                              called `default_view`, which was new in Connect 4.0 (feature level 42).
+                          web_escape_navigates_to_home_view:
                             type: boolean
                             description: |
                               Whether the escape key navigates to the
-                              [configured default view](/help/configure-home-view).
+                              [configured home view](/help/configure-home-view).
 
-                              **Changes**: New in Connect 5.0 (feature level 107).
+                              **Changes**: New in Connect 8.0 (feature level 219). Previously, this
+                              was called `escape_navigates_to_default_view`, which was new in Connect
+                              5.0 (feature level 107).
                           left_side_userlist:
                             type: boolean
                             description: |
@@ -14699,9 +15147,14 @@ paths:
                             description: |
                               Unread count badge (appears in desktop sidebar and browser tab)
 
-                              - 1 - All unreads
-                              - 2 - Direct messages and mentions
-                              - 3 - None
+                              - 1 - All unread messages
+                              - 2 - DMs, mentions, and followed topics
+                              - 3 - DMs and mentions
+                              - 4 - None
+
+                              **Changes**: In Zulip 8.0 (feature level 227), added `DMs, mentions,
+                              and followed topics` option, renumbering the options to insert it in
+                              order.
                           realm_name_in_email_notifications_policy:
                             type: integer
                             description: |
@@ -14737,6 +15190,13 @@ paths:
                               - 4 - Never
 
                               **Changes**: New in Connect 8.0 (feature level 214).
+                          automatically_follow_topics_where_mentioned:
+                            type: boolean
+                            description: |
+                              Whether the server will automatically mark the user as following
+                              topics where the user is mentioned.
+
+                              **Changes**: New in Connect 8.0 (feature level 235).
                           presence_enabled:
                             type: boolean
                             description: |
@@ -14827,7 +15287,22 @@ paths:
                           the usual User dictionary, this does not contain the `is_active`
                           key, as all the users present in this array have active accounts.
 
+                          If the current user is a guest whose access to users is limited by a
+                          `can_access_all_users_group` policy, and the event queue was registered
+                          with the `user_list_incomplete` client capability, then users that the
+                          current user cannot access will not be included in this array. If the
+                          current user's access to a user is restricted but the client lacks this
+                          capability, then that inaccessible user will appear in the users array as
+                          an "Unknown user" object with the usual format but placeholder data whose
+                          only variable content is the user ID.
+
                           See also `cross_realm_bots` and `realm_non_active_users`.
+
+                          **Changes**: Before Zulip 8.0 (feature level 232), the
+                          `user_list_incomplete` client capability did not exist, and so all
+                          clients whose access to a new user was prevented by
+                          `can_access_all_users_group` policy would receive a fake "Unknown
+                          user" event for such users.
                         items:
                           $ref: "#/components/schemas/User"
                       realm_non_active_users:
@@ -15050,6 +15525,37 @@ paths:
                                   nullable: true
                                 avatar_version: {}
                                 profile_data: {}
+                      server_supported_permission_settings:
+                        description: |
+                          Present if `realm` is present in `fetch_event_types`.
+
+                          Configuration for various group permission settings.
+
+                          We consider this part of the Zulip API to be unstable
+                          and may change significantly in future versions.
+
+                          **Changes**: New in Zulip 8.0 (feature level 221).
+                        type: object
+                        additionalProperties: false
+                        properties:
+                          realm:
+                            type: object
+                            description: |
+                              Configuration for realm level group permission settings.
+                            additionalProperties:
+                              $ref: "#/components/schemas/GroupPermissionSetting"
+                          stream:
+                            type: object
+                            description: |
+                              Configuration for stream level group permission settings.
+                            additionalProperties:
+                              $ref: "#/components/schemas/GroupPermissionSetting"
+                          group:
+                            type: object
+                            description: |
+                              Configuration for group level group permission settings.
+                            additionalProperties:
+                              $ref: "#/components/schemas/GroupPermissionSetting"
                     example:
                       {
                         "last_event_id": -1,
@@ -15257,7 +15763,7 @@ paths:
                       push_notifications_enabled:
                         type: boolean
                         description: |
-                          Whether mobile/push notifications are enabled.
+                          Whether mobile/push notifications are configured.
                       is_incompatible:
                         type: boolean
                         description: |
@@ -15597,30 +16103,35 @@ paths:
           schema:
             type: string
           example: en
-        - name: default_view
+        - name: web_home_view
           in: query
           description: |
-            The [default view](/help/configure-home-view) used when opening a new
+            The [home view](/help/configure-home-view) used when opening a new
             Connect web app window or hitting the `Esc` keyboard shortcut repeatedly.
 
             - "recent_topics" - Recent conversations view
             - "inbox" - Inbox view
             - "all_messages" - All messages view
 
-            **Changes**: Before Connect 5.0 (feature level 80), this setting was managed by
+            **Changes**: New in Connect 8.0 (feature level 219). Previously, this was
+            called `default_view`, which was new in Connect 4.0 (feature level 42).
+
+            Before Connect 5.0 (feature level 80), this setting was managed by
             the `PATCH /settings/display` endpoint.
 
             Unnecessary JSON-encoding of this parameter was removed in Connect 4.0 (feature level 64).
           schema:
             type: string
           example: all_messages
-        - name: escape_navigates_to_default_view
+        - name: web_escape_navigates_to_home_view
           in: query
           description: |
             Whether the escape key navigates to the
-            [configured default view](/help/configure-home-view).
+            [configured home view](/help/configure-home-view).
 
-            **Changes**: New in Connect 5.0 (feature level 107).
+            **Changes**: New in Connect 8.0 (feature level 219). Previously, this
+            was called `escape_navigates_to_default_view`, which was new in Connect
+            5.0 (feature level 107).
           schema:
             type: boolean
           example: true
@@ -15948,18 +16459,23 @@ paths:
           description: |
             Unread count badge (appears in desktop sidebar and browser tab)
 
-            - 1 - All unreads
-            - 2 - Direct messages and mentions
-            - 3 - None
+            - 1 - All unread messages
+            - 2 - DMs, mentions, and followed topics
+            - 3 - DMs and mentions
+            - 4 - None
 
-            **Changes**: Before Connect 5.0 (feature level 80), this setting was managed by
-            the `PATCH /settings/notifications` endpoint.
+            **Changes**: In Connect 8.0 (feature level 227), added `DMs, mentions, and followed
+            topics` option, renumbering the options to insert it in order.
+
+            Before Connect 5.0 (feature level 80), this setting was managed by the
+            `PATCH /settings/notifications` endpoint.
           schema:
             type: integer
             enum:
               - 1
               - 2
               - 3
+              - 4
           example: 1
         - name: realm_name_in_email_notifications_policy
           in: query
@@ -16022,6 +16538,16 @@ paths:
               - 3
               - 4
           example: 1
+        - name: automatically_follow_topics_where_mentioned
+          in: query
+          description: |
+            Whether the server will automatically mark the user as following
+            topics where the user is mentioned.
+
+            **Changes**: New in Zulip 8.0 (feature level 235).
+          schema:
+            type: boolean
+          example: true
         - name: presence_enabled
           in: query
           description: |
@@ -16588,6 +17114,50 @@ paths:
                         description: |
                           An example JSON response for when invalid combination of stream permission
                           parameters are passed:
+  /streams/{stream_id}/email_address:
+    get:
+      operationId: get-stream-email-address
+      summary: Get the email address of a stream
+      tags: ["streams"]
+      description: |
+        Get email address of a stream.
+
+        **Changes**: New in Zulip 8.0 (feature level 226).
+      parameters:
+        - $ref: "#/components/parameters/StreamIdInPath"
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/JsonSuccessBase"
+                  - additionalProperties: false
+                    properties:
+                      result: {}
+                      msg: {}
+                      ignored_parameters_unsupported: {}
+                      email:
+                        type: string
+                        description: |
+                          Email address of the stream.
+                    example:
+                      {
+                        "result": "success",
+                        "msg": "",
+                        "email": "test_stream.af64447e9e39374841063747ade8e6b0.show-sender@testserver",
+                      }
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/InvalidStreamError"
+                  - description: |
+                      An example JSON response for when the requested stream does not exist,
+                      or where the user does not have permission to access the target stream:
   /streams/{stream_id}/delete_topic:
     post:
       operationId: delete-topic
@@ -17842,6 +18412,15 @@ components:
             owner_id:
               nullable: true
             services: {}
+            is_active:
+              type: boolean
+              description: |
+                A boolean describing whether the user account has been deactivated.
+
+                **Changes**: New in Zulip 8.0 (feature level 222). Previously
+                we sent `realm_user` event with `op` field set to `remove`
+                when deactivating a bot and `realm_user` event with `op`
+                field set to `add` when reactivating a bot.
     BasicBotBase:
       type: object
       properties:
@@ -18041,16 +18620,22 @@ components:
             [profile field types](/help/custom-profile-fields#profile-field-types).
 
             **Changes**: New in Connect 6.0 (feature level 146).
-    Hotspot:
+    OnboardingStep:
       type: object
       additionalProperties: false
       description: |
-        Dictionary containing details of a single hotspot.
+        Dictionary containing details of a single onboarding step.
+
+        **Changes**: Before Connect 8.0 (feature level 233), this was
+        named as `Hotspot`. One-time notice wasn't available earlier.
       properties:
-        delay:
-          type: number
+        type:
+          type: string
           description: |
-            The delay after which the user should be shown the hotspot.
+            The type of the onboarding step. Valid values are either
+            'hotspot' or 'one_time_notice'.
+
+            **Changes**: New in Connect 8.0 (feature level 233).
         name:
           type: string
           description: |
@@ -18064,6 +18649,17 @@ components:
           description: |
             The description of the hotspot, as will be displayed to the
             user.
+        delay:
+          type: number
+          description: |
+            The delay after which the user should be shown the hotspot.
+        has_trigger:
+          type: boolean
+          description: |
+            The has_trigger is used to identify if the hotspot will activate
+            only when some specific event occurs.
+
+            **Changes**: New in Zulip 8.0 (feature level 230).
     RealmEmoji:
       type: object
       additionalProperties: false
@@ -18372,11 +18968,6 @@ components:
           description: |
             A boolean specifying whether the given stream has been pinned
             to the top.
-        email_address:
-          type: string
-          description: |
-            Email address of the given stream, used for
-            [sending emails to the stream](/help/message-a-stream-by-email).
         is_muted:
           type: boolean
           description: |
@@ -18524,14 +19115,54 @@ components:
         [help-email-visibility]: /help/configure-email-visibility
     EmojiReaction:
       allOf:
-        - $ref: "#/components/schemas/EmojiReactionBase"
+        - $ref: "#/components/schemas/EmojiBase"
         - additionalProperties: false
           properties:
             emoji_code: {}
             emoji_name: {}
             reaction_type: {}
-            user_id: {}
-            user: {}
+            user_id:
+              type: integer
+              description: |
+                The ID of the user who added the reaction.
+
+                **Changes**: New in Zulip 3.0 (feature level 2). The `user`
+                object is deprecated and will be removed in the future.
+            user:
+              type: object
+              additionalProperties: false
+              deprecated: true
+              description: |
+                Dictionary with data on the user who added the
+                reaction, including the user ID as the `id`
+                field. Note that reactions data received from the
+                [events API](/api/get-events) has a slightly different
+                `user` dictionary format, with the user ID field
+                called `user_id` instead.
+
+                **Changes**: Deprecated and to be removed in a future release
+                once core clients have migrated to use the adjacent `user_id`
+                field, which was introduced in Zulip 3.0 (feature level 2).
+                Clients supporting older Zulip server versions should use
+                the user ID mentioned in the description above as they would
+                the `user_id` field.
+              properties:
+                id:
+                  type: integer
+                  description: |
+                    ID of the user.
+                email:
+                  type: string
+                  description: |
+                    Zulip API email of the user.
+                full_name:
+                  type: string
+                  description: |
+                    Full name of the user.
+                is_mirror_dummy:
+                  type: boolean
+                  description: |
+                    Whether the user is a mirror dummy.
     EmojiBase:
       type: object
       properties:
@@ -18566,7 +19197,7 @@ components:
             - `zulip_extra_emoji` : These are special emoji included with Connect.
               In this namespace, `emoji_code` will be the name of the emoji (e.g.
               "connect").
-    EmojiReactionBase:
+    EmojiReactionEvent:
       allOf:
         - $ref: "#/components/schemas/EmojiBase"
         - properties:
@@ -18583,11 +19214,8 @@ components:
               deprecated: true
               description: |
                 Dictionary with data on the user who added the
-                reaction, including the user ID as the `id`
-                field. Note that reactions data received from the
-                [events API](/api/get-events) has a slightly different
-                `user` dictionary format, with the user ID field
-                called `user_id` instead.
+                reaction, including the user ID as the `user_id`
+                field.
 
                 **Changes**: Deprecated and to be removed in a future release
                 once core clients have migrated to use the adjacent `user_id`
@@ -18596,7 +19224,7 @@ components:
                 the user ID mentioned in the description above as they would
                 the `user_id` field.
               properties:
-                id:
+                user_id:
                   type: integer
                   description: |
                     ID of the user.
@@ -19104,6 +19732,61 @@ components:
         - rendered_content
         - scheduled_delivery_timestamp
         - failed
+    GroupPermissionSetting:
+      description: |
+        Configuration for a group permission setting specifying the groups
+        to which the setting can be set to and the default values for the
+        setting.
+      additionalProperties: false
+      type: object
+      properties:
+        require_system_group:
+          type: boolean
+          description: |
+            Whether the setting can only be set to a system user group.
+        allow_internet_group:
+          type: boolean
+          description: |
+            Whether the setting can be set to `role:internet` system group.
+        allow_owners_group:
+          type: boolean
+          description: |
+            Whether the setting can be set to `role:owners` system group.
+        allow_nobody_group:
+          type: boolean
+          description: |
+            Whether the setting can be set to `role:nobody` system group.
+        allow_everyone_group:
+          type: boolean
+          description: |
+            Whether the setting can be set to `role:everyone` system group.
+        default_group_name:
+          type: string
+          description: |
+            Name of the default group for the setting.
+        id_field_name:
+          type: string
+          description: |
+            Name for the field used to pass the group ID for the setting.
+        default_for_system_groups:
+          type: string
+          nullable: true
+          description: |
+            Name of the default group for the setting for system groups.
+
+            This is non-null only for group-level settings.
+        allowed_system_groups:
+          type: array
+          description: |
+            An array of names of system groups to which the setting can
+            be set to.
+
+            If the list is empty, the setting can be set to system groups
+            based on the other boolean fields.
+
+            **Changes**: New in Zulip 8.0 (feature level 225).
+          items:
+            type: string
     User:
       allOf:
         - $ref: "#/components/schemas/UserBase"
@@ -19655,7 +20338,8 @@ components:
           description: |
             ## Invalid push device token
 
-            A typical failed JSON response for when the push device token is invalid:
+            A typical failed JSON response for when the push device token is not
+            recognized by the Zulip server:
     InvalidRemotePushDeviceTokenError:
       allOf:
         - $ref: "#/components/schemas/CodedError"

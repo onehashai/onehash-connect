@@ -1,3 +1,2 @@
-1. Make sure your OneHash Connect Cloud organization is on the Zulip Cloud Plus plan. Contact
-    [support@onehash.ai](mailto:support@onehash.ai) to upgrade if needed.
-
+1. Make sure your Connect Cloud organization is on the [Connect Cloud
+   Plus](https://www.onehash.ai) plan.

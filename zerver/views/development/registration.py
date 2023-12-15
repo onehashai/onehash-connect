@@ -65,10 +65,13 @@ def register_development_realm(request: HttpRequest) -> HttpResponse:
     email = f"{name}@zulip.com"
     realm_name = f"realm-{count}"
     realm_type = Realm.ORG_TYPES["business"]["id"]
+    realm_default_language = "en"
     realm_subdomain = realm_name
-    prereg_realm = create_preregistration_realm(email, realm_name, realm_subdomain, realm_type)
+    prereg_realm = create_preregistration_realm(
+        email, realm_name, realm_subdomain, realm_type, realm_default_language
+    )
     activation_url = create_confirmation_link(
-        prereg_realm, Confirmation.REALM_CREATION, realm_creation=True
+        prereg_realm, Confirmation.REALM_CREATION, no_associated_realm_object=True
     )
     key = activation_url.split("/")[-1]
     # Need to add test data to POST request as it doesn't originally contain the required parameters
@@ -77,6 +80,7 @@ def register_development_realm(request: HttpRequest) -> HttpResponse:
         key=key,
         realm_name=realm_name,
         realm_type=realm_type,
+        realm_default_language=realm_default_language,
         full_name=name,
         password="test",
         realm_subdomain=realm_subdomain,
@@ -91,13 +95,16 @@ def register_demo_development_realm(request: HttpRequest) -> HttpResponse:
     # Demo organization owners are not required to provide a name or email.
     name = "Your name"
     email = ""
+    realm_default_language = "en"
     realm_name = generate_demo_realm_name()
     realm_type = Realm.ORG_TYPES["unspecified"]["id"]
     realm_subdomain = realm_name
     email_address_visibility = UserProfile.EMAIL_ADDRESS_VISIBILITY_NOBODY
-    prereg_realm = create_preregistration_realm(email, realm_name, realm_subdomain, realm_type)
+    prereg_realm = create_preregistration_realm(
+        email, realm_name, realm_subdomain, realm_type, realm_default_language
+    )
     activation_url = create_confirmation_link(
-        prereg_realm, Confirmation.REALM_CREATION, realm_creation=True
+        prereg_realm, Confirmation.REALM_CREATION, no_associated_realm_object=True
     )
     key = activation_url.split("/")[-1]
     # Need to add test data to POST request as it doesn't originally contain the required parameters
@@ -106,6 +113,7 @@ def register_demo_development_realm(request: HttpRequest) -> HttpResponse:
         key=key,
         realm_name=realm_name,
         realm_type=realm_type,
+        realm_default_language=realm_default_language,
         email_address_visibility=email_address_visibility,
         full_name=name,
         password="test",

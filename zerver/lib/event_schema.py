@@ -75,7 +75,6 @@ subscription_fields: Sequence[Tuple[str, object]] = [
     ("audible_notifications", OptionalType(bool)),
     ("color", str),
     ("desktop_notifications", OptionalType(bool)),
-    ("email_address", str),
     ("email_notifications", OptionalType(bool)),
     ("in_home_view", bool),
     ("is_muted", bool),
@@ -333,25 +332,29 @@ def check_heartbeat(
     _check_heartbeat(var_name, event)
 
 
-_hotspot = DictType(
+_onboarding_steps = DictType(
     required_keys=[
+        ("type", str),
         ("name", str),
+    ],
+    optional_keys=[
         ("title", str),
         ("description", str),
         ("delay", NumberType()),
-    ]
+        ("has_trigger", bool),
+    ],
 )
 
-hotspots_event = event_dict_type(
+onboarding_steps_event = event_dict_type(
     required_keys=[
-        ("type", Equals("hotspots")),
+        ("type", Equals("onboarding_steps")),
         (
-            "hotspots",
-            ListType(_hotspot),
+            "onboarding_steps",
+            ListType(_onboarding_steps),
         ),
     ]
 )
-check_hotspots = make_checker(hotspots_event)
+check_onboarding_steps = make_checker(onboarding_steps_event)
 
 invites_changed_event = event_dict_type(
     required_keys=[
@@ -415,12 +418,11 @@ _check_topic_links = DictType(
     ]
 )
 
-message_fields = [
+basic_message_fields = [
     ("avatar_url", OptionalType(str)),
     ("client", str),
     ("content", str),
     ("content_type", Equals("text/html")),
-    ("display_recipient", str),
     ("id", int),
     ("is_me_message", bool),
     ("reactions", ListType(dict)),
@@ -429,12 +431,17 @@ message_fields = [
     ("sender_email", str),
     ("sender_full_name", str),
     ("sender_id", int),
-    ("stream_id", int),
     (TOPIC_NAME, str),
     (TOPIC_LINKS, ListType(_check_topic_links)),
     ("submessages", ListType(dict)),
     ("timestamp", int),
     ("type", str),
+]
+
+message_fields = [
+    *basic_message_fields,
+    ("display_recipient", str),
+    ("stream_id", int),
 ]
 
 message_event = event_dict_type(
@@ -445,6 +452,28 @@ message_event = event_dict_type(
     ]
 )
 check_message = make_checker(message_event)
+
+_check_direct_message_display_recipient = DictType(
+    required_keys=[
+        ("id", int),
+        ("is_mirror_dummy", bool),
+        ("email", str),
+        ("full_name", str),
+    ]
+)
+
+direct_message_fields = [
+    *basic_message_fields,
+    ("display_recipient", ListType(_check_direct_message_display_recipient)),
+]
+direct_message_event = event_dict_type(
+    required_keys=[
+        ("type", Equals("message")),
+        ("flags", ListType(str)),
+        ("message", DictType(direct_message_fields)),
+    ]
+)
+check_direct_message = make_checker(direct_message_event)
 
 # This legacy presence structure is intended to be replaced by a more
 # sensible data structure.
@@ -644,15 +673,6 @@ bot_type_for_remove = DictType(
     ]
 )
 
-realm_bot_remove_event = event_dict_type(
-    required_keys=[
-        ("type", Equals("realm_bot")),
-        ("op", Equals("remove")),
-        ("bot", bot_type_for_remove),
-    ]
-)
-check_realm_bot_remove = make_checker(realm_bot_remove_event)
-
 bot_type_for_update = DictType(
     required_keys=[
         ("user_id", int),
@@ -664,6 +684,7 @@ bot_type_for_update = DictType(
         ("default_events_register_stream", OptionalType(str)),
         ("default_sending_stream", OptionalType(str)),
         ("full_name", str),
+        ("is_active", bool),
         ("owner_id", int),
         ("services", bot_services_type),
     ],
@@ -999,7 +1020,8 @@ night_logo_data = DictType(
 )
 
 group_setting_update_data_type = DictType(
-    required_keys=[], optional_keys=[("create_multiuse_invite_group", int)]
+    required_keys=[],
+    optional_keys=[("create_multiuse_invite_group", int), ("can_access_all_users_group", int)],
 )
 
 update_dict_data = UnionType(
@@ -1108,15 +1130,6 @@ removed_user_type = DictType(
     ]
 )
 
-realm_user_remove_event = event_dict_type(
-    required_keys=[
-        ("type", Equals("realm_user")),
-        ("op", Equals("remove")),
-        ("person", removed_user_type),
-    ],
-)
-check_realm_user_remove = make_checker(realm_user_remove_event)
-
 custom_profile_field_type = DictType(
     required_keys=[
         ("id", int),
@@ -1190,6 +1203,12 @@ realm_user_person_types = dict(
             ("timezone", str),
         ],
     ),
+    is_active=DictType(
+        required_keys=[
+            ("user_id", int),
+            ("is_active", bool),
+        ],
+    ),
 )
 
 realm_user_update_event = event_dict_type(
@@ -1215,6 +1234,16 @@ def check_realm_user_update(
         f"{var_name}['person']",
         event["person"],
     )
+
+
+realm_user_remove_event = event_dict_type(
+    required_keys=[
+        ("type", Equals("realm_user")),
+        ("op", Equals("remove")),
+        ("person", removed_user_type),
+    ],
+)
+check_realm_user_remove = make_checker(realm_user_remove_event)
 
 
 restart_event = event_dict_type(
@@ -1327,9 +1356,6 @@ def check_stream_update(
 
     if prop == "description":
         assert extra_keys == {"rendered_description"}
-        assert isinstance(value, str)
-    elif prop == "email_address":
-        assert extra_keys == set()
         assert isinstance(value, str)
     elif prop == "invite_only":
         assert extra_keys == {"history_public_to_subscribers", "is_web_public"}

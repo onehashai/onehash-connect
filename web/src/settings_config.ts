@@ -87,7 +87,7 @@ export const web_stream_unreads_count_display_policy_values = {
     },
 };
 
-export const default_view_values = {
+export const web_home_view_values = {
     inbox: {
         code: "inbox",
         description: $t({defaultMessage: "Inbox"}),
@@ -553,7 +553,7 @@ export const display_settings_labels = {
                 "Display names of reacting users when few users have reacted to a message",
         }),
     ),
-    escape_navigates_to_default_view: $t({defaultMessage: "Escape key navigates to home view"}),
+    web_escape_navigates_to_home_view: $t({defaultMessage: "Escape key navigates to home view"}),
     default_language_settings_label: $t({defaultMessage: "Language"}),
 };
 
@@ -585,6 +585,9 @@ export const notification_settings_labels = {
     }),
     automatically_unmute_topics_in_muted_streams_policy: $t({
         defaultMessage: "Automatically unmute topics in muted streams",
+    }),
+    automatically_follow_topics_where_mentioned: $t({
+        defaultMessage: "Automatically follow topics where I'm mentioned",
     }),
 };
 
@@ -756,6 +759,7 @@ const other_notification_settings = [
     "notification_sound",
     "automatically_follow_topics_policy",
     "automatically_unmute_topics_in_muted_streams_policy",
+    "automatically_follow_topics_where_mentioned",
 ];
 
 export const all_notification_settings = [
@@ -771,6 +775,7 @@ type NotificationSettingCheckbox = {
     setting_name: string;
     is_disabled: boolean;
     is_checked: boolean;
+    is_mobile_checkbox: boolean;
 };
 
 export function get_notifications_table_row_data(
@@ -784,6 +789,7 @@ export function get_notifications_table_row_data(
                 setting_name: "",
                 is_disabled: true,
                 is_checked: false,
+                is_mobile_checkbox: false,
             };
         }
 
@@ -796,9 +802,11 @@ export function get_notifications_table_row_data(
             setting_name,
             is_disabled: false,
             is_checked: checked,
+            is_mobile_checkbox: false,
         };
         if (column === "mobile") {
             checkbox.is_disabled = !page_params.realm_push_notifications_enabled;
+            checkbox.is_mobile_checkbox = true;
         }
         return checkbox;
     });
@@ -872,14 +880,18 @@ export const realm_name_in_email_notifications_policy_values = {
 export const desktop_icon_count_display_values = {
     messages: {
         code: 1,
-        description: $t({defaultMessage: "All unreads"}),
+        description: $t({defaultMessage: "All unread messages"}),
     },
-    notifiable: {
+    dm_mention_followed_topic: {
         code: 2,
-        description: $t({defaultMessage: "Direct messages and mentions"}),
+        description: $t({defaultMessage: "DMs, mentions, and followed topics"}),
+    },
+    dm_mention: {
+        code: 3,
+        description: $t({defaultMessage: "DMs and mentions"}),
     },
     none: {
-        code: 3,
+        code: 4,
         description: $t({defaultMessage: "None"}),
     },
 };

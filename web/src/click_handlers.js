@@ -1,22 +1,18 @@
 import $ from "jquery";
 import tippy from "tippy.js";
-import WinChan from "winchan";
 
 // You won't find every click handler here, but it's a good place to start!
 
 import render_buddy_list_tooltip_content from "../templates/buddy_list_tooltip_content.hbs";
 
 import * as activity_ui from "./activity_ui";
-import * as blueslip from "./blueslip";
 import * as browser_history from "./browser_history";
 import * as buddy_data from "./buddy_data";
-import * as channel from "./channel";
 import * as compose from "./compose";
 import * as compose_actions from "./compose_actions";
 import * as compose_reply from "./compose_reply";
 import * as compose_state from "./compose_state";
 import {media_breakpoints_num} from "./css_variables";
-import * as dark_theme from "./dark_theme";
 import * as emoji_picker from "./emoji_picker";
 import * as hash_util from "./hash_util";
 import * as hashchange from "./hashchange";
@@ -299,7 +295,6 @@ export function initialize() {
     $("body").on("click", ".move_message_button", function (e) {
         const $row = message_lists.current.get_row(rows.id($(this).closest(".message_row")));
         const message_id = rows.id($row);
-        message_lists.current.select_id(message_id);
         const message = message_lists.current.get(message_id);
         stream_popover.build_move_topic_to_stream_popover(
             message.stream_id,
@@ -349,6 +344,9 @@ export function initialize() {
 
         const row_id = rows.id($(this).closest(".message_row"));
         $(`#edit_form_${CSS.escape(row_id)} .file_input`).trigger("click");
+    });
+    $("body").on("focus", ".message_edit_form .message_edit_content", (e) => {
+        compose_state.set_last_focused_compose_type_input(e.target);
     });
 
     $("body").on("click", ".message_edit_form .markdown_preview", (e) => {
@@ -476,7 +474,7 @@ export function initialize() {
     });
 
     // SIDEBARS
-    $("#user_presences")
+    $("#buddy-list-users-matching-view")
         .expectOne()
         .on("click", ".selectable_sidebar_block", (e) => {
             const $li = $(e.target).parents("li");
@@ -551,7 +549,7 @@ export function initialize() {
     }
 
     // BUDDY LIST TOOLTIPS (not displayed on touch devices)
-    $("#user_presences").on("mouseenter", ".selectable_sidebar_block", (e) => {
+    $("#buddy-list-users-matching-view").on("mouseenter", ".selectable_sidebar_block", (e) => {
         e.stopPropagation();
         const $elem = $(e.currentTarget).closest(".user_sidebar_entry").find(".user-presence-link");
         const user_id_string = $elem.attr("data-user-id");
@@ -559,7 +557,7 @@ export function initialize() {
 
         // `target_node` is the `ul` element since it stays in DOM even after updates.
         function get_target_node() {
-            return document.querySelector("#user_presences");
+            return document.querySelector("#buddy-list-users-matching-view");
         }
 
         function check_reference_removed(mutation, instance) {
@@ -578,7 +576,7 @@ export function initialize() {
     });
 
     // DIRECT MESSAGE LIST TOOLTIPS (not displayed on touch devices)
-    $("body").on("mouseenter", ".pm_user_status", (e) => {
+    $("body").on("mouseenter", ".dm-user-status", (e) => {
         e.stopPropagation();
         const $elem = $(e.currentTarget);
         const user_ids_string = $elem.attr("data-user-ids-string");
@@ -596,7 +594,7 @@ export function initialize() {
         function check_reference_removed(mutation, instance) {
             return Array.prototype.includes.call(
                 mutation.removedNodes,
-                $(instance.reference).parents(".pm-list")[0],
+                $(instance.reference).parents(".dm-list")[0],
             );
         }
 
@@ -627,9 +625,11 @@ export function initialize() {
     // MISC
 
     {
-        const sel = ["#stream_filters", "#left-sidebar-navigation-list", "#user_presences"].join(
-            ", ",
-        );
+        const sel = [
+            "#stream_filters",
+            "#left-sidebar-navigation-list",
+            "#buddy-list-users-matching-view",
+        ].join(", ");
 
         $(sel).on("click", "a", function () {
             this.blur();
@@ -693,17 +693,16 @@ export function initialize() {
         if ($target.is(".compose_mobile_button, .compose_mobile_button *")) {
             return;
         }
-
-        if ($(".enter_sends").has(e.target).length) {
-            e.preventDefault();
-            return;
-        }
     }
 
     $("body").on("click", "#compose-content", handle_compose_click);
 
     $("body").on("click", "#compose_close", () => {
         compose_actions.cancel();
+    });
+
+    $("body").on("focus", "#compose-textarea", (e) => {
+        compose_state.set_last_focused_compose_type_input(e.target);
     });
 
     // LEFT SIDEBAR
@@ -717,7 +716,7 @@ export function initialize() {
 
     $("body").on(
         "click",
-        ".private_messages_container.zoom-out #private_messages_section_header",
+        ".direct-messages-container.zoom-out #private_messages_section_header",
         (e) => {
             if ($(e.target).closest("#show_all_private_messages").length === 1) {
                 // Let the browser handle the "all direct messages" widget.
@@ -751,7 +750,7 @@ export function initialize() {
      * this click handler rather than just a link. */
     $("body").on(
         "click",
-        ".private_messages_container.zoom-in #private_messages_section_header",
+        ".direct-messages-container.zoom-in #private_messages_section_header",
         (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -759,48 +758,6 @@ export function initialize() {
             window.location.hash = "narrow/is/dm";
         },
     );
-
-    // WEBATHENA
-
-    $("body").on("click", ".webathena_login", (e) => {
-        $("#zephyr-mirror-error").removeClass("show");
-        const principal = ["zephyr", "zephyr"];
-        WinChan.open(
-            {
-                url: "https://webathena.mit.edu/#!request_ticket_v1",
-                relay_url: "https://webathena.mit.edu/relay.html",
-                params: {
-                    realm: "ATHENA.MIT.EDU",
-                    principal,
-                },
-            },
-            (err, r) => {
-                if (err) {
-                    blueslip.warn(err);
-                    return;
-                }
-                if (r.status !== "OK") {
-                    blueslip.warn(r);
-                    return;
-                }
-
-                channel.post({
-                    url: "/accounts/webathena_kerberos_login/",
-                    data: {cred: JSON.stringify(r.session)},
-                    success() {
-                        $("#zephyr-mirror-error").removeClass("show");
-                    },
-                    error() {
-                        $("#zephyr-mirror-error").addClass("show");
-                    },
-                });
-            },
-        );
-        $("#settings-dropdown").dropdown("toggle");
-        e.preventDefault();
-        e.stopPropagation();
-    });
-    // End Webathena code
 
     // disable the draggability for left-sidebar components
     $("#stream_filters, #left-sidebar-navigation-list").on("dragstart", (e) => {
@@ -823,41 +780,17 @@ export function initialize() {
     // Don't focus links on context menu.
     $("body").on("contextmenu", "a", (e) => e.target.blur());
 
-    // GEAR MENU
-
-    $("body").on("click", ".change-language-spectator, .language_selection_widget button", (e) => {
+    $("body").on("click", ".language_selection_widget button", (e) => {
         e.preventDefault();
         e.stopPropagation();
         settings_display.launch_default_language_setting_modal();
-    });
-
-    // We cannot update recipient bar color using dark_theme.enable/disable due to
-    // it being called before message lists are initialized and the order cannot be changed.
-    // Also, since these buttons are only visible for spectators which doesn't have events,
-    // if theme is changed in a different tab, the theme of this tab remains the same.
-    $("body").on("click", "#gear-menu .dark-theme", (e) => {
-        // Allow propagation to close gear menu.
-        e.preventDefault();
-        requestAnimationFrame(() => {
-            dark_theme.enable();
-            message_lists.update_recipient_bar_background_color();
-        });
-    });
-
-    $("body").on("click", "#gear-menu .light-theme", (e) => {
-        // Allow propagation to close gear menu.
-        e.preventDefault();
-        requestAnimationFrame(() => {
-            dark_theme.disable();
-            message_lists.update_recipient_bar_background_color();
-        });
     });
 
     $("body").on("click", "#header-container .brand", (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        hashchange.set_hash_to_default_view();
+        hashchange.set_hash_to_home_view();
     });
 
     // MAIN CLICK HANDLER
@@ -882,7 +815,7 @@ export function initialize() {
                 // We do the same when copying a code block, since the
                 // most likely next action within Zulip is to paste it
                 // into compose and modify it.
-                $("#compose-textarea").trigger("focus");
+                $("textarea#compose-textarea").trigger("focus");
                 return;
             } else if (
                 !window.getSelection().toString() &&
@@ -903,7 +836,6 @@ export function initialize() {
                 !$(e.target).closest(".micromodal").length &&
                 !$(e.target).closest("[data-tippy-root]").length &&
                 !$(e.target).closest(".typeahead").length &&
-                !$(e.target).closest(".enter_sends").length &&
                 !$(e.target).closest(".flatpickr-calendar").length &&
                 $(e.target).closest("body").length
             ) {

@@ -91,13 +91,13 @@ export function reset_compose_message_max_height(bottom_whitespace_height) {
 
     const compose_height = $("#compose").get(0).getBoundingClientRect().height;
     const compose_textarea_height = Math.max(
-        $("#compose-textarea").get(0).getBoundingClientRect().height,
+        $("textarea#compose-textarea").get(0).getBoundingClientRect().height,
         $("#preview_message_area").get(0).getBoundingClientRect().height,
     );
     const compose_non_textarea_height = compose_height - compose_textarea_height;
 
     // We ensure that the last message is not overlapped by compose box.
-    $("#compose-textarea").css(
+    $("textarea#compose-textarea").css(
         "max-height",
         // Because <textarea> max-height includes padding, we subtract
         // 10 for the padding and 10 for the selected message border.
@@ -175,7 +175,7 @@ export function resize_sidebars() {
 }
 
 export function update_recent_view_filters_height() {
-    const recent_view_filters_height = $("#recent_topics_filter_buttons").outerHeight(true) ?? 0;
+    const recent_view_filters_height = $("#recent_view_filter_buttons").outerHeight(true) ?? 0;
     $("html").css("--recent-topics-filters-height", `${recent_view_filters_height}px`);
 }
 

@@ -19,6 +19,24 @@
 
 <br /><br />
 
+<b>Expected users</b>:
+<br />
+<ul>
+    <li>Total: {{ expected_total_users }}</li>
+    <li>Paid: {{ paid_users_count }}</li>
+</ul>
+
+<b>Description of paid users</b>:
+<br />
+{{ paid_users_description }}
+
+<br /><br />
+
 <b>Requested by</b>: {{ requested_by }} ({{ user_role }})
+
+{% if requested_plan %}
+<br /><br />
+<b>Requested plan</b>: {{ requested_plan }}
+{% endif %}
 
 {% endblock %}

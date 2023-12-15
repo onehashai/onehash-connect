@@ -49,13 +49,13 @@
 
 {tab|desktop-web}
 
-{relative|stream|subscribed}
+{relative|gear|stream-settings}
 
 1. Select a stream.
 
 {!select-stream-view-personal.md!}
 
-1. Under **Personal settings**, toggle **Mute stream**.
+1. Under **Notification settings**, toggle **Mute stream**.
 
 {tab|mobile}
 

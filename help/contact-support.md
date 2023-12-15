@@ -2,21 +2,41 @@
 
 We're here to help! This page will guide you to the best way to reach us.
 
-* For **support requests** regarding your OneHash Connect Cloud organization or
-  self-hosted server, [email Connect support](mailto:support@onehash.ai).
-    * Response time: Usually 1-3 business days, or within one business day for
-  paid customers.
+## Connect community
 
-* For **sales**, **billing**, **partnerships**, and **other commercial
-  questions**, contact [support@onehash.ai](mailto:support@onehash.ai).
-    * Response time: Usually within one business day.
+The primary communication forum for the Connect community is the Connect server
+hosted at www.onehash.ai. Users and administrators of Connect organizations stop
+by to ask questions, offer feedback, and participate in product design
+discussions.
 
-* To **suggest new features**, **report an issue**, or **share any other
-  feedback**, join the [Connect development community][development-community].
-  It's the best place to interactively discuss your problem or proposal. Please
-  [follow the community norms](/development-community/#community-norms) when
-  posting.
-    * Response time: Usually within one business day.
+Everyone is welcome to sign up and participate — we love hearing from our users!
+Please see the [Connect development community][development-community] guide for
+detailed instructions on how to join the community, [community norms][community-norms]
+and [where][development-community-streams] to ask your questions or give
+feedback.
+
+## Support requests
+
+For support requests regarding your Connect Cloud organization or self-hosted
+server, you can request interactive chat support in the [Connect development
+community][development-community], or [email Zulip
+support](mailto:support@onehash.ai). Response time: Usually within 1-3 business days, or
+  within one business day for paid customers.
+
+Phone support is available only for **Connect Enterprise** customers.
+
+## Sales, billing, and partnerships
+
+For **sales**, **billing**, **partnerships**, and **other commercial
+questions**, contact [support@onehash.ai](mailto:support@onehash.ai). Response time:
+Usually within one business day.
+
+## Product feedback
+
+* You can **suggest new features**, **report an issue**, or **share any other
+  feedback**, in the [Connect development community](#connect-community). It's the
+  best place to interactively discuss your problem or proposal.
+    * Response time: Usually within 1-3 business days.
 
 * If you have a **concrete bug report**, you can create an issue in the
   appropriate [Connect GitHub repository](https://github.com/onehashai). Use the
@@ -24,13 +44,13 @@ We're here to help! This page will guide you to the best way to reach us.
   aren't sure where to start.
     * Response time: Usually within one week.
 
-* Phone support is available only for **Enterprise support customers**.
-
-Your feedback helps us make OneHash Connect better for everyone! Please reach out if you
-have questions, suggestions, or just want to brainstorm how to make OneHash Connect work
+Your feedback helps us make Connect better for everyone! Please reach out if you
+have questions, suggestions, or just want to brainstorm how to make Connect work
 for your organization.
 
 [development-community]: https://zulip.com/development-community/
+[community-norms]: https://zulip.com/development-community/#community-norms
+[development-community-streams]: https://zulip.com/development-community/#streams-for-zulip-users-and-administrators
 
 ## Related articles
 

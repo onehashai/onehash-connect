@@ -11,15 +11,19 @@ from django.test import override_settings
 from django.utils.timezone import now as timezone_now
 from django_auth_ldap.config import LDAPSearch
 
-from zerver.actions.users import do_change_user_role
 from zerver.lib.email_notifications import (
     enqueue_welcome_emails,
     get_onboarding_email_schedule,
     send_account_registered_email,
 )
-from zerver.lib.send_email import deliver_scheduled_emails, send_custom_email
+from zerver.lib.send_email import (
+    deliver_scheduled_emails,
+    send_custom_email,
+    send_custom_server_email,
+)
 from zerver.lib.test_classes import ZulipTestCase
 from zerver.models import Realm, ScheduledEmail, UserProfile, get_realm
+from zilencer.models import RemoteZulipServer
 
 
 class TestCustomEmails(ZulipTestCase):
@@ -34,12 +38,12 @@ class TestCustomEmails(ZulipTestCase):
             markdown_template.flush()
             send_custom_email(
                 UserProfile.objects.filter(id=hamlet.id),
+                dry_run=False,
                 options={
                     "markdown_template_path": markdown_template.name,
                     "reply_to": reply_to,
                     "subject": email_subject,
                     "from_name": from_name,
-                    "dry_run": False,
                 },
             )
         self.assert_length(mail.outbox, 1)
@@ -61,23 +65,21 @@ class TestCustomEmails(ZulipTestCase):
         email_subject = "subject_test"
         reply_to = "reply_to_test"
         from_name = "from_name_test"
-        contact_email = "zulip-admin@example.com"
         markdown_template_path = "templates/corporate/policies/index.md"
-        send_custom_email(
-            UserProfile.objects.none(),
-            target_emails=[contact_email],
+        send_custom_server_email(
+            remote_servers=RemoteZulipServer.objects.all(),
+            dry_run=False,
             options={
                 "markdown_template_path": markdown_template_path,
                 "reply_to": reply_to,
                 "subject": email_subject,
                 "from_name": from_name,
-                "dry_run": False,
             },
         )
         self.assert_length(mail.outbox, 1)
         msg = mail.outbox[0]
         self.assertEqual(msg.subject, email_subject)
-        self.assertEqual(msg.to, [contact_email])
+        self.assertEqual(msg.to, ["remotezulipserver@zulip.com"])
         self.assert_length(msg.reply_to, 1)
         self.assertEqual(msg.reply_to[0], reply_to)
         self.assertNotIn("{% block content %}", msg.body)
@@ -95,9 +97,9 @@ class TestCustomEmails(ZulipTestCase):
         )
         send_custom_email(
             UserProfile.objects.filter(id=hamlet.id),
+            dry_run=False,
             options={
                 "markdown_template_path": markdown_template_path,
-                "dry_run": False,
             },
         )
         self.assert_length(mail.outbox, 1)
@@ -113,9 +115,9 @@ class TestCustomEmails(ZulipTestCase):
         )
         send_custom_email(
             UserProfile.objects.filter(id=hamlet.id),
+            dry_run=False,
             options={
                 "markdown_template_path": markdown_template_path,
-                "dry_run": False,
             },
         )
         self.assert_length(mail.outbox, 1)
@@ -136,9 +138,9 @@ class TestCustomEmails(ZulipTestCase):
 
         send_custom_email(
             UserProfile.objects.filter(id=hamlet.id),
+            dry_run=False,
             options={
                 "markdown_template_path": markdown_template_path,
-                "dry_run": False,
             },
             add_context=add_context,
         )
@@ -162,10 +164,10 @@ class TestCustomEmails(ZulipTestCase):
             NoEmailArgumentError,
             send_custom_email,
             UserProfile.objects.filter(id=hamlet.id),
+            dry_run=False,
             options={
                 "markdown_template_path": markdown_template_path,
                 "from_name": from_name,
-                "dry_run": False,
             },
         )
 
@@ -173,10 +175,10 @@ class TestCustomEmails(ZulipTestCase):
             NoEmailArgumentError,
             send_custom_email,
             UserProfile.objects.filter(id=hamlet.id),
+            dry_run=False,
             options={
                 "markdown_template_path": markdown_template_path,
                 "subject": email_subject,
-                "dry_run": False,
             },
         )
 
@@ -194,10 +196,10 @@ class TestCustomEmails(ZulipTestCase):
             DoubledEmailArgumentError,
             send_custom_email,
             UserProfile.objects.filter(id=hamlet.id),
+            dry_run=False,
             options={
                 "markdown_template_path": markdown_template_path,
                 "subject": email_subject,
-                "dry_run": False,
             },
         )
 
@@ -205,32 +207,12 @@ class TestCustomEmails(ZulipTestCase):
             DoubledEmailArgumentError,
             send_custom_email,
             UserProfile.objects.filter(id=hamlet.id),
+            dry_run=False,
             options={
                 "markdown_template_path": markdown_template_path,
                 "from_name": from_name,
-                "dry_run": False,
             },
         )
-
-    def test_send_custom_email_admins_only(self) -> None:
-        admin_user = self.example_user("hamlet")
-        do_change_user_role(admin_user, UserProfile.ROLE_REALM_ADMINISTRATOR, acting_user=None)
-
-        non_admin_user = self.example_user("cordelia")
-
-        markdown_template_path = (
-            "zerver/tests/fixtures/email/custom_emails/email_base_headers_test.md"
-        )
-        send_custom_email(
-            UserProfile.objects.filter(id__in=(admin_user.id, non_admin_user.id)),
-            options={
-                "markdown_template_path": markdown_template_path,
-                "admins_only": True,
-                "dry_run": False,
-            },
-        )
-        self.assert_length(mail.outbox, 1)
-        self.assertIn(admin_user.delivery_email, mail.outbox[0].to[0])
 
     def test_send_custom_email_dry_run(self) -> None:
         hamlet = self.example_user("hamlet")
@@ -241,12 +223,12 @@ class TestCustomEmails(ZulipTestCase):
         with patch("builtins.print") as _:
             send_custom_email(
                 UserProfile.objects.filter(id=hamlet.id),
+                dry_run=True,
                 options={
                     "markdown_template_path": markdown_template_path,
                     "reply_to": reply_to,
                     "subject": email_subject,
                     "from_name": from_name,
-                    "dry_run": True,
                 },
             )
             self.assert_length(mail.outbox, 0)
@@ -482,12 +464,12 @@ class TestFollowupEmails(ZulipTestCase):
     def test_followup_emails_for_regular_realms(self) -> None:
         cordelia = self.example_user("cordelia")
         send_account_registered_email(self.example_user("cordelia"), realm_creation=True)
-        enqueue_welcome_emails(self.example_user("cordelia"))
+        enqueue_welcome_emails(self.example_user("cordelia"), realm_creation=True)
         scheduled_emails = ScheduledEmail.objects.filter(users=cordelia).order_by(
             "scheduled_timestamp"
         )
         assert scheduled_emails is not None
-        self.assert_length(scheduled_emails, 2)
+        self.assert_length(scheduled_emails, 3)
         self.assertEqual(
             orjson.loads(scheduled_emails[0].data)["template_prefix"],
             "zerver/emails/account_registered",
@@ -495,6 +477,10 @@ class TestFollowupEmails(ZulipTestCase):
         self.assertEqual(
             orjson.loads(scheduled_emails[1].data)["template_prefix"],
             "zerver/emails/onboarding_zulip_guide",
+        )
+        self.assertEqual(
+            orjson.loads(scheduled_emails[2].data)["template_prefix"],
+            "zerver/emails/onboarding_team_to_zulip",
         )
 
         deliver_scheduled_emails(scheduled_emails[0])
@@ -513,12 +499,12 @@ class TestFollowupEmails(ZulipTestCase):
         )
         cordelia.realm.save()
         send_account_registered_email(self.example_user("cordelia"), realm_creation=True)
-        enqueue_welcome_emails(self.example_user("cordelia"))
+        enqueue_welcome_emails(self.example_user("cordelia"), realm_creation=True)
         scheduled_emails = ScheduledEmail.objects.filter(users=cordelia).order_by(
             "scheduled_timestamp"
         )
         assert scheduled_emails is not None
-        self.assert_length(scheduled_emails, 2)
+        self.assert_length(scheduled_emails, 3)
         self.assertEqual(
             orjson.loads(scheduled_emails[0].data)["template_prefix"],
             "zerver/emails/account_registered",
@@ -526,6 +512,10 @@ class TestFollowupEmails(ZulipTestCase):
         self.assertEqual(
             orjson.loads(scheduled_emails[1].data)["template_prefix"],
             "zerver/emails/onboarding_zulip_guide",
+        )
+        self.assertEqual(
+            orjson.loads(scheduled_emails[2].data)["template_prefix"],
+            "zerver/emails/onboarding_team_to_zulip",
         )
 
         deliver_scheduled_emails(scheduled_emails[0])
@@ -562,6 +552,7 @@ class TestOnboardingEmailDelay(ZulipTestCase):
         date_joined: str,
         onboarding_zulip_topics: int,
         onboarding_zulip_guide: int,
+        onboarding_team_to_zulip: int,
     ) -> None:
         DAY_OF_WEEK = {
             "Monday": datetime(2018, 1, 1, 1, 0, 0, 0, tzinfo=timezone.utc),
@@ -591,35 +582,43 @@ class TestOnboardingEmailDelay(ZulipTestCase):
         self.assertEqual(day_sent, onboarding_zulip_guide)
         self.assertNotIn(day_sent, WEEKEND)
 
+        # onboarding_team_to_zulip
+        day_sent = (
+            DAY_OF_WEEK[date_joined] + onboarding_email_schedule["onboarding_team_to_zulip"]
+        ).isoweekday()
+        self.assertEqual(day_sent, onboarding_team_to_zulip)
+        self.assertNotIn(day_sent, WEEKEND)
+
     def test_get_onboarding_email_schedule(self) -> None:
         user_profile = self.example_user("hamlet")
 
-        # joined Monday: schedule = Wednesday:3, Friday:5,
-        self.verify_onboarding_email_schedule(user_profile, "Monday", 3, 5)
+        # joined Monday: schedule = Wednesday:3, Friday:5, Tuesday:2
+        self.verify_onboarding_email_schedule(user_profile, "Monday", 3, 5, 2)
 
-        # joined Tuesday: schedule = Thursday:4, Monday:1
-        self.verify_onboarding_email_schedule(user_profile, "Tuesday", 4, 1)
+        # joined Tuesday: schedule = Thursday:4, Monday:1, Wednesday:3
+        self.verify_onboarding_email_schedule(user_profile, "Tuesday", 4, 1, 3)
 
-        # joined Wednesday: schedule = Friday:5, Tuesday:2
-        self.verify_onboarding_email_schedule(user_profile, "Wednesday", 5, 2)
+        # joined Wednesday: schedule = Friday:5, Tuesday:2, Thursday:4
+        self.verify_onboarding_email_schedule(user_profile, "Wednesday", 5, 2, 4)
 
-        # joined Thursday: schedule = Monday:1, Wednesday:3
-        self.verify_onboarding_email_schedule(user_profile, "Thursday", 1, 3)
+        # joined Thursday: schedule = Monday:1, Wednesday:3, Friday:5
+        self.verify_onboarding_email_schedule(user_profile, "Thursday", 1, 3, 5)
 
-        # joined Friday: schedule = Tuesday:2, Thursday:4
-        self.verify_onboarding_email_schedule(user_profile, "Friday", 2, 4)
+        # joined Friday: schedule = Tuesday:2, Thursday:4, Monday:1
+        self.verify_onboarding_email_schedule(user_profile, "Friday", 2, 4, 1)
 
-        # joined Saturday: schedule = Monday:1, Wednesday:3
-        self.verify_onboarding_email_schedule(user_profile, "Saturday", 1, 3)
+        # joined Saturday: schedule = Monday:1, Wednesday:3, Friday:5
+        self.verify_onboarding_email_schedule(user_profile, "Saturday", 1, 3, 5)
 
-        # joined Sunday: schedule = Tuesday:2, Thursday:4
-        self.verify_onboarding_email_schedule(user_profile, "Sunday", 2, 4)
+        # joined Sunday: schedule = Tuesday:2, Thursday:4, Monday:1
+        self.verify_onboarding_email_schedule(user_profile, "Sunday", 2, 4, 1)
 
     def test_time_offset_for_onboarding_email_schedule(self) -> None:
         user_profile = self.example_user("hamlet")
         days_delayed = {
             "4": timedelta(days=4, hours=-1),
             "6": timedelta(days=6, hours=-1),
+            "8": timedelta(days=8, hours=-1),
         }
 
         # Time offset of America/Phoenix is -07:00
@@ -639,6 +638,12 @@ class TestOnboardingEmailDelay(ZulipTestCase):
         self.assertEqual(
             onboarding_email_schedule["onboarding_zulip_guide"],
             days_delayed["6"],
+        )
+
+        # onboarding_team_to_zulip sent on Friday
+        self.assertEqual(
+            onboarding_email_schedule["onboarding_team_to_zulip"],
+            days_delayed["8"],
         )
 
 

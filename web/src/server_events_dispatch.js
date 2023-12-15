@@ -31,6 +31,7 @@ import * as muted_users_ui from "./muted_users_ui";
 import * as narrow_state from "./narrow_state";
 import * as narrow_title from "./narrow_title";
 import * as navbar_alerts from "./navbar_alerts";
+import * as onboarding_steps from "./onboarding_steps";
 import * as overlays from "./overlays";
 import {page_params} from "./page_params";
 import * as peer_data from "./peer_data";
@@ -62,7 +63,6 @@ import * as settings_profile_fields from "./settings_profile_fields";
 import * as settings_realm_domains from "./settings_realm_domains";
 import * as settings_realm_user_settings_defaults from "./settings_realm_user_settings_defaults";
 import * as settings_streams from "./settings_streams";
-import * as settings_user_groups_legacy from "./settings_user_groups_legacy";
 import * as settings_users from "./settings_users";
 import * as sidebar_ui from "./sidebar_ui";
 import * as starred_messages from "./starred_messages";
@@ -143,11 +143,12 @@ export function dispatch_normal_event(event) {
             }
             break;
 
-        case "hotspots":
-            hotspots.load_new(event.hotspots);
-            page_params.hotspots = page_params.hotspots
-                ? [...page_params.hotspots, ...event.hotspots]
-                : event.hotspots;
+        case "onboarding_steps":
+            hotspots.load_new(onboarding_steps.filter_new_hotspots(event.onboarding_steps));
+            onboarding_steps.update_notice_to_display(event.onboarding_steps);
+            page_params.onboarding_steps = page_params.onboarding_steps
+                ? [...page_params.onboarding_steps, ...event.onboarding_steps]
+                : event.onboarding_steps;
             break;
 
         case "invites_changed":
@@ -230,6 +231,7 @@ export function dispatch_normal_event(event) {
                 notifications_stream_id: stream_ui_updates.update_announce_stream_option,
                 org_type: noop,
                 private_message_policy: noop,
+                push_notifications_enabled: noop,
                 send_welcome_emails: noop,
                 message_content_allowed_in_email_notifications: noop,
                 enable_spectator_access: noop,
@@ -258,7 +260,7 @@ export function dispatch_normal_event(event) {
                         if (event.property === "invite_to_realm_policy") {
                             settings_invites.update_invite_user_panel();
                             sidebar_ui.update_invite_user_option();
-                            gear_menu.initialize();
+                            gear_menu.rerender();
                         }
 
                         const stream_creation_settings = [
@@ -289,7 +291,7 @@ export function dispatch_normal_event(event) {
                                 if (key === "create_multiuse_invite_group") {
                                     settings_invites.update_invite_user_panel();
                                     sidebar_ui.update_invite_user_option();
-                                    gear_menu.initialize();
+                                    gear_menu.rerender();
                                 }
 
                                 if (key === "edit_topic_policy") {
@@ -356,11 +358,6 @@ export function dispatch_normal_event(event) {
             switch (event.op) {
                 case "add":
                     bot_data.add(event.bot);
-                    settings_bots.render_bots();
-                    break;
-                case "remove":
-                    bot_data.deactivate(event.bot.user_id);
-                    event.bot.is_active = false;
                     settings_bots.render_bots();
                     break;
                 case "delete":
@@ -468,16 +465,6 @@ export function dispatch_normal_event(event) {
                         settings_users.redraw_bots_list();
                     }
                     break;
-                case "remove":
-                    people.deactivate(event.person);
-                    stream_events.remove_deactivated_user_from_all_streams(event.person.user_id);
-                    settings_users.update_view_on_deactivate(event.person.user_id);
-                    buddy_list.maybe_remove_key({key: event.person.user_id});
-                    settings_account.maybe_update_deactivate_account_button();
-                    if (people.user_is_bot(event.person.user_id)) {
-                        settings_users.update_bot_data(event.person.user_id);
-                    }
-                    break;
                 case "update":
                     user_events.update_person(event.person);
                     settings_account.maybe_update_deactivate_account_button();
@@ -485,6 +472,16 @@ export function dispatch_normal_event(event) {
                         settings_users.update_bot_data(event.person.user_id);
                     }
                     break;
+                case "remove": {
+                    const user_id = event.person.user_id;
+                    people.remove_inaccessible_user(user_id);
+                    buddy_list.maybe_remove_user_id({user_id});
+                    message_live_update.update_user_full_name(
+                        user_id,
+                        people.INACCESSIBLE_USER_NAME,
+                    );
+                    break;
+                }
                 default:
                     blueslip.error("Unexpected event type realm_user/" + event.op);
                     break;
@@ -688,12 +685,12 @@ export function dispatch_normal_event(event) {
             const user_display_settings = [
                 "color_scheme",
                 "default_language",
-                "default_view",
+                "web_home_view",
                 "demote_inactive_streams",
                 "dense_mode",
                 "web_mark_read_on_scroll_policy",
                 "emojiset",
-                "escape_navigates_to_default_view",
+                "web_escape_navigates_to_home_view",
                 "fluid_layout_width",
                 "high_contrast_mode",
                 "timezone",
@@ -708,7 +705,7 @@ export function dispatch_normal_event(event) {
                 "send_read_receipts",
             ];
 
-            const original_default_view = user_settings.default_view;
+            const original_home_view = user_settings.web_home_view;
             if (user_display_settings.includes(event.property)) {
                 user_settings[event.property] = event.value;
             }
@@ -721,19 +718,20 @@ export function dispatch_normal_event(event) {
                 // present in the backend/Jinja2 templates.
                 settings_display.set_default_language_name(event.language_name);
             }
-            if (
-                event.property === "default_view" && // If current hash is empty (default view), and the
-                // user changes the default view while in settings,
+            if (event.property === "web_home_view") {
+                left_sidebar_navigation_area.handle_home_view_changed(event.value);
+
+                // If current hash is empty (home view), and the
+                // user changes the home view while in settings,
                 // then going back to an empty hash on closing the
                 // overlay will not match the view currently displayed
                 // under settings, so we set the hash to the previous
-                // value of the default view.
-                !browser_history.state.hash_before_overlay &&
-                overlays.settings_open()
-            ) {
-                browser_history.state.hash_before_overlay =
-                    "#" +
-                    (original_default_view === "recent_topics" ? "recent" : original_default_view);
+                // value of the home view.
+                if (!browser_history.state.hash_before_overlay && overlays.settings_open()) {
+                    browser_history.state.hash_before_overlay =
+                        "#" +
+                        (original_home_view === "recent_topics" ? "recent" : original_home_view);
+                }
             }
             if (event.property === "twenty_four_hour_time") {
                 // Rerender the whole message list UI
@@ -806,8 +804,8 @@ export function dispatch_normal_event(event) {
             if (event.property === "display_emoji_reaction_users") {
                 message_live_update.rerender_messages_view();
             }
-            if (event.property === "escape_navigates_to_default_view") {
-                $("#go-to-default-view-hotkey-help").toggleClass("notdisplayed", !event.value);
+            if (event.property === "web_escape_navigates_to_home_view") {
+                $("#go-to-home-view-hotkey-help").toggleClass("notdisplayed", !event.value);
             }
             if (event.property === "enter_sends") {
                 user_settings.enter_sends = event.value;
@@ -894,7 +892,6 @@ export function dispatch_normal_event(event) {
                     blueslip.error("Unexpected event type user_group/" + event.op);
                     break;
             }
-            settings_user_groups_legacy.reload();
             break;
 
         case "user_status":

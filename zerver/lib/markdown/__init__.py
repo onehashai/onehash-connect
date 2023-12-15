@@ -1,16 +1,14 @@
 # Zulip's main Markdown implementation.  See docs/subsystems/markdown.md for
 # detailed documentation on our Markdown syntax.
 import cgi
-import datetime
 import html
 import logging
 import mimetypes
 import re
 import time
-import urllib
-import urllib.parse
 from collections import deque
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from functools import lru_cache
 from typing import (
     Any,
@@ -28,7 +26,7 @@ from typing import (
     Union,
     cast,
 )
-from urllib.parse import parse_qs, urlencode, urljoin, urlsplit
+from urllib.parse import parse_qs, quote, urlencode, urljoin, urlsplit, urlunsplit
 from xml.etree.ElementTree import Element, SubElement
 
 import ahocorasick
@@ -39,6 +37,7 @@ import markdown
 import markdown.blockprocessors
 import markdown.inlinepatterns
 import markdown.postprocessors
+import markdown.preprocessors
 import markdown.treeprocessors
 import markdown.util
 import re2
@@ -50,7 +49,7 @@ from markdown.blockparser import BlockParser
 from markdown.extensions import codehilite, nl2br, sane_lists, tables
 from soupsieve import escape as css_escape
 from tlds import tld_set
-from typing_extensions import TypeAlias, override
+from typing_extensions import Self, TypeAlias, override
 
 from zerver.lib import mention
 from zerver.lib.cache import cache_with_key
@@ -132,9 +131,6 @@ class MessageRenderingResult:
     links_for_preview: Set[str]
     user_ids_with_alert_words: Set[int]
     potential_attachment_path_ids: List[str]
-
-    def has_wildcard_mention(self) -> bool:
-        return self.mentions_stream_wildcard or self.mentions_topic_wildcard
 
 
 @dataclass
@@ -490,7 +486,7 @@ def fetch_open_graph_image(url: str) -> Optional[Dict[str, Any]]:
 
 
 def get_tweet_id(url: str) -> Optional[str]:
-    parsed_url = urllib.parse.urlparse(url)
+    parsed_url = urlsplit(url)
     if not (parsed_url.netloc == "twitter.com" or parsed_url.netloc.endswith(".twitter.com")):
         return None
     to_match = parsed_url.path
@@ -719,13 +715,13 @@ class InlineInterestingLinkProcessor(markdown.treeprocessors.Treeprocessor):
     def get_actual_image_url(self, url: str) -> str:
         # Add specific per-site cases to convert image-preview URLs to image URLs.
         # See https://github.com/zulip/zulip/issues/4658 for more information
-        parsed_url = urllib.parse.urlparse(url)
+        parsed_url = urlsplit(url)
         if parsed_url.netloc == "github.com" or parsed_url.netloc.endswith(".github.com"):
             # https://github.com/zulip/zulip/blob/main/static/images/logo/zulip-icon-128x128.png ->
             # https://raw.githubusercontent.com/zulip/zulip/main/static/images/logo/zulip-icon-128x128.png
             split_path = parsed_url.path.split("/")
             if len(split_path) > 3 and split_path[3] == "blob":
-                return urllib.parse.urljoin(
+                return urljoin(
                     "https://raw.githubusercontent.com", "/".join(split_path[0:3] + split_path[4:])
                 )
 
@@ -734,7 +730,7 @@ class InlineInterestingLinkProcessor(markdown.treeprocessors.Treeprocessor):
     def is_image(self, url: str) -> bool:
         if not self.zmd.image_preview_enabled:
             return False
-        parsed_url = urllib.parse.urlparse(url)
+        parsed_url = urlsplit(url)
         # remove HTML URLs which end with image extensions that cannot be shorted
         if parsed_url.netloc == "pasteboard.co":
             return False
@@ -746,7 +742,7 @@ class InlineInterestingLinkProcessor(markdown.treeprocessors.Treeprocessor):
         # wikipedia.org to point to the actual image URL.  It's
         # structurally very similar to dropbox_image, and possibly
         # should be rewritten to use open graph, but has some value.
-        parsed_url = urllib.parse.urlparse(url)
+        parsed_url = urlsplit(url)
         if parsed_url.netloc.lower().endswith(".wikipedia.org") and parsed_url.path.startswith(
             "/wiki/File:"
         ):
@@ -761,7 +757,7 @@ class InlineInterestingLinkProcessor(markdown.treeprocessors.Treeprocessor):
 
     def dropbox_image(self, url: str) -> Optional[Dict[str, Any]]:
         # TODO: The returned Dict could possibly be a TypedDict in future.
-        parsed_url = urllib.parse.urlparse(url)
+        parsed_url = urlsplit(url)
         if parsed_url.netloc == "dropbox.com" or parsed_url.netloc.endswith(".dropbox.com"):
             is_album = parsed_url.path.startswith("/sc/") or parsed_url.path.startswith("/photos/")
             # Only allow preview Dropbox shared links
@@ -913,7 +909,7 @@ class InlineInterestingLinkProcessor(markdown.treeprocessors.Treeprocessor):
                     "type": "mention",
                     "start": match.start(),
                     "end": match.end(),
-                    "url": "https://twitter.com/" + urllib.parse.quote(screen_name),
+                    "url": "https://twitter.com/" + quote(screen_name),
                     "text": mention_string,
                 }
                 for match in re.finditer(re.escape(mention_string), text, re.IGNORECASE)
@@ -1194,6 +1190,9 @@ class InlineInterestingLinkProcessor(markdown.treeprocessors.Treeprocessor):
                 return insertion_index
 
     def is_video(self, url: str) -> bool:
+        if not self.zmd.image_preview_enabled:
+            return False
+
         url_type = mimetypes.guess_type(url)[0]
         # Support only video formats (containers) that are supported cross-browser and cross-device. As per
         # https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers#index_of_media_container_formats_file_types
@@ -1259,7 +1258,7 @@ class InlineInterestingLinkProcessor(markdown.treeprocessors.Treeprocessor):
                 # `/user_uploads` and beginning with `user_uploads`.
                 # This urllib construction converts the latter into
                 # the former.
-                parsed_url = urllib.parse.urlsplit(urllib.parse.urljoin("/", url))
+                parsed_url = urlsplit(urljoin("/", url))
                 host = parsed_url.netloc
 
                 if host != "" and (
@@ -1402,9 +1401,7 @@ class Timestamp(markdown.inlinepatterns.Pattern):
             timestamp = dateutil.parser.parse(time_input_string, tzinfos=common_timezones)
         except ValueError:
             try:
-                timestamp = datetime.datetime.fromtimestamp(
-                    float(time_input_string), tz=datetime.timezone.utc
-                )
+                timestamp = datetime.fromtimestamp(float(time_input_string), tz=timezone.utc)
             except ValueError:
                 timestamp = None
 
@@ -1419,9 +1416,9 @@ class Timestamp(markdown.inlinepatterns.Pattern):
         # Use HTML5 <time> element for valid timestamps.
         time_element = Element("time")
         if timestamp.tzinfo:
-            timestamp = timestamp.astimezone(datetime.timezone.utc)
+            timestamp = timestamp.astimezone(timezone.utc)
         else:
-            timestamp = timestamp.replace(tzinfo=datetime.timezone.utc)
+            timestamp = timestamp.replace(tzinfo=timezone.utc)
         time_element.set("datetime", timestamp.isoformat().replace("+00:00", "Z"))
         # Set text to initial input, so simple clients translating
         # HTML to text will at least display something.
@@ -1569,8 +1566,8 @@ def sanitize_url(url: str) -> Optional[str]:
     See the docstring on markdown.inlinepatterns.LinkPattern.sanitize_url.
     """
     try:
-        parts = urllib.parse.urlparse(url.replace(" ", "%20"))
-        scheme, netloc, path, params, query, fragment = parts
+        parts = urlsplit(url.replace(" ", "%20"))
+        scheme, netloc, path, query, fragment = parts
     except ValueError:
         # Bad URL - so bad it couldn't be parsed.
         return ""
@@ -1581,10 +1578,10 @@ def sanitize_url(url: str) -> Optional[str]:
         scheme = "mailto"
     elif scheme == "" and netloc == "" and len(path) > 0 and path[0] == "/":
         # Allow domain-relative links
-        return urllib.parse.urlunparse(("", "", path, params, query, fragment))
-    elif (scheme, netloc, path, params, query) == ("", "", "", "", "") and len(fragment) > 0:
+        return urlunsplit(("", "", path, query, fragment))
+    elif (scheme, netloc, path, query) == ("", "", "", "") and len(fragment) > 0:
         # Allow fragment links
-        return urllib.parse.urlunparse(("", "", "", "", "", fragment))
+        return urlunsplit(("", "", "", "", fragment))
 
     # Zulip modification: If scheme is not specified, assume http://
     # We re-enter sanitize_url because netloc etc. need to be re-parsed.
@@ -1609,7 +1606,7 @@ def sanitize_url(url: str) -> Optional[str]:
     # the colon check, which would also forbid a lot of legitimate URLs.
 
     # URL passes all tests. Return URL as-is.
-    return urllib.parse.urlunparse((scheme, netloc, path, params, query, fragment))
+    return urlunsplit((scheme, netloc, path, query, fragment))
 
 
 def url_to_a(
@@ -1812,7 +1809,15 @@ def prepare_linkifier_pattern(source: str) -> str:
     whitespace, or opening delimiters, won't match if there are word
     characters directly after, and saves what was matched as
     OUTER_CAPTURE_GROUP."""
-    return rf"""(?P<{BEFORE_CAPTURE_GROUP}>^|\s|['"\(,:<])(?P<{OUTER_CAPTURE_GROUP}>{source})(?P<{AFTER_CAPTURE_GROUP}>$|[^\pL\pN])"""
+
+    # This NEL character (0x85) is interpolated via a variable,
+    # because r"" strings cannot use backslash escapes.
+    next_line = "\u0085"
+
+    # We use an extended definition of 'whitespace' which is
+    # equivalent to \p{White_Space} -- since \s in re2 only matches
+    # ASCII spaces, and re2 does not support \p{White_Space}.
+    return rf"""(?P<{BEFORE_CAPTURE_GROUP}>^|\s|{next_line}|\pZ|['"\(,:<])(?P<{OUTER_CAPTURE_GROUP}>{source})(?P<{AFTER_CAPTURE_GROUP}>$|[^\pL\pN])"""
 
 
 # Given a regular expression pattern, linkifies groups that match it
@@ -1895,6 +1900,8 @@ class UserMentionPattern(CompiledInlineProcessor):
                     self.zmd.zulip_rendering_result.mentions_topic_wildcard = True
             elif user is not None:
                 assert isinstance(user, FullNameInfo)
+                if not user.is_active:
+                    silent = True
 
                 if not silent:
                     self.zmd.zulip_rendering_result.mentions_user_ids.add(user.id)
@@ -2129,11 +2136,11 @@ class LinkInlineProcessor(markdown.inlinepatterns.LinkInlineProcessor):
         return None, None, None
 
 
-def get_sub_registry(r: markdown.util.Registry, keys: List[str]) -> markdown.util.Registry:
+def get_sub_registry(r: markdown.util.Registry[T], keys: List[str]) -> markdown.util.Registry[T]:
     # Registry is a new class added by Python-Markdown to replace OrderedDict.
     # Since Registry doesn't support .keys(), it is easier to make a new
     # object instead of removing keys from the existing object.
-    new_r = markdown.util.Registry()
+    new_r = markdown.util.Registry[T]()
     for k in keys:
         new_r.register(r[k], k, r.get_index_for_name(k))
     return new_r
@@ -2177,7 +2184,7 @@ class ZulipMarkdown(markdown.Markdown):
         self.set_output_format("html")
 
     @override
-    def build_parser(self) -> markdown.Markdown:
+    def build_parser(self) -> Self:
         # Build the parser using selected default features from Python-Markdown.
         # The complete list of all available processors can be found in the
         # super().build_parser() function.
@@ -2193,12 +2200,12 @@ class ZulipMarkdown(markdown.Markdown):
         self.handle_zephyr_mirror()
         return self
 
-    def build_preprocessors(self) -> markdown.util.Registry:
+    def build_preprocessors(self) -> markdown.util.Registry[markdown.preprocessors.Preprocessor]:
         # We disable the following preprocessors from upstream:
         #
         # html_block - insecure
         # reference - references don't make sense in a chat context.
-        preprocessors = markdown.util.Registry()
+        preprocessors = markdown.util.Registry[markdown.preprocessors.Preprocessor]()
         preprocessors.register(MarkdownListPreprocessor(self), "hanging_lists", 35)
         preprocessors.register(
             markdown.preprocessors.NormalizeWhitespace(self), "normalize_whitespace", 30
@@ -2238,7 +2245,7 @@ class ZulipMarkdown(markdown.Markdown):
         )
         return parser
 
-    def build_inlinepatterns(self) -> markdown.util.Registry:
+    def build_inlinepatterns(self) -> markdown.util.Registry[markdown.inlinepatterns.Pattern]:
         # We disable the following upstream inline patterns:
         #
         # backtick -        replaced by ours
@@ -2273,7 +2280,7 @@ class ZulipMarkdown(markdown.Markdown):
         # Add inline patterns.  We use a custom numbering of the
         # rules, that preserves the order from upstream but leaves
         # space for us to add our own.
-        reg = markdown.util.Registry()
+        reg = markdown.util.Registry[markdown.inlinepatterns.Pattern]()
         reg.register(BacktickInlineProcessor(markdown.inlinepatterns.BACKTICK_RE), "backtick", 105)
         reg.register(
             markdown.inlinepatterns.DoubleTagPattern(STRONG_EM_RE, "strong,em"), "strong_em", 100
@@ -2311,7 +2318,9 @@ class ZulipMarkdown(markdown.Markdown):
         reg.register(UnicodeEmoji(cast(Pattern[str], POSSIBLE_EMOJI_RE), self), "unicodeemoji", 0)
         return reg
 
-    def register_linkifiers(self, registry: markdown.util.Registry) -> markdown.util.Registry:
+    def register_linkifiers(
+        self, registry: markdown.util.Registry[markdown.inlinepatterns.Pattern]
+    ) -> markdown.util.Registry[markdown.inlinepatterns.Pattern]:
         for linkifier in self.linkifiers:
             pattern = linkifier["pattern"]
             registry.register(
@@ -2321,9 +2330,9 @@ class ZulipMarkdown(markdown.Markdown):
             )
         return registry
 
-    def build_treeprocessors(self) -> markdown.util.Registry:
+    def build_treeprocessors(self) -> markdown.util.Registry[markdown.treeprocessors.Treeprocessor]:
         # Here we build all the processors from upstream, plus a few of our own.
-        treeprocessors = markdown.util.Registry()
+        treeprocessors = markdown.util.Registry[markdown.treeprocessors.Treeprocessor]()
         # We get priority 30 from 'hilite' extension
         treeprocessors.register(markdown.treeprocessors.InlineProcessor(self), "inline", 25)
         treeprocessors.register(markdown.treeprocessors.PrettifyTreeprocessor(self), "prettify", 20)
@@ -2336,9 +2345,9 @@ class ZulipMarkdown(markdown.Markdown):
             treeprocessors.register(InlineVideoProcessor(self), "rewrite_videos_proxy", 10)
         return treeprocessors
 
-    def build_postprocessors(self) -> markdown.util.Registry:
+    def build_postprocessors(self) -> markdown.util.Registry[markdown.postprocessors.Postprocessor]:
         # These are the default Python-Markdown processors, unmodified.
-        postprocessors = markdown.util.Registry()
+        postprocessors = markdown.util.Registry[markdown.postprocessors.Postprocessor]()
         postprocessors.register(markdown.postprocessors.RawHtmlPostprocessor(self), "raw_html", 20)
         postprocessors.register(
             markdown.postprocessors.AndSubstitutePostprocessor(), "amp_substitute", 15
@@ -2628,7 +2637,10 @@ def do_convert(
 
         if mention_data is None:
             mention_backend = MentionBackend(message_realm.id)
-            mention_data = MentionData(mention_backend, content)
+            message_sender = None
+            if message is not None:
+                message_sender = message.sender
+            mention_data = MentionData(mention_backend, content, message_sender)
 
         stream_names = possible_linked_stream_names(content)
         stream_name_info = mention_data.get_stream_name_map(stream_names)

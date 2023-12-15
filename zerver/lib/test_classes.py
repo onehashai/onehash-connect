@@ -4,7 +4,6 @@ import re
 import shutil
 import subprocess
 import tempfile
-import urllib
 from contextlib import contextmanager
 from datetime import timedelta
 from typing import (
@@ -24,10 +23,12 @@ from typing import (
     Union,
     cast,
 )
-from unittest import TestResult, mock
+from unittest import TestResult, mock, skipUnless
+from urllib.parse import parse_qs, quote, urlencode
 
 import lxml.html
 import orjson
+import responses
 from django.apps import apps
 from django.conf import settings
 from django.core.mail import EmailMessage
@@ -36,6 +37,7 @@ from django.db.migrations.executor import MigrationExecutor
 from django.db.migrations.state import StateApps
 from django.db.utils import IntegrityError
 from django.http import HttpRequest, HttpResponse
+from django.http.response import ResponseHeaders
 from django.test import SimpleTestCase, TestCase, TransactionTestCase
 from django.test.client import BOUNDARY, MULTIPART_CONTENT, encode_multipart
 from django.test.testcases import SerializeMixin
@@ -44,12 +46,16 @@ from django.utils import translation
 from django.utils.module_loading import import_string
 from django.utils.timezone import now as timezone_now
 from fakeldap import MockLDAP
+from requests import PreparedRequest
 from two_factor.plugins.phonenumber.models import PhoneDevice
 from typing_extensions import override
 
 from corporate.models import Customer, CustomerPlan, LicenseLedger
 from zerver.actions.message_send import check_send_message, check_send_stream_message
-from zerver.actions.realm_settings import do_set_realm_property
+from zerver.actions.realm_settings import (
+    do_change_realm_permission_group_setting,
+    do_set_realm_property,
+)
 from zerver.actions.streams import bulk_add_subscriptions, bulk_remove_subscriptions
 from zerver.decorator import do_two_factor_login
 from zerver.lib.cache import bounce_key_prefix_for_testing
@@ -89,12 +95,14 @@ from zerver.lib.webhooks.common import (
 from zerver.models import (
     Client,
     Message,
+    PushDeviceToken,
     Reaction,
     Realm,
     RealmEmoji,
     Recipient,
     Stream,
     Subscription,
+    SystemGroups,
     UserGroup,
     UserGroupMembership,
     UserMessage,
@@ -112,7 +120,7 @@ from zerver.openapi.openapi import validate_against_openapi_schema, validate_req
 from zerver.tornado.event_queue import clear_client_event_queues_for_testing
 
 if settings.ZILENCER_ENABLED:
-    from zilencer.models import get_remote_server_by_uuid
+    from zilencer.models import RemoteZulipServer, get_remote_server_by_uuid
 
 if TYPE_CHECKING:
     from django.test.client import _MonkeyPatchedWSGIResponse as TestHttpResponse
@@ -270,7 +278,7 @@ Output:
         url_split = url.split("?")
         data = {}
         if len(url_split) == 2:
-            data = urllib.parse.parse_qs(url_split[1])
+            data = parse_qs(url_split[1])
         url = url_split[0]
         url = url.replace("/json/", "/").replace("/api/v1/", "/")
         return (url, data)
@@ -334,7 +342,7 @@ Output:
         """
         We need to urlencode, since Django's function won't do it for us.
         """
-        encoded = urllib.parse.urlencode(info)
+        encoded = urlencode(info)
         extra["content_type"] = "application/x-www-form-urlencoded"
         django_client = self.client  # see WRAPPER_COMMENT
         self.set_http_headers(extra, skip_user_agent)
@@ -426,7 +434,7 @@ Output:
         headers: Optional[Mapping[str, Any]] = None,
         **extra: str,
     ) -> "TestHttpResponse":
-        encoded = urllib.parse.urlencode(info)
+        encoded = urlencode(info)
         extra["content_type"] = "application/x-www-form-urlencoded"
         django_client = self.client  # see WRAPPER_COMMENT
         self.set_http_headers(extra, skip_user_agent)
@@ -469,7 +477,7 @@ Output:
         intentionally_undocumented: bool = False,
         **extra: str,
     ) -> "TestHttpResponse":
-        encoded = urllib.parse.urlencode(info)
+        encoded = urlencode(info)
         extra["content_type"] = "application/x-www-form-urlencoded"
         django_client = self.client  # see WRAPPER_COMMENT
         self.set_http_headers(extra, skip_user_agent)
@@ -594,7 +602,6 @@ Output:
         desdemona="desdemona@zulip.com",
         shiva="shiva@zulip.com",
         webhook_bot="webhook-bot@zulip.com",
-        welcome_bot="welcome-bot@zulip.com",
         outgoing_webhook_bot="outgoing-webhook@zulip.com",
         default_bot="default-bot@zulip.com",
     )
@@ -799,9 +806,7 @@ Output:
     def register(self, email: str, password: str, subdomain: str = DEFAULT_SUBDOMAIN) -> None:
         response = self.client_post("/accounts/home/", {"email": email}, subdomain=subdomain)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(
-            response["Location"], f"/accounts/send_confirm/?email={urllib.parse.quote(email)}"
-        )
+        self.assertEqual(response["Location"], f"/accounts/send_confirm/?email={quote(email)}")
         response = self.submit_reg_form_for_user(email, password, subdomain=subdomain)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response["Location"], f"http://{Realm.host_for_subdomain(subdomain)}/")
@@ -820,6 +825,7 @@ Output:
         source_realm_id: str = "",
         key: Optional[str] = None,
         realm_type: int = Realm.ORG_TYPES["business"]["id"],
+        realm_default_language: str = "en",
         enable_marketing_emails: Optional[bool] = None,
         email_address_visibility: Optional[int] = None,
         is_demo_organization: bool = False,
@@ -840,6 +846,7 @@ Output:
             "realm_name": realm_name,
             "realm_subdomain": realm_subdomain,
             "realm_type": realm_type,
+            "realm_default_language": realm_default_language,
             "key": key if key is not None else find_key_by_email(email),
             "timezone": timezone,
             "terms": True,
@@ -874,12 +881,14 @@ Output:
         realm_subdomain: str,
         realm_name: str,
         realm_type: int = Realm.ORG_TYPES["business"]["id"],
+        realm_default_language: str = "en",
         realm_in_root_domain: Optional[str] = None,
     ) -> "TestHttpResponse":
         payload = {
             "email": email,
             "realm_name": realm_name,
             "realm_type": realm_type,
+            "realm_default_language": realm_default_language,
             "realm_subdomain": realm_subdomain,
         }
         if realm_in_root_domain is not None:
@@ -1066,10 +1075,11 @@ Output:
         from_user: UserProfile,
         to_user: UserProfile,
         content: str = "test content",
-        sending_client_name: str = "test suite",
+        *,
+        read_by_sender: bool = True,
     ) -> int:
         recipient_list = [to_user.id]
-        (sending_client, _) = Client.objects.get_or_create(name=sending_client_name)
+        (sending_client, _) = Client.objects.get_or_create(name="test suite")
 
         sent_message_result = check_send_message(
             from_user,
@@ -1078,6 +1088,7 @@ Output:
             recipient_list,
             None,
             content,
+            read_by_sender=read_by_sender,
         )
         return sent_message_result.message_id
 
@@ -1086,12 +1097,13 @@ Output:
         from_user: UserProfile,
         to_users: List[UserProfile],
         content: str = "test content",
-        sending_client_name: str = "test suite",
+        *,
+        read_by_sender: bool = True,
     ) -> int:
         to_user_ids = [u.id for u in to_users]
         assert len(to_user_ids) >= 2
 
-        (sending_client, _) = Client.objects.get_or_create(name=sending_client_name)
+        (sending_client, _) = Client.objects.get_or_create(name="test suite")
 
         sent_message_result = check_send_message(
             from_user,
@@ -1100,6 +1112,7 @@ Output:
             to_user_ids,
             None,
             content,
+            read_by_sender=read_by_sender,
         )
         return sent_message_result.message_id
 
@@ -1110,10 +1123,11 @@ Output:
         content: str = "test content",
         topic_name: str = "test",
         recipient_realm: Optional[Realm] = None,
-        sending_client_name: str = "test suite",
+        *,
         allow_unsubscribed_sender: bool = False,
+        read_by_sender: bool = True,
     ) -> int:
-        (sending_client, _) = Client.objects.get_or_create(name=sending_client_name)
+        (sending_client, _) = Client.objects.get_or_create(name="test suite")
 
         message_id = check_send_stream_message(
             sender=sender,
@@ -1122,6 +1136,7 @@ Output:
             topic=topic_name,
             body=content,
             realm=recipient_realm,
+            read_by_sender=read_by_sender,
         )
         if (
             not UserMessage.objects.filter(user_profile=sender, message_id=message_id).exists()
@@ -1180,6 +1195,17 @@ Output:
         subscriptions = Subscription.objects.filter(recipient=recipient, active=True)
 
         return [subscription.user_profile for subscription in subscriptions]
+
+    def not_long_term_idle_subscriber_ids(self, stream_name: str, realm: Realm) -> Set[int]:
+        stream = Stream.objects.get(name=stream_name, realm=realm)
+        recipient = Recipient.objects.get(type_id=stream.id, type=Recipient.STREAM)
+
+        subscriptions = Subscription.objects.filter(
+            recipient=recipient, active=True, is_user_active=True
+        ).exclude(user_profile__long_term_idle=True)
+        user_profile_ids = set(subscriptions.values_list("user_profile_id", flat=True))
+
+        return user_profile_ids
 
     def assert_json_success(
         self,
@@ -1346,7 +1372,7 @@ Output:
             realm, invite_only, history_public_to_subscribers
         )
         administrators_user_group = UserGroup.objects.get(
-            name=UserGroup.ADMINISTRATORS_GROUP_NAME, realm=realm, is_system_group=True
+            name=SystemGroups.ADMINISTRATORS, realm=realm, is_system_group=True
         )
 
         try:
@@ -1385,14 +1411,18 @@ Output:
 
     # Subscribe to a stream directly
     def subscribe(
-        self, user_profile: UserProfile, stream_name: str, invite_only: bool = False
+        self,
+        user_profile: UserProfile,
+        stream_name: str,
+        invite_only: bool = False,
+        is_web_public: bool = False,
     ) -> Stream:
         realm = user_profile.realm
         try:
             stream = get_stream(stream_name, user_profile.realm)
         except Stream.DoesNotExist:
             stream, from_stream_creation = create_stream_if_needed(
-                realm, stream_name, invite_only=invite_only
+                realm, stream_name, invite_only=invite_only, is_web_public=is_web_public
             )
         bulk_add_subscriptions(realm, [stream], [user_profile], acting_user=None)
         return stream
@@ -1682,7 +1712,7 @@ Output:
 
         def set_age(user_name: str, age: int) -> None:
             user = self.example_user(user_name)
-            user.date_joined = timezone_now() - timedelta(age)
+            user.date_joined = timezone_now() - timedelta(days=age)
             user.save()
 
         do_set_realm_property(realm, "waiting_period_threshold", 1000, acting_user=None)
@@ -1769,7 +1799,7 @@ Output:
             automanage_licenses=False,
             billing_cycle_anchor=timezone_now(),
             billing_schedule=billing_schedule,
-            tier=CustomerPlan.STANDARD,
+            tier=CustomerPlan.TIER_CLOUD_STANDARD,
         )
         ledger = LicenseLedger.objects.create(
             plan=plan,
@@ -1786,7 +1816,7 @@ Output:
         self, realm: Realm, licenses: int, licenses_at_next_renewal: int
     ) -> Tuple[CustomerPlan, LicenseLedger]:
         return self.subscribe_realm_to_manual_license_management_plan(
-            realm, licenses, licenses_at_next_renewal, CustomerPlan.MONTHLY
+            realm, licenses, licenses_at_next_renewal, CustomerPlan.BILLING_SCHEDULE_MONTHLY
         )
 
     def create_user_notifications_data_object(
@@ -1920,6 +1950,41 @@ Output:
     def soft_deactivate_user(self, user: UserProfile) -> None:
         do_soft_deactivate_users([user])
         assert user.long_term_idle
+
+    def set_up_db_for_testing_user_access(self) -> None:
+        polonius = self.example_user("polonius")
+        hamlet = self.example_user("hamlet")
+        othello = self.example_user("othello")
+        iago = self.example_user("iago")
+        prospero = self.example_user("prospero")
+        aaron = self.example_user("aaron")
+        zoe = self.example_user("ZOE")
+        shiva = self.example_user("shiva")
+        realm = get_realm("zulip")
+        # Polonius is subscribed to "Verona" by default, so we unsubscribe
+        # it so that it becomes easier to test the restricted access.
+        self.unsubscribe(polonius, "Verona")
+
+        self.make_stream("test_stream1")
+        self.make_stream("test_stream2", invite_only=True)
+
+        self.subscribe(othello, "test_stream1")
+        self.send_stream_message(othello, "test_stream1", content="test message", topic_name="test")
+        self.unsubscribe(othello, "test_stream1")
+
+        self.subscribe(polonius, "test_stream1")
+        self.subscribe(polonius, "test_stream2")
+        self.subscribe(hamlet, "test_stream1")
+        self.subscribe(iago, "test_stream2")
+
+        self.send_personal_message(polonius, prospero)
+        self.send_personal_message(shiva, polonius)
+        self.send_huddle_message(aaron, [polonius, zoe])
+
+        members_group = UserGroup.objects.get(name="role:members", realm=realm)
+        do_change_realm_permission_group_setting(
+            realm, "can_access_all_users_group", members_group, acting_user=None
+        )
 
 
 class ZulipTestCase(ZulipTestCaseMixin, TestCase):
@@ -2268,7 +2333,7 @@ one or more new messages.
         return body
 
 
-class MigrationsTestCase(ZulipTestCase):  # nocoverage
+class MigrationsTestCase(ZulipTransactionTestCase):  # nocoverage
     """
     Test class for database migrations inspired by this blog post:
        https://www.caktusgroup.com/blog/2016/02/02/writing-unit-tests-django-migrations/
@@ -2286,6 +2351,7 @@ class MigrationsTestCase(ZulipTestCase):  # nocoverage
 
     @override
     def setUp(self) -> None:
+        super().setUp()
         assert (
             self.migrate_from and self.migrate_to
         ), f"TestCase '{type(self).__name__}' must define migrate_from and migrate_to properties"
@@ -2316,3 +2382,60 @@ def get_topic_messages(user_profile: UserProfile, stream: Stream, topic_name: st
         message__recipient=stream.recipient,
     ).order_by("id")
     return [um.message for um in filter_by_topic_name_via_message(query, topic_name)]
+
+
+@skipUnless(settings.ZILENCER_ENABLED, "requires zilencer")
+class BouncerTestCase(ZulipTestCase):
+    @override
+    def setUp(self) -> None:
+        # Set a deterministic uuid and a nice hostname for convenience.
+        self.server_uuid = "6cde5f7a-1f7e-4978-9716-49f69ebfc9fe"
+        self.server = RemoteZulipServer.objects.all().latest("id")
+
+        self.server.uuid = self.server_uuid
+        self.server.hostname = "demo.example.com"
+        self.server.save()
+
+        super().setUp()
+
+    @override
+    def tearDown(self) -> None:
+        RemoteZulipServer.objects.filter(uuid=self.server_uuid).delete()
+        super().tearDown()
+
+    def request_callback(self, request: PreparedRequest) -> Tuple[int, ResponseHeaders, bytes]:
+        kwargs = {}
+        if isinstance(request.body, bytes):
+            # send_json_to_push_bouncer sends the body as bytes containing json.
+            data = orjson.loads(request.body)
+            kwargs = dict(content_type="application/json")
+        else:
+            assert isinstance(request.body, str) or request.body is None
+            params: Dict[str, List[str]] = parse_qs(request.body)
+            # In Python 3, the values of the dict from `parse_qs` are
+            # in a list, because there might be multiple values.
+            # But since we are sending values with no same keys, hence
+            # we can safely pick the first value.
+            data = {k: v[0] for k, v in params.items()}
+        assert request.url is not None  # allow mypy to infer url is present.
+        assert settings.PUSH_NOTIFICATION_BOUNCER_URL is not None
+        local_url = request.url.replace(settings.PUSH_NOTIFICATION_BOUNCER_URL, "")
+        if request.method == "POST":
+            result = self.uuid_post(self.server_uuid, local_url, data, subdomain="", **kwargs)
+        elif request.method == "GET":
+            result = self.uuid_get(self.server_uuid, local_url, data, subdomain="")
+        return (result.status_code, result.headers, result.content)
+
+    def add_mock_response(self) -> None:
+        # Match any endpoint with the PUSH_NOTIFICATION_BOUNCER_URL.
+        assert settings.PUSH_NOTIFICATION_BOUNCER_URL is not None
+        COMPILED_URL = re.compile(settings.PUSH_NOTIFICATION_BOUNCER_URL + ".*")
+        responses.add_callback(responses.POST, COMPILED_URL, callback=self.request_callback)
+        responses.add_callback(responses.GET, COMPILED_URL, callback=self.request_callback)
+
+    def get_generic_payload(self, method: str = "register") -> Dict[str, Any]:
+        user_id = 10
+        token = "111222"
+        token_kind = PushDeviceToken.GCM
+
+        return {"user_id": user_id, "token": token, "token_kind": token_kind}

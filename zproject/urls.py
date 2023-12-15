@@ -56,7 +56,7 @@ from zerver.views.email_mirror import email_mirror_message
 from zerver.views.events_register import events_register_backend
 from zerver.views.health import health
 from zerver.views.home import accounts_accept_terms, desktop_home, home
-from zerver.views.hotspots import mark_hotspot_as_read
+from zerver.views.hotspots import mark_onboarding_step_as_read
 from zerver.views.invite import (
     generate_multiuse_invite_backend,
     get_user_invites,
@@ -92,6 +92,7 @@ from zerver.views.push_notifications import (
     add_apns_device_token,
     remove_android_reg_id,
     remove_apns_device_token,
+    self_hosting_auth_redirect,
     send_test_push_notification_api,
 )
 from zerver.views.reactions import add_reaction, remove_reaction
@@ -149,6 +150,7 @@ from zerver.views.streams import (
     deactivate_stream_backend,
     delete_in_topic,
     get_stream_backend,
+    get_stream_email_address,
     get_streams_backend,
     get_subscribers_backend,
     get_topics_backend,
@@ -409,11 +411,11 @@ v1_api_and_json_patterns = [
     ),
     # users/me -> zerver.views.user_settings
     rest_path("users/me/avatar", POST=set_avatar_backend, DELETE=delete_avatar_backend),
-    # users/me/hotspots -> zerver.views.hotspots
+    # users/me/onboarding_steps -> zerver.views.hotspots
     rest_path(
-        "users/me/hotspots",
+        "users/me/onboarding_steps",
         POST=(
-            mark_hotspot_as_read,
+            mark_onboarding_step_as_read,
             # This endpoint is low priority for documentation as
             # it is part of the web app-specific tutorial.
             {"intentionally_undocumented"},
@@ -467,6 +469,7 @@ v1_api_and_json_patterns = [
         PATCH=update_stream_backend,
         DELETE=deactivate_stream_backend,
     ),
+    rest_path("streams/<int:stream_id>/email_address", GET=get_stream_email_address),
     # Delete topic in stream
     rest_path("streams/<int:stream_id>/delete_topic", POST=delete_in_topic),
     rest_path("default_streams", POST=add_default_stream, DELETE=remove_default_stream),
@@ -816,6 +819,10 @@ urls += [
     path("api/<slug:article>", api_documentation_view),
     path("policies/", policy_documentation_view),
     path("policies/<slug:article>", policy_documentation_view),
+]
+
+urls += [
+    path("self-hosted-billing/", self_hosting_auth_redirect, name="self_hosting_auth_redirect"),
 ]
 
 if not settings.CORPORATE_ENABLED:  # nocoverage

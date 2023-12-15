@@ -1,4 +1,4 @@
-import datetime
+from datetime import timedelta
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Sequence, Tuple, Union
 from unittest import mock
 
@@ -247,12 +247,16 @@ class NarrowBuilderTest(ZulipTestCase):
         self._do_add_term_test(term, where_clause, params)
 
         term = dict(operator="is", operand="mentioned", negated=True)
-        where_clause = "WHERE NOT ((flags & %(flags_1)s) != %(param_1)s OR (flags & %(flags_2)s) != %(param_2)s)"
+        where_clause = "WHERE (flags & %(flags_1)s) = %(param_1)s"
+        mention_flags_mask = (
+            UserMessage.flags.mentioned.mask
+            | UserMessage.flags.stream_wildcard_mentioned.mask
+            | UserMessage.flags.topic_wildcard_mentioned.mask
+            | UserMessage.flags.group_mentioned.mask
+        )
         params = dict(
-            flags_1=UserMessage.flags.mentioned.mask,
+            flags_1=mention_flags_mask,
             param_1=0,
-            flags_2=UserMessage.flags.wildcard_mentioned.mask,
-            param_2=0,
         )
         self._do_add_term_test(term, where_clause, params)
 
@@ -304,6 +308,16 @@ class NarrowBuilderTest(ZulipTestCase):
             term,
             "WHERE (flags & %(flags_1)s) != %(param_1)s AND realm_id = %(realm_id_1)s AND (sender_id = %(sender_id_1)s AND recipient_id = %(recipient_id_1)s OR sender_id = %(sender_id_2)s AND recipient_id = %(recipient_id_2)s)",
         )
+
+    def test_combined_stream_dm(self) -> None:
+        term1 = dict(operator="dm", operand=self.othello_email)
+        self._build_query(term1)
+
+        topic_term = dict(operator="topic", operand="bogus")
+        self.assertRaises(BadNarrowOperatorError, self._build_query, topic_term)
+
+        stream_term = dict(operator="streams", operand="public")
+        self.assertRaises(BadNarrowOperatorError, self._build_query, stream_term)
 
     def test_add_term_using_dm_operator_not_the_same_user_as_operand_and_negated(
         self,
@@ -4287,7 +4301,7 @@ class MessageHasKeywordsTest(ZulipTestCase):
         realm_id = hamlet.realm.id
         rendering_result = render_markdown(msg, content)
         mention_backend = MentionBackend(realm_id)
-        mention_data = MentionData(mention_backend, content)
+        mention_data = MentionData(mention_backend, content, msg.sender)
         do_update_message(
             hamlet,
             msg,
@@ -4447,7 +4461,7 @@ class MessageVisibilityTest(ZulipTestCase):
         realm.message_visibility_limit = None
         realm.save()
 
-        end_time = timezone_now() - datetime.timedelta(hours=lookback_hours - 5)
+        end_time = timezone_now() - timedelta(hours=lookback_hours - 5)
         stat = COUNT_STATS["messages_sent:is_bot:hour"]
 
         RealmCount.objects.create(realm=realm, property=stat.property, end_time=end_time, value=5)

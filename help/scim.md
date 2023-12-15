@@ -19,10 +19,7 @@ OneHash Connect's SCIM integration has the following limitations:
   this integration with SCIM providers that do not yet have detailed
   self-service documentation on this page.
 
-!!! warn ""
-    OneHash Connect Cloud customers who wish to use SCIM integration must upgrade to
-    the OneHash Connect Cloud Plus plan. Contact
-    [support@onehash.ai](mailto:support@onehash.ai) for plan benefits and pricing.
+{!cloud-plus-only.md!}
 
 ## Configure SCIM
 

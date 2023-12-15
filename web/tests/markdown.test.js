@@ -5,7 +5,7 @@ const {strict: assert} = require("assert");
 const markdown_test_cases = require("../../zerver/tests/fixtures/markdown_test_cases");
 
 const markdown_assert = require("./lib/markdown_assert");
-const {set_global, zrequire} = require("./lib/namespace");
+const {mock_esm, set_global, zrequire} = require("./lib/namespace");
 const {run_test} = require("./lib/test");
 const {page_params, user_settings} = require("./lib/zpage_params");
 
@@ -41,6 +41,10 @@ const example_realm_linkifiers = [
 user_settings.translate_emoticons = false;
 
 set_global("document", {compatMode: "CSS1Compat"});
+
+mock_esm("../src/settings_data", {
+    user_can_access_all_other_users: () => false,
+});
 
 const emoji = zrequire("emoji");
 const emoji_codes = zrequire("../../static/generated/emoji/emoji_codes.json");
@@ -110,6 +114,8 @@ people.add_active_user({
     user_id: 107,
     email: "ampampamp@zulip.com",
 });
+
+people.add_inaccessible_user(108);
 
 people.initialize_current_user(cordelia.user_id);
 
@@ -284,7 +290,13 @@ test("message_flags", () => {
 
     message = {raw_content: "@**all**"};
     markdown.apply_markdown(message);
-    assert.ok(message.flags.includes("wildcard_mentioned"));
+    assert.ok(message.flags.includes("stream_wildcard_mentioned"));
+    assert.ok(!message.flags.includes("topic_wildcard_mentioned"));
+
+    message = {raw_content: "@**topic**"};
+    markdown.apply_markdown(message);
+    assert.ok(!message.flags.includes("stream_wildcard_mentioned"));
+    assert.ok(message.flags.includes("topic_wildcard_mentioned"));
 });
 
 test("marked", () => {
@@ -513,6 +525,14 @@ test("marked", () => {
             input: "@**|123|106** comes under user|id case.",
             expected: "<p>@**|123|106** comes under user|id case.</p>",
         },
+        {
+            input: "@**|108** mention inaccessible user using ID.",
+            expected: "<p>@**|108** mention inaccessible user using ID.</p>",
+        },
+        {
+            input: "@**Unknown user|108** mention inaccessible user using name and ID.",
+            expected: "<p>@**Unknown user|108** mention inaccessible user using name and ID.</p>",
+        },
         {input: "@**|1234** invalid id.", expected: "<p>@**|1234** invalid id.</p>"},
         {input: "T\n@hamletcharacters", expected: "<p>T<br>\n@hamletcharacters</p>"},
         {
@@ -713,111 +733,129 @@ test("message_flags", () => {
     markdown.apply_markdown(message);
     assert.equal(message.is_me_message, false);
     assert.equal(message.flags.includes("mentioned"), true);
-    assert.equal(message.flags.includes("wildcard_mentioned"), true);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), true);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
 
     input = "test @**everyone**";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
     assert.equal(message.is_me_message, false);
-    assert.equal(message.flags.includes("wildcard_mentioned"), true);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), true);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
     assert.equal(message.flags.includes("mentioned"), false);
 
     input = "test @**stream**";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
     assert.equal(message.is_me_message, false);
-    assert.equal(message.flags.includes("wildcard_mentioned"), true);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), true);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
     assert.equal(message.flags.includes("mentioned"), false);
 
     input = "test @**topic**";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
     assert.equal(message.is_me_message, false);
-    assert.equal(message.flags.includes("wildcard_mentioned"), true);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), true);
     assert.equal(message.flags.includes("mentioned"), false);
 
     input = "test @all";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
-    assert.equal(message.flags.includes("wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
     assert.equal(message.flags.includes("mentioned"), false);
 
     input = "test @everyone";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
-    assert.equal(message.flags.includes("wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
     assert.equal(message.flags.includes("mentioned"), false);
 
     input = "test @topic";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
-    assert.equal(message.flags.includes("wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
     assert.equal(message.flags.includes("mentioned"), false);
 
     input = "test @any";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
-    assert.equal(message.flags.includes("wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
     assert.equal(message.flags.includes("mentioned"), false);
 
     input = "test @alleycat.com";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
-    assert.equal(message.flags.includes("wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
     assert.equal(message.flags.includes("mentioned"), false);
 
     input = "test @*hamletcharacters*";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
-    assert.equal(message.flags.includes("wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
     assert.equal(message.flags.includes("mentioned"), true);
 
     input = "test @*backend*";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
-    assert.equal(message.flags.includes("wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
     assert.equal(message.flags.includes("mentioned"), false);
 
     input = "test @**invalid_user**";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
-    assert.equal(message.flags.includes("wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
     assert.equal(message.flags.includes("mentioned"), false);
 
     input = "test @_**all**";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
-    assert.equal(message.flags.includes("wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
     assert.equal(message.flags.includes("mentioned"), false);
 
     input = "> test @**all**";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
-    assert.equal(message.flags.includes("wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
     assert.equal(message.flags.includes("mentioned"), false);
 
     input = "test @_**topic**";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
-    assert.equal(message.flags.includes("wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
     assert.equal(message.flags.includes("mentioned"), false);
 
     input = "> test @**topic**";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
-    assert.equal(message.flags.includes("wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
     assert.equal(message.flags.includes("mentioned"), false);
 
     input = "test @_*hamletcharacters*";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
-    assert.equal(message.flags.includes("wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
     assert.equal(message.flags.includes("mentioned"), false);
 
     input = "> test @*hamletcharacters*";
     message = {topic: "No links here", raw_content: input};
     markdown.apply_markdown(message);
-    assert.equal(message.flags.includes("wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("stream_wildcard_mentioned"), false);
+    assert.equal(message.flags.includes("topic_wildcard_mentioned"), false);
     assert.equal(message.flags.includes("mentioned"), false);
 });
 

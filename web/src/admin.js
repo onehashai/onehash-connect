@@ -1,4 +1,5 @@
 import $ from "jquery";
+import tippy from "tippy.js";
 
 import render_admin_tab from "../templates/settings/admin_tab.hbs";
 import render_settings_organization_settings_tip from "../templates/settings/organization_settings_tip.hbs";
@@ -30,7 +31,9 @@ const admin_settings_label = {
     realm_mandatory_topics: $t({defaultMessage: "Require topics in stream messages"}),
     realm_notifications_stream: $t({defaultMessage: "New stream announcements"}),
     realm_signup_notifications_stream: $t({defaultMessage: "New user announcements"}),
-    realm_inline_image_preview: $t({defaultMessage: "Show previews of uploaded and linked images"}),
+    realm_inline_image_preview: $t({
+        defaultMessage: "Show previews of uploaded and linked images and videos",
+    }),
     realm_inline_url_embed_preview: $t({defaultMessage: "Show previews of linked websites"}),
     realm_send_welcome_emails: $t({defaultMessage: "Send emails introducing OneHash Connect to new users"}),
     realm_message_content_allowed_in_email_notifications: $t({
@@ -74,7 +77,6 @@ function insert_tip_box() {
     $(".organization-box")
         .find(".settings-section")
         .not("#emoji-settings")
-        .not("#user-groups-admin")
         .not("#organization-auth-settings")
         .not("#admin-bot-list")
         .not("#admin-invites-list")
@@ -113,7 +115,6 @@ export function build_page() {
         realm_inline_url_embed_preview: page_params.realm_inline_url_embed_preview,
         server_inline_url_embed_preview: page_params.server_inline_url_embed_preview,
         realm_authentication_methods: page_params.realm_authentication_methods,
-        realm_user_group_edit_policy: page_params.realm_user_group_edit_policy,
         realm_name_changes_disabled: page_params.realm_name_changes_disabled,
         realm_email_changes_disabled: page_params.realm_email_changes_disabled,
         realm_avatar_changes_disabled: page_params.realm_avatar_changes_disabled,
@@ -173,7 +174,6 @@ export function build_page() {
         can_create_multiuse_invite: settings_data.user_can_create_multiuse_invite(),
         can_invite_users_by_email: settings_data.user_can_invite_users_by_email(),
         realm_invite_required: page_params.realm_invite_required,
-        can_edit_user_groups: settings_data.user_can_edit_user_groups(),
         policy_values: settings_config.common_policy_values,
         realm_delete_own_message_policy: page_params.realm_delete_own_message_policy,
         DELETE_OWN_MESSAGE_POLICY_ADMINS_ONLY:
@@ -186,7 +186,7 @@ export function build_page() {
         web_stream_unreads_count_display_policy_values:
             settings_config.web_stream_unreads_count_display_policy_values,
         color_scheme_values: settings_config.color_scheme_values,
-        default_view_values: settings_config.default_view_values,
+        web_home_view_values: settings_config.web_home_view_values,
         settings_object: realm_user_settings_defaults,
         display_settings: settings_config.get_all_display_settings(),
         settings_label: settings_config.realm_user_settings_defaults_labels,
@@ -256,6 +256,23 @@ export function build_page() {
     $("#id_realm_bot_creation_policy").val(page_params.realm_bot_creation_policy);
 
     $("#id_realm_digest_weekday").val(options.realm_digest_weekday);
+
+    const is_plan_plus = page_params.realm_plan_type === 10;
+    const is_plan_self_hosted = page_params.realm_plan_type === 1;
+    if (
+        page_params.development_environment &&
+        page_params.is_admin &&
+        !(is_plan_plus || is_plan_self_hosted)
+    ) {
+        $("#realm_can_access_all_users_group_widget").prop("disabled", true);
+        const opts = {
+            content: $t({
+                defaultMessage: "This feature is available on Zulip Cloud Plus. Upgrade to access.",
+            }),
+        };
+
+        tippy($("#realm_can_access_all_users_group_widget_container")[0], opts);
+    }
 }
 
 export function launch(section) {

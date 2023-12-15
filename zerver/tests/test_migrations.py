@@ -4,15 +4,12 @@
 # You can also read
 #   https://www.caktusgroup.com/blog/2016/02/02/writing-unit-tests-django-migrations/
 # to get a tutorial on the framework that inspired this feature.
-from datetime import datetime, timezone
-from unittest import skip
+from unittest.mock import patch
 
-import orjson
 from django.db.migrations.state import StateApps
 from typing_extensions import override
 
 from zerver.lib.test_classes import MigrationsTestCase
-from zerver.lib.test_helpers import use_db_models
 
 # Important note: These tests are very expensive, and details of
 # Django's database transaction model mean it does not super work to
@@ -25,82 +22,34 @@ from zerver.lib.test_helpers import use_db_models
 #
 #   django.db.utils.OperationalError: cannot ALTER TABLE
 #   "zerver_subscription" because it has pending trigger events
-#
-# As a result, we generally mark these tests as skipped once they have
-# been tested for a migration being merged.
 
 
-@skip("Cannot be run because there is a non-atomic migration that has been merged after it")
-class ScheduledEmailData(MigrationsTestCase):
-    migrate_from = "0467_rename_extradata_realmauditlog_extra_data_json"
-    migrate_to = "0468_rename_followup_day_email_templates"
+class RenameUserHotspot(MigrationsTestCase):
+    migrate_from = "0492_realm_push_notifications_enabled_and_more"
+    migrate_to = "0493_rename_userhotspot_to_onboardingstep"
 
-    @use_db_models
+    @override
+    def setUp(self) -> None:
+        with patch("builtins.print") as _:
+            super().setUp()
+
     @override
     def setUpBeforeMigration(self, apps: StateApps) -> None:
-        iago = self.example_user("iago")
-        ScheduledEmail = apps.get_model("zerver", "ScheduledEmail")
-        send_date = datetime(2025, 1, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
+        self.assertRaises(LookupError, lambda: apps.get_model("zerver", "onboardingstep"))
 
-        templates = [
-            ["zerver/emails/followup_day1", "a", True, 10],
-            ["zerver/emails/followup_day2", "b", False, 20],
-            ["zerver/emails/onboarding_zulip_guide", "c", True, 30],
-        ]
+        UserHotspot = apps.get_model("zerver", "userhotspot")
 
-        for template in templates:
-            email_fields = {
-                "template_prefix": template[0],
-                "string_context": template[1],
-                "boolean_context": template[2],
-                "integer_context": template[3],
-            }
+        expected_field_names = {"id", "hotspot", "timestamp", "user"}
+        fields_name = {field.name for field in UserHotspot._meta.get_fields()}
 
-            email = ScheduledEmail.objects.create(
-                type=1,
-                realm=iago.realm,
-                scheduled_timestamp=send_date,
-                data=orjson.dumps(email_fields).decode(),
-            )
-            email.users.add(iago.id)
+        self.assertEqual(fields_name, expected_field_names)
 
-    def test_updated_email_templates(self) -> None:
-        ScheduledEmail = self.apps.get_model("zerver", "ScheduledEmail")
-        send_date = datetime(2025, 1, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
+    def test_renamed_model_and_field(self) -> None:
+        self.assertRaises(LookupError, lambda: self.apps.get_model("zerver", "userhotspot"))
 
-        old_templates = [
-            "zerver/emails/followup_day1",
-            "zerver/emails/followup_day2",
-        ]
+        OnboardingStep = self.apps.get_model("zerver", "onboardingstep")
 
-        current_templates = [
-            "zerver/emails/account_registered",
-            "zerver/emails/onboarding_zulip_guide",
-            "zerver/emails/onboarding_zulip_topics",
-        ]
+        expected_field_names = {"id", "onboarding_step", "timestamp", "user"}
+        fields_name = {field.name for field in OnboardingStep._meta.get_fields()}
 
-        email_data = [
-            ["zerver/emails/account_registered", "a", True, 10],
-            ["zerver/emails/onboarding_zulip_topics", "b", False, 20],
-            ["zerver/emails/onboarding_zulip_guide", "c", True, 30],
-        ]
-
-        scheduled_emails = ScheduledEmail.objects.all()
-        self.assert_length(scheduled_emails, 3)
-
-        checked_emails = []
-        for email in scheduled_emails:
-            self.assertEqual(email.type, 1)
-            self.assertEqual(email.scheduled_timestamp, send_date)
-
-            updated_data = orjson.loads(email.data)
-            template_prefix = updated_data["template_prefix"]
-            self.assertFalse(template_prefix in old_templates)
-            for data in email_data:
-                if template_prefix == data[0]:
-                    self.assertEqual(updated_data["string_context"], data[1])
-                    self.assertEqual(updated_data["boolean_context"], data[2])
-                    self.assertEqual(updated_data["integer_context"], data[3])
-                    checked_emails.append(template_prefix)
-
-        self.assertEqual(current_templates, sorted(checked_emails))
+        self.assertEqual(fields_name, expected_field_names)

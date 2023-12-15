@@ -6,9 +6,11 @@ import render_narrow_to_compose_recipients_tooltip from "../templates/narrow_to_
 
 import * as compose_recipient from "./compose_recipient";
 import * as compose_state from "./compose_state";
+import * as compose_validate from "./compose_validate";
 import {$t} from "./i18n";
 import * as narrow_state from "./narrow_state";
-import {EXTRA_LONG_HOVER_DELAY, LONG_HOVER_DELAY} from "./tippyjs";
+import * as popover_menus from "./popover_menus";
+import {EXTRA_LONG_HOVER_DELAY, INSTANT_HOVER_DELAY, LONG_HOVER_DELAY} from "./tippyjs";
 import {parse_html} from "./ui_util";
 import {user_settings} from "./user_settings";
 
@@ -23,6 +25,10 @@ export function initialize() {
             "#new_direct_message_button",
         ],
         delay: EXTRA_LONG_HOVER_DELAY,
+        // Only show on mouseenter since for spectators, clicking on these
+        // buttons opens login modal, and Micromodal returns focus to the
+        // trigger after it closes, which results in tooltip being displayed.
+        trigger: "mouseenter",
         appendTo: () => document.body,
         onHidden(instance) {
             instance.destroy();
@@ -50,6 +56,30 @@ export function initialize() {
         // This ensures that the upload files tooltip
         // doesn't hide behind the left sidebar.
         appendTo: () => document.body,
+        // If the button is `.disabled-on-hover`, then we want to show the
+        // tooltip instantly, to make it clear to the user that the button
+        // is disabled, and why.
+        onTrigger(instance, event) {
+            if (event.currentTarget.classList.contains("disabled-on-hover")) {
+                instance.setProps({delay: INSTANT_HOVER_DELAY});
+            } else {
+                instance.setProps({delay: LONG_HOVER_DELAY});
+            }
+        },
+    });
+
+    delegate("body", {
+        target: ".send-control-button",
+        delay: LONG_HOVER_DELAY,
+        placement: "top",
+        onShow() {
+            // Don't show send-area tooltips if the popover is displayed.
+            if (popover_menus.is_scheduled_messages_popover_displayed()) {
+                return false;
+            }
+            return true;
+        },
+        appendTo: () => document.body,
     });
 
     delegate("body", {
@@ -61,11 +91,16 @@ export function initialize() {
         trigger: "mouseenter",
         appendTo: () => document.body,
         onShow(instance) {
+            // Don't show Send button tooltip if the popover is displayed.
+            if (popover_menus.is_scheduled_messages_popover_displayed()) {
+                return false;
+            }
             if (user_settings.enter_sends) {
                 instance.setContent(parse_html($("#send-enter-tooltip-template").html()));
             } else {
                 instance.setContent(parse_html($("#send-ctrl-enter-tooltip-template").html()));
             }
+            return true;
         },
     });
 
@@ -105,9 +140,13 @@ export function initialize() {
     });
 
     delegate("body", {
-        target: [".disabled-compose-send-button-container"],
+        // TODO: Might need to target just the Send button itself
+        // in the new design
+        target: [".disabled-message-send-controls"],
         maxWidth: 350,
-        content: () => compose_recipient.get_posting_policy_error_message(),
+        content: () =>
+            compose_recipient.get_posting_policy_error_message() ||
+            compose_validate.get_disabled_send_tooltip(),
         appendTo: () => document.body,
         onHidden(instance) {
             instance.destroy();

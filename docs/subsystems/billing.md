@@ -69,10 +69,10 @@ a few things to keep in mind while conducting these tests manually:
 
 Here are some flows to test when upgrading a Zulip organization:
 
-- When free trials are not enabled, i.e. `FREE_TRIAL_DAYS` is not set
+- When free trials are not enabled, i.e. `CLOUD_FREE_TRIAL_DAYS` is not set
   to any value in `dev_settings.py` (aka the default). You can
   double-check that the setting is disabled by verifying
-  `./scripts/get-django-setting FREE_TRIAL_DAYS` returns 0.
+  `./scripts/get-django-setting CLOUD_FREE_TRIAL_DAYS` returns 0.
 
   - Using a valid card number like `4242 4242 4242 4242`.
   - Using an invalid card number like `4000000000000341`, which will add the card
@@ -84,7 +84,7 @@ Here are some flows to test when upgrading a Zulip organization:
 - Upgrade an organization when free trials are enabled. The free
   trials setting has been (possibly permanently) disabled in
   production for some time now, so testing this code path is not a
-  priority. You can set `FREE_TRIAL_DAYS` to any number greater than
+  priority. You can set `CLOUD_FREE_TRIAL_DAYS` to any number greater than
   `0` in `dev_settings.py` to enable free trials. There are two
   different flows to test here:
   - Right after the organization is created by following the instructions in the
@@ -116,7 +116,7 @@ our code is:
 - Go to the [Stripe Dashboard](https://dashboard.stripe.com/developers) in
   your Stripe account.
 - Upgrade the API version.
-- Run `tools/test-backend --generate-stripe-fixtures`.
+- Run `tools/test-backend --generate-stripe-fixtures --parallel=1 corporate/`.
 - Fix any failing tests, and manually look through `git diff` to understand
   the changes. Ensure that there are no material changes.
 - Update the value of `STRIPE_API_VERSION` in `corporate/lib/stripe.py`.

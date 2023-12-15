@@ -429,8 +429,9 @@ Learn how Connect integrations work with this simple Hello World example!
     by default in the Connect development environment. If you are running
     Connect in production, you should make sure that this stream exists.
 
-1.  {!create-bot-construct-url.md!}
+1. {!create-an-incoming-webhook.md!}
 
+1. {!generate-integration-url.md!}
 
 1.  To trigger a notification using this example webhook, you can use
     `send_webhook_fixture_message` from a [Connect development
@@ -455,9 +456,9 @@ Learn how Connect integrations work with this simple Hello World example!
 
 ```
 
-`{!create-bot-construct-url.md!}` and `{!congrats.md!}` are examples of
+`{!create-an-incoming-webhook.md!}` and `{!congrats.md!}` are examples of
 a Markdown macro. Connect has a macro-based Markdown/Jinja2 framework that
-includes macros for common instructions in OneHash Connect's webhooks/integrations
+includes macros for common instructions in Connect's webhooks/integrations
 documentation.
 
 See

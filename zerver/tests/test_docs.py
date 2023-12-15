@@ -408,7 +408,7 @@ class HelpTest(ZulipTestCase):
     def test_help_relative_links_for_gear(self) -> None:
         result = self.client_get("/help/analytics")
         self.assertIn(
-            '<a href="/stats"><i class="fa fa-bar-chart"></i> Usage statistics</a>',
+            '<a href="/stats"><i class="zulip-icon zulip-icon-bar-chart"></i> Usage statistics</a>',
             str(result.content),
         )
         self.assertEqual(result.status_code, 200)
@@ -417,19 +417,26 @@ class HelpTest(ZulipTestCase):
             result = self.client_get("/help/analytics", subdomain="")
         self.assertEqual(result.status_code, 200)
         self.assertIn(
-            '<strong><i class="fa fa-bar-chart"></i> Usage statistics</strong>', str(result.content)
+            '<strong><i class="zulip-icon zulip-icon-bar-chart"></i> Usage statistics</strong>',
+            str(result.content),
         )
         self.assertNotIn("/stats", str(result.content))
 
     def test_help_relative_links_for_stream(self) -> None:
         result = self.client_get("/help/message-a-stream-by-email")
-        self.assertIn('<a href="/#streams/subscribed">Subscribed streams</a>', str(result.content))
+        self.assertIn(
+            '<a href="/#streams/subscribed"><i class="zulip-icon zulip-icon-hash"></i> Stream settings</a>',
+            str(result.content),
+        )
         self.assertEqual(result.status_code, 200)
 
         with self.settings(ROOT_DOMAIN_LANDING_PAGE=True):
             result = self.client_get("/help/message-a-stream-by-email", subdomain="")
         self.assertEqual(result.status_code, 200)
-        self.assertIn("<strong>Manage streams</strong>", str(result.content))
+        self.assertIn(
+            '<strong><i class="zulip-icon zulip-icon-hash"></i> Stream settings</strong>',
+            str(result.content),
+        )
         self.assertNotIn("/#streams", str(result.content))
 
 
@@ -502,8 +509,8 @@ class PlansPageTest(ZulipTestCase):
         root_domain = ""
         result = self.client_get("/plans/", subdomain=root_domain)
         self.assert_in_success_response(["Self-host Zulip"], result)
-        self.assert_not_in_success_response(["/upgrade/#sponsorship"], result)
-        self.assert_in_success_response(["/accounts/go/?next=%2Fupgrade%2F%23sponsorship"], result)
+        self.assert_not_in_success_response(["/sponsorship/"], result)
+        self.assert_in_success_response(["/accounts/go/?next=%2Fsponsorship%2F"], result)
 
         non_existent_domain = "moo"
         result = self.client_get("/plans/", subdomain=non_existent_domain)
@@ -526,10 +533,8 @@ class PlansPageTest(ZulipTestCase):
         self.login(organization_member)
         result = self.client_get("/plans/", subdomain="zulip")
         self.assert_in_success_response(["Current plan"], result)
-        self.assert_in_success_response(["/upgrade/#sponsorship"], result)
-        self.assert_not_in_success_response(
-            ["/accounts/go/?next=%2Fupgrade%2F%23sponsorship"], result
-        )
+        self.assert_in_success_response(["/sponsorship/"], result)
+        self.assert_not_in_success_response(["/accounts/go/?next=%2Fsponsorship%2F"], result)
 
         # Test root domain, with login on different domain
         result = self.client_get("/plans/", subdomain="")
@@ -564,30 +569,35 @@ class PlansPageTest(ZulipTestCase):
             self.assertEqual(result.status_code, 302)
             self.assertEqual(result["Location"], "https://zulip.com/plans/")
 
-        # But in the development environment, it renders a page
-        result = self.client_get("/plans/", subdomain="zulip")
-        self.assert_in_success_response([sign_up_now, upgrade_to_standard], result)
-        self.assert_not_in_success_response([current_plan, sponsorship_pending], result)
-
         realm.plan_type = Realm.PLAN_TYPE_LIMITED
         realm.save(update_fields=["plan_type"])
         result = self.client_get("/plans/", subdomain="zulip")
         self.assert_in_success_response([current_plan, upgrade_to_standard], result)
         self.assert_not_in_success_response([sign_up_now, sponsorship_pending], result)
 
-        with self.settings(FREE_TRIAL_DAYS=60):
+        with self.settings(CLOUD_FREE_TRIAL_DAYS=60):
             result = self.client_get("/plans/", subdomain="zulip")
-            self.assert_in_success_response([current_plan, "Start 60 day free trial"], result)
+            self.assert_in_success_response([current_plan, "Start 60-day free trial"], result)
             self.assert_not_in_success_response(
                 [sign_up_now, sponsorship_pending, upgrade_to_standard], result
             )
 
+        # Sponsored realms always have Customer entry.
+        customer = Customer.objects.create(realm=get_realm("zulip"), stripe_customer_id="cus_id")
         realm.plan_type = Realm.PLAN_TYPE_STANDARD_FREE
         realm.save(update_fields=["plan_type"])
         result = self.client_get("/plans/", subdomain="zulip")
         self.assert_in_success_response([current_plan], result)
         self.assert_not_in_success_response(
             [sign_up_now, upgrade_to_standard, sponsorship_pending], result
+        )
+
+        plan = CustomerPlan.objects.create(
+            customer=customer,
+            tier=CustomerPlan.TIER_CLOUD_STANDARD,
+            status=CustomerPlan.ACTIVE,
+            billing_cycle_anchor=timezone_now(),
+            billing_schedule=CustomerPlan.BILLING_SCHEDULE_MONTHLY,
         )
 
         realm.plan_type = Realm.PLAN_TYPE_STANDARD
@@ -598,14 +608,8 @@ class PlansPageTest(ZulipTestCase):
             [sign_up_now, upgrade_to_standard, sponsorship_pending], result
         )
 
-        customer = Customer.objects.create(realm=get_realm("zulip"), stripe_customer_id="cus_id")
-        plan = CustomerPlan.objects.create(
-            customer=customer,
-            tier=CustomerPlan.STANDARD,
-            status=CustomerPlan.FREE_TRIAL,
-            billing_cycle_anchor=timezone_now(),
-            billing_schedule=CustomerPlan.MONTHLY,
-        )
+        plan.status = CustomerPlan.FREE_TRIAL
+        plan.save(update_fields=["status"])
         result = self.client_get("/plans/", subdomain="zulip")
         self.assert_in_success_response(["Current plan (free trial)"], result)
         self.assert_not_in_success_response(

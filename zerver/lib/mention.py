@@ -3,8 +3,10 @@ import re
 from dataclasses import dataclass
 from typing import Dict, List, Match, Optional, Set, Tuple
 
+from django.conf import settings
 from django.db.models import Q
 
+from zerver.lib.users import get_inaccessible_user_ids
 from zerver.models import UserGroup, UserProfile, get_linkable_streams
 
 BEFORE_MENTION_ALLOWED_REGEX = r"(?<![^\s\'\"\(\{\[\/<])"
@@ -26,6 +28,7 @@ stream_wildcards = frozenset(["all", "everyone", "stream"])
 class FullNameInfo:
     id: int
     full_name: str
+    is_active: bool
 
 
 @dataclass
@@ -59,12 +62,21 @@ class PossibleMentions:
 
 
 class MentionBackend:
+    # Be careful about reuse: MentionBackend contains caches which are
+    # designed to only have the lifespan of a sender user (typically a
+    # single request).
+    #
+    # In particular, user_cache is not robust to message_sender
+    # within the lifetime of a single MentionBackend lifetime.
+
     def __init__(self, realm_id: int) -> None:
         self.realm_id = realm_id
         self.user_cache: Dict[Tuple[int, str], FullNameInfo] = {}
         self.stream_cache: Dict[str, int] = {}
 
-    def get_full_name_info_list(self, user_filters: List[UserFilter]) -> List[FullNameInfo]:
+    def get_full_name_info_list(
+        self, user_filters: List[UserFilter], message_sender: Optional[UserProfile]
+    ) -> List[FullNameInfo]:
         result: List[FullNameInfo] = []
         unseen_user_filters: List[UserFilter] = []
 
@@ -91,8 +103,7 @@ class MentionBackend:
 
             rows = (
                 UserProfile.objects.filter(
-                    realm_id=self.realm_id,
-                    is_active=True,
+                    Q(realm_id=self.realm_id) | Q(email__in=settings.CROSS_REALM_BOT_EMAILS),
                 )
                 .filter(
                     functools.reduce(lambda a, b: a | b, q_list),
@@ -100,10 +111,20 @@ class MentionBackend:
                 .only(
                     "id",
                     "full_name",
+                    "is_active",
                 )
             )
 
-            user_list = [FullNameInfo(id=row.id, full_name=row.full_name) for row in rows]
+            possible_mention_user_ids = [row.id for row in rows]
+            inaccessible_user_ids = get_inaccessible_user_ids(
+                possible_mention_user_ids, message_sender
+            )
+
+            user_list = [
+                FullNameInfo(id=row.id, full_name=row.full_name, is_active=row.is_active)
+                for row in rows
+                if row.id not in inaccessible_user_ids
+            ]
 
             # We expect callers who take advantage of our cache to supply both
             # id and full_name in the user mentions in their messages.
@@ -193,7 +214,7 @@ def possible_user_group_mentions(content: str) -> Set[str]:
 
 
 def get_possible_mentions_info(
-    mention_backend: MentionBackend, mention_texts: Set[str]
+    mention_backend: MentionBackend, mention_texts: Set[str], message_sender: Optional[UserProfile]
 ) -> List[FullNameInfo]:
     if not mention_texts:
         return []
@@ -217,15 +238,19 @@ def get_possible_mentions_info(
             # For **name** syntax.
             user_filters.append(UserFilter(full_name=mention_text, id=None))
 
-    return mention_backend.get_full_name_info_list(user_filters)
+    return mention_backend.get_full_name_info_list(user_filters, message_sender)
 
 
 class MentionData:
-    def __init__(self, mention_backend: MentionBackend, content: str) -> None:
+    def __init__(
+        self, mention_backend: MentionBackend, content: str, message_sender: Optional[UserProfile]
+    ) -> None:
         self.mention_backend = mention_backend
         realm_id = mention_backend.realm_id
         mentions = possible_mentions(content)
-        possible_mentions_info = get_possible_mentions_info(mention_backend, mentions.mention_texts)
+        possible_mentions_info = get_possible_mentions_info(
+            mention_backend, mentions.mention_texts, message_sender
+        )
         self.full_name_info = {row.full_name.lower(): row for row in possible_mentions_info}
         self.user_id_info = {row.id: row for row in possible_mentions_info}
         self.init_user_group_data(realm_id=realm_id, content=content)

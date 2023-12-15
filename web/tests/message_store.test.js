@@ -3,11 +3,9 @@
 const {strict: assert} = require("assert");
 
 const {mock_esm, set_global, zrequire} = require("./lib/namespace");
-const {run_test} = require("./lib/test");
+const {run_test, noop} = require("./lib/test");
 const blueslip = require("./lib/zblueslip");
 const {page_params} = require("./lib/zpage_params");
-
-const noop = () => {};
 
 mock_esm("../src/stream_topic_history", {
     add_message: noop,
@@ -182,24 +180,35 @@ test("message_booleans_parity", () => {
         assert.equal(update_message.topic, "update_booleans");
     };
 
-    assert_bool_match(["wildcard_mentioned"], {
+    assert_bool_match(["stream_wildcard_mentioned"], {
         mentioned: true,
         mentioned_me_directly: false,
-        wildcard_mentioned: true,
+        stream_wildcard_mentioned: true,
+        topic_wildcard_mentioned: false,
+        alerted: false,
+    });
+
+    assert_bool_match(["topic_wildcard_mentioned"], {
+        mentioned: true,
+        mentioned_me_directly: false,
+        stream_wildcard_mentioned: false,
+        topic_wildcard_mentioned: true,
         alerted: false,
     });
 
     assert_bool_match(["mentioned"], {
         mentioned: true,
         mentioned_me_directly: true,
-        wildcard_mentioned: false,
+        stream_wildcard_mentioned: false,
+        topic_wildcard_mentioned: false,
         alerted: false,
     });
 
     assert_bool_match(["has_alert_word"], {
         mentioned: false,
         mentioned_me_directly: false,
-        wildcard_mentioned: false,
+        stream_wildcard_mentioned: false,
+        topic_wildcard_mentioned: false,
         alerted: true,
     });
 });
@@ -211,16 +220,23 @@ test("errors", ({disallow_rewire}) => {
         display_recipient: [{id: 92714}],
     };
 
-    blueslip.expect("error", "Unknown user_id in maybe_get_user_by_id", 2);
-    blueslip.expect("error", "Unknown user id", 2); // From person.js
+    blueslip.expect("error", "Unknown user_id in maybe_get_user_by_id", 1);
+    blueslip.expect("error", "Unknown user id", 1); // From person.js
 
     // Expect each to throw two blueslip errors
     // One from message_store.js, one from person.js
     const emails = message_store.get_pm_emails(message);
     assert.equal(emails, "?");
 
-    const names = message_store.get_pm_full_names(message);
-    assert.equal(names, "?");
+    assert.throws(
+        () => {
+            message_store.get_pm_full_names(message);
+        },
+        {
+            name: "Error",
+            message: "Unknown user_id in get_by_user_id: 92714",
+        },
+    );
 
     message = {
         type: "stream",
@@ -249,28 +265,39 @@ test("update_booleans", () => {
     // First, test fields that we do actually want to update.
     message.mentioned = false;
     message.mentioned_me_directly = false;
-    message.wildcard_mentioned = false;
+    message.stream_wildcard_mentioned = false;
+    message.topic_wildcard_mentioned = false;
     message.alerted = false;
 
     let flags = ["mentioned", "has_alert_word", "read"];
     message_store.update_booleans(message, flags);
     assert.equal(message.mentioned, true);
     assert.equal(message.mentioned_me_directly, true);
-    assert.equal(message.wildcard_mentioned, false);
+    assert.equal(message.stream_wildcard_mentioned, false);
+    assert.equal(message.topic_wildcard_mentioned, false);
     assert.equal(message.alerted, true);
 
-    flags = ["wildcard_mentioned", "unread"];
+    flags = ["stream_wildcard_mentioned", "unread"];
     message_store.update_booleans(message, flags);
     assert.equal(message.mentioned, true);
     assert.equal(message.mentioned_me_directly, false);
-    assert.equal(message.wildcard_mentioned, true);
+    assert.equal(message.stream_wildcard_mentioned, true);
+    assert.equal(message.topic_wildcard_mentioned, false);
+
+    flags = ["topic_wildcard_mentioned", "unread"];
+    message_store.update_booleans(message, flags);
+    assert.equal(message.mentioned, true);
+    assert.equal(message.mentioned_me_directly, false);
+    assert.equal(message.stream_wildcard_mentioned, false);
+    assert.equal(message.topic_wildcard_mentioned, true);
 
     flags = ["read"];
     message_store.update_booleans(message, flags);
     assert.equal(message.mentioned, false);
     assert.equal(message.mentioned_me_directly, false);
     assert.equal(message.alerted, false);
-    assert.equal(message.wildcard_mentioned, false);
+    assert.equal(message.stream_wildcard_mentioned, false);
+    assert.equal(message.topic_wildcard_mentioned, false);
 
     // Make sure we don't muck with unread.
     message.unread = false;

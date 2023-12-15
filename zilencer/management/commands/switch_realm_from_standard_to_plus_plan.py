@@ -6,10 +6,9 @@ from typing_extensions import override
 
 from zerver.lib.management import ZulipBaseCommand
 
-# if settings.BILLING_ENABLED:
-#     from corporate.lib.stripe import switch_realm_from_standard_to_plus_plan
 if settings.ONEHASH_BILLING_ENABLED:
-    from onehash_corporate.lib.stripe import switch_realm_from_standard_to_plus_plan
+    from onehash_corporate.lib.stripe import RealmBillingSession
+    from onehash_corporate.models import CustomerPlan
 
 
 class Command(ZulipBaseCommand):
@@ -24,7 +23,6 @@ class Command(ZulipBaseCommand):
         if not realm:
             raise CommandError("No realm found.")
 
-        # if settings.BILLING_ENABLED:
-        #     switch_realm_from_standard_to_plus_plan(realm)
         if settings.ONEHASH_BILLING_ENABLED:
-            switch_realm_from_standard_to_plus_plan(realm)
+            billing_session = RealmBillingSession(realm=realm)
+            billing_session.do_change_plan_to_new_tier(new_plan_tier=CustomerPlan.TIER_CLOUD_PLUS)

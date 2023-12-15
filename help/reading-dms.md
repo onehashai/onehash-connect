@@ -5,6 +5,6 @@
 ## Related articles
 
 * [Getting started with Connect](/help/getting-started-with-connect)
-* [Reading topics](/help/reading-topics)
-* [Finding a topic to read](/help/finding-a-topic-to-read)
+* [Reading conversations](/help/reading-conversations)
+* [Finding a conversations to read](/help/finding-a-conversation-to-read)
 * [Reading strategies](/help/reading-strategies)

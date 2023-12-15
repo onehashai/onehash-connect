@@ -46,6 +46,11 @@ export const draft_model = (function () {
         return get()[id] || false;
     };
 
+    exports.getDraftCount = function () {
+        const drafts = get();
+        return Object.keys(drafts).length;
+    };
+
     function save(drafts, update_count = true) {
         ls.set(KEY, drafts);
         if (update_count) {
@@ -202,9 +207,12 @@ export function restore_message(draft) {
             content: draft.content,
         };
     } else {
+        const recipient_emails = draft.private_message_recipient
+            .split(",")
+            .filter((email) => people.is_valid_email_for_compose(email));
         compose_args = {
             type: draft.type,
-            private_message_recipient: draft.private_message_recipient,
+            private_message_recipient: recipient_emails.join(","),
             content: draft.content,
         };
     }
@@ -245,7 +253,7 @@ export function update_draft(opts = {}) {
         return undefined;
     }
 
-    const draft_id = $("#compose-textarea").data("draft-id");
+    const draft_id = $("textarea#compose-textarea").data("draft-id");
 
     if (draft_id !== undefined) {
         // We don't save multiple drafts of the same message;
@@ -260,7 +268,7 @@ export function update_draft(opts = {}) {
     // We have never saved a draft for this message, so add one.
     const update_count = opts.update_count === undefined ? true : opts.update_count;
     const new_draft_id = draft_model.addDraft(draft, update_count);
-    $("#compose-textarea").data("draft-id", new_draft_id);
+    $("textarea#compose-textarea").data("draft-id", new_draft_id);
     maybe_notify(no_notify);
 
     return new_draft_id;

@@ -4,6 +4,8 @@
   popovers. (Tippy tooltips are defined in tooltips.css).
 */
 .tippy-box[data-theme="light-border"] {
+    background-color: var(--color-background-popover);
+
     .sp-input {
         /* Override incorrect color for text in dark theme. */
         color: var(--color-text-default) !important;
@@ -29,6 +31,38 @@
             padding: 3px 15px;
         }
     }
+
+    &[data-placement^="top"] {
+        > .tippy-arrow {
+            &::before {
+                border-top-color: var(--color-background-popover);
+            }
+        }
+    }
+
+    &[data-placement^="bottom"] {
+        > .tippy-arrow {
+            &::before {
+                border-bottom-color: var(--color-background-popover);
+            }
+        }
+    }
+
+    &[data-placement^="left"] {
+        > .tippy-arrow {
+            &::before {
+                border-left-color: var(--color-background-popover);
+            }
+        }
+    }
+
+    &[data-placement^="right"] {
+        > .tippy-arrow {
+            &::before {
+                border-right-color: var(--color-background-popover);
+            }
+        }
+    }
 }
 
 .tippy-box[data-theme="dropdown-widget"] {
@@ -44,6 +78,34 @@
         font-size: 14px;
         color: hsl(0deg 0% 75%);
         padding: 0;
+    }
+}
+
+.tippy-box[data-theme="navbar-dropdown-menu"] {
+    border: 0;
+    border-radius: 6px;
+
+    > .tippy-content {
+        padding: 0;
+    }
+
+    > .tippy-arrow {
+        top: -5.5px;
+        width: 16px;
+        height: 8px;
+        z-index: 1;
+        filter: drop-shadow(0 -1.25px 0 var(--color-border-dropdown-menu));
+
+        &::before {
+            content: "";
+            top: 0;
+            width: 100%;
+            height: 100%;
+            mask-image: url("../shared/icons/popover-arrow.svg");
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            color: var(--color-background-dropdown-menu);
+        }
     }
 }
 
@@ -164,10 +226,21 @@
 }
 
 .streams_popover {
-    .topic-name {
-        text-align: center;
-        margin-top: 5px;
-        margin-bottom: 5px;
+    width: min-content;
+
+    .stream-menu-item {
+        white-space: nowrap;
+    }
+
+    .stream-name {
+        align-items: baseline;
+        color: var(--color-text-sidebar-popover-menu);
+        display: flex;
+        gap: 3px;
+        font-weight: 700;
+        line-height: 1.1;
+        margin: 6px 0;
+        white-space: normal;
     }
 
     .colorpicker-container {
@@ -215,6 +288,23 @@
     }
 }
 
+.topics_popover {
+    min-width: var(--popover-menu-min-width);
+    width: min-content;
+
+    .topic-menu-item {
+        white-space: nowrap;
+    }
+
+    .topic-name {
+        color: var(--color-text-sidebar-popover-menu);
+        font-weight: 700;
+        line-height: 1.1;
+        margin: 6px 0;
+        white-space: normal;
+    }
+}
+
 ul {
     &.user-card-popover-actions i,
     &.actions_popover i,
@@ -245,18 +335,6 @@ ul {
                 font-size: 17px;
                 line-height: 1;
                 top: 1px;
-            }
-        }
-    }
-
-    &.topics_popover {
-        .topic-name {
-            text-align: center;
-            margin-top: 5px;
-            margin-bottom: 5px;
-
-            .fa-chevron-right {
-                font-size: 12px;
             }
         }
     }
@@ -295,7 +373,8 @@ ul {
    from the right sidebar; otherwise, it will have the
    user-card-popover-root class instead. */
 .user-sidebar-popover-root {
-    width: 240px;
+    /* 240px (width of avatar) + 2px (1px for each border) */
+    width: 242px;
 
     margin: -14px;
     padding: 0;
@@ -313,7 +392,8 @@ ul {
 .group-info-popover,
 .message-user-card-popover-root,
 .user-card-popover-root {
-    width: 240px;
+    /* 240px (width of avatar) + 2px (1px for each border) */
+    width: 242px;
     padding: 0;
 }
 
@@ -322,15 +402,26 @@ ul {
         padding: 5px 0;
     }
 
-    .manage-group a {
-        text-align: center;
-    }
-
     .group-info {
-        text-align: center;
+        padding-left: 11px;
+        padding-right: 11px;
 
         .group-name {
             font-weight: bold;
+        }
+    }
+
+    .manage-group {
+        a {
+            display: flex;
+            align-items: center;
+            padding-left: 11px;
+
+            .zulip-icon {
+                position: relative;
+                top: -1px;
+                margin-right: 5px;
+            }
         }
     }
 
@@ -478,8 +569,18 @@ ul {
     .user_profile_manage_own_edit_button,
     .user_profile_manage_others_edit_button {
         width: 25px;
+        height: 14px;
         text-align: center;
         font-size: 18px;
+    }
+
+    #user_profile_manage_own_edit_link {
+        height: 25px;
+    }
+
+    .deactivated-user-icon {
+        margin: -1px;
+        vertical-align: middle;
     }
 
     .user_profile_name {
@@ -784,9 +885,13 @@ ul {
 }
 
 .user-group-popover-root {
-    & ul.nav {
+    .group-info-popover ul.nav {
         /* TODO: Clean this logic up after drop Bootstrap styling */
         margin: 0;
+
+        &.member-list {
+            padding-left: 6px;
+        }
     }
 
     & .tippy-box {
@@ -998,40 +1103,56 @@ ul {
 }
 
 .visibility_policy_popover {
-    padding-left: 4px;
-    padding-right: 4px;
+    padding: 0 4px;
+
+    .visibility_policy_popover_container {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        padding: 1px;
+        background-color: var(--color-background-tab-picker-container);
+        border-radius: 5px;
+    }
 
     .visibility_policy_option {
         padding: 2px 13px;
-        background-color: hsl(0deg 0% 0% / 7%);
-        border-radius: 2px;
-        border: 1px solid transparent;
-
-        &:hover:not(.selected_visibility_policy) {
-            background-color: hsl(0deg 0% 100%);
-            border: 1px solid hsl(0deg 0% 0% / 30%);
-        }
+        border-radius: 4px;
+        cursor: pointer;
 
         .icon_and_text {
             display: flex;
             align-items: center;
             text-decoration: none;
+            color: var(--color-tab-picker-icon);
+            gap: 10px;
 
-            &:hover {
-                background-color: transparent;
+            &i {
+                font-size: 16px;
             }
         }
 
-        .icon_and_text i {
-            font-size: 17px;
-            margin-right: 10px;
+        &:hover:not(.selected_visibility_policy) {
+            background-color: var(
+                --color-background-tab-picker-tab-option-hover
+            );
+        }
+
+        &:active:not(.selected_visibility_policy) {
+            outline: 1px solid var(--color-outline-tab-picker-tab-option);
+            outline-offset: -1px;
         }
     }
 
     .selected_visibility_policy {
-        background-color: hsl(0deg 0% 100%);
-        border: 1px solid hsl(0deg 0% 0% / 20%);
+        background-color: var(--color-background-tab-picker-selected-tab);
+        outline: 1px solid var(--color-outline-tab-picker-tab-option);
+        outline-offset: -1px;
+        z-index: 1;
     }
+}
+
+#personal-menu-dropdown {
+    padding-bottom: 5px;
 }
 
 .personal-menu-header {
@@ -1099,20 +1220,40 @@ ul {
 }
 
 .navbar-dropdown-menu {
-    display: flex;
-    flex-flow: column nowrap;
+    margin: 0;
+    border: solid 1px var(--color-border-dropdown-menu);
+    background-color: var(--color-background-dropdown-menu);
+    max-height: 85vh;
+    overflow-x: hidden;
+    user-select: none;
+    border-radius: 6px;
+    box-shadow: var(--box-shadow-navbar-dropdown-menu);
+
+    .simplebar-content {
+        min-width: var(--popover-menu-min-width);
+        /*  This is necessary to set the dropdown menu width equal to
+            the width of the longest menu item, thus letting the menu
+            items control the width of the menu. */
+        width: min-content;
+    }
+
+    .navbar-dropdown-menu-inner-list-item {
+        /*  This is necessary to keep long menu items on a single line. */
+        white-space: nowrap;
+    }
 
     .text-item,
-    .link-item a {
+    .link-item .navbar-dropdown-menu-link {
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
         gap: 5px;
-        padding: 5px 10px;
+        padding: 0 10px;
         font-size: 15px;
         line-height: 16px;
+        height: 26px;
 
-        & i {
+        .navbar-dropdown-icon {
             width: 16px;
             height: 16px;
             font-size: 16px;
@@ -1133,26 +1274,21 @@ ul {
             background: var(--color-background-hover-dropdown-menu);
         }
 
-        & i {
+        .navbar-dropdown-icon {
             color: var(--color-icon-purple);
         }
 
-        & a {
+        .navbar-dropdown-menu-link {
             color: var(--color-text-dropdown-menu) !important;
             text-decoration: none;
-            display: flex;
-            flex-flow: row nowrap;
             flex-grow: 1;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 10px;
 
             &:hover {
                 background: var(--color-background-hover-dropdown-menu);
                 outline: none;
             }
 
-            &:focus {
+            &:focus-visible {
                 border-radius: 4px;
                 /* Override the default focus style */
                 outline: 1px solid var(--color-outline-focus) !important;
@@ -1165,37 +1301,178 @@ ul {
         }
     }
 
-    .clear_status {
-        margin-left: auto;
-        color: hsl(0deg 0% 40%) !important;
-
-        &:hover {
-            text-decoration: none;
-        }
-    }
-
     .status_emoji {
         width: 16px;
         height: 16px;
     }
+
+    .zulip-icon {
+        position: relative;
+        top: -1px;
+    }
+}
+
+.personal-menu-clear-status {
+    display: flex;
+    padding: 3px;
+    align-items: center;
+    margin-left: auto;
+    color: hsl(0deg 0% 40%) !important;
+    border-radius: 4px;
+    opacity: 0.5;
+
+    &:hover,
+    &:focus {
+        opacity: 0.9;
+        text-decoration: none;
+    }
+}
+
+.personal-menu-clear-status .personal-menu-clear-status-icon {
+    top: 0;
+}
+
+.personal-menu-status-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.personal-menu-status-text {
+    color: var(--color-text-personal-menu-some-status);
+}
+
+.personal-menu-no-status-text {
+    color: var(--color-text-personal-menu-no-status);
+}
+
+#gear-menu-dropdown {
+    padding: 5px 0;
+    box-shadow: var(--box-shadow-gear-menu);
+
+    .org-info {
+        padding: 4px 0 5px;
+
+        & li {
+            display: flex;
+            justify-content: flex-start;
+            font-size: 15px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 16px; /* 114.286% */
+            letter-spacing: 0.28px;
+
+            &:focus-within {
+                background: var(--color-background-hover-dropdown-menu);
+            }
+
+            .navbar-dropdown-menu-link {
+                padding: 2px 10px;
+                flex-grow: 1;
+                text-decoration: none;
+
+                &:hover {
+                    background: var(--color-background-hover-dropdown-menu);
+                    outline: none;
+                }
+
+                &:focus-visible {
+                    border-radius: 4px;
+                    /* Override the default focus style */
+                    outline: 1px solid var(--color-outline-focus) !important;
+                    outline-offset: -1px;
+                }
+
+                &:active {
+                    background: var(--color-background-active-dropdown-menu);
+                }
+            }
+        }
+
+        .org-url {
+            margin-bottom: 7px;
+            padding: 0 10px;
+        }
+
+        .org-name,
+        .org-plan .navbar-dropdown-menu-link {
+            color: var(--color-text-dropdown-menu);
+        }
+
+        .org-name {
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 22px;
+            padding: 0 10px;
+            /* We set white-space to normal for the menu items
+               where we want to explicitly wrap. */
+            white-space: normal;
+        }
+
+        .org-upgrade {
+            font-size: 14px;
+        }
+
+        .org-upgrade,
+        .org-url {
+            color: var(--color-gear-menu-lighter-text);
+        }
+
+        .org-upgrade a,
+        .org-version a {
+            color: var(--color-gear-menu-blue-text);
+        }
+    }
+
+    .gear-menu-select-light-theme,
+    .gear-menu-select-dark-theme {
+        display: none;
+    }
+}
+
+#help-menu-dropdown {
+    padding-bottom: 5px;
 }
 
 ul.navbar-dropdown-menu-outer-list {
     list-style: none;
     margin: 0;
 
-    & > li {
+    li.navbar-dropdown-menu-outer-list-item {
         border-bottom: solid 1px var(--color-border-popover-menu);
 
         &:last-child {
             border-bottom: none;
+
+            ul.navbar-dropdown-menu-inner-list {
+                padding-bottom: 0;
+            }
         }
 
-        & > ul {
+        ul.navbar-dropdown-menu-inner-list {
             margin: 0;
             padding: 4px 0;
             list-style: none;
             background: none !important;
         }
     }
+}
+
+.spectator-view {
+    #gear-menu-dropdown .gear-menu-select-dark-theme {
+        display: block;
+    }
+}
+
+.navbar-dropdown-hotkey-hint {
+    color: var(--color-hotkey-hint);
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 14px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    border: 1px solid var(--color-hotkey-hint);
+    margin-left: auto;
 }

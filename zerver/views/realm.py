@@ -32,13 +32,13 @@ from zerver.lib.user_groups import access_user_group_for_setting
 from zerver.lib.validator import (
     check_bool,
     check_capped_string,
+    check_capped_url,
     check_dict,
     check_int,
     check_int_in,
     check_string_in,
     check_string_or_int,
     check_union,
-    check_url,
     to_non_negative_int,
 )
 from zerver.models import Realm, RealmReactivationStatus, RealmUserDefault, UserProfile
@@ -52,6 +52,9 @@ def parse_jitsi_server_url(
         return special_values_map[value]
 
     return value
+
+
+JITSI_SERVER_URL_MAX_LENGTH = 200
 
 
 @require_realm_admin
@@ -104,6 +107,8 @@ def update_realm(
     authentication_methods: Optional[Dict[str, Any]] = REQ(
         json_validator=check_dict([]), default=None
     ),
+    # Note: push_notifications_enabled and push_notifications_enabled_end_timestamp
+    # are not offered here as it is maintained by the server, not via the API.
     notifications_stream_id: Optional[int] = REQ(json_validator=check_int, default=None),
     signup_notifications_stream_id: Optional[int] = REQ(json_validator=check_int, default=None),
     message_retention_days_raw: Optional[Union[int, str]] = REQ(
@@ -145,7 +150,10 @@ def update_realm(
     jitsi_server_url_raw: Optional[str] = REQ(
         "jitsi_server_url",
         json_validator=check_union(
-            [check_string_in(list(Realm.JITSI_SERVER_SPECIAL_VALUES_MAP.keys())), check_url]
+            [
+                check_string_in(list(Realm.JITSI_SERVER_SPECIAL_VALUES_MAP.keys())),
+                check_capped_url(JITSI_SERVER_URL_MAX_LENGTH),
+            ]
         ),
         default=None,
     ),
@@ -175,6 +183,9 @@ def update_realm(
         default=None,
     ),
     enable_guest_user_indicator: Optional[bool] = REQ(json_validator=check_bool, default=None),
+    can_access_all_users_group_id: Optional[int] = REQ(
+        "can_access_all_users_group", json_validator=check_int, default=None
+    ),
 ) -> HttpResponse:
     realm = user_profile.realm
 
@@ -228,6 +239,9 @@ def update_realm(
 
     if enable_spectator_access:
         realm.ensure_not_on_limited_plan()
+
+    if can_access_all_users_group_id is not None:
+        realm.can_enable_restricted_user_access_for_guests()
 
     data: Dict[str, Any] = {}
 
@@ -330,8 +344,8 @@ def update_realm(
         if k in realm.property_types:
             req_vars[k] = v
 
-        for permissions_configuration in Realm.REALM_PERMISSION_GROUP_SETTINGS.values():
-            if k == permissions_configuration.id_field_name:
+        for permission_configuration in Realm.REALM_PERMISSION_GROUP_SETTINGS.values():
+            if k == permission_configuration.id_field_name:
                 req_group_setting_vars[k] = v
 
     for k, v in req_vars.items():
@@ -342,8 +356,8 @@ def update_realm(
             else:
                 data[k] = v
 
-    for setting_name, permissions_configuration in Realm.REALM_PERMISSION_GROUP_SETTINGS.items():
-        setting_group_id_name = permissions_configuration.id_field_name
+    for setting_name, permission_configuration in Realm.REALM_PERMISSION_GROUP_SETTINGS.items():
+        setting_group_id_name = permission_configuration.id_field_name
 
         assert setting_group_id_name in req_group_setting_vars
 
@@ -355,11 +369,7 @@ def update_realm(
                 user_group_id,
                 user_profile,
                 setting_name=setting_name,
-                require_system_group=permissions_configuration.require_system_group,
-                allow_internet_group=permissions_configuration.allow_internet_group,
-                allow_owners_group=permissions_configuration.allow_owners_group,
-                allow_nobody_group=permissions_configuration.allow_nobody_group,
-                allow_everyone_group=permissions_configuration.allow_everyone_group,
+                permission_configuration=permission_configuration,
             )
             do_change_realm_permission_group_setting(
                 realm, setting_name, user_group, acting_user=user_profile
@@ -384,7 +394,7 @@ def update_realm(
         new_notifications_stream = None
         if notifications_stream_id >= 0:
             (new_notifications_stream, sub) = access_stream_by_id(
-                user_profile, notifications_stream_id
+                user_profile, notifications_stream_id, allow_realm_admin=True
             )
         do_set_realm_notifications_stream(
             realm, new_notifications_stream, notifications_stream_id, acting_user=user_profile
@@ -398,7 +408,7 @@ def update_realm(
         new_signup_notifications_stream = None
         if signup_notifications_stream_id >= 0:
             (new_signup_notifications_stream, sub) = access_stream_by_id(
-                user_profile, signup_notifications_stream_id
+                user_profile, signup_notifications_stream_id, allow_realm_admin=True
             )
         do_set_realm_signup_notifications_stream(
             realm,
@@ -465,7 +475,7 @@ def realm_reactivation(request: HttpRequest, confirmation_key: str) -> HttpRespo
 
 
 emojiset_choices = {emojiset["key"] for emojiset in RealmUserDefault.emojiset_choices()}
-default_view_options = ["recent_topics", "inbox", "all_messages"]
+web_home_view_options = ["recent_topics", "inbox", "all_messages"]
 
 
 @require_realm_admin
@@ -490,10 +500,12 @@ def update_realm_user_settings_defaults(
     ),
     translate_emoticons: Optional[bool] = REQ(json_validator=check_bool, default=None),
     display_emoji_reaction_users: Optional[bool] = REQ(json_validator=check_bool, default=None),
-    default_view: Optional[str] = REQ(
-        str_validator=check_string_in(default_view_options), default=None
+    web_home_view: Optional[str] = REQ(
+        str_validator=check_string_in(web_home_view_options), default=None
     ),
-    escape_navigates_to_default_view: Optional[bool] = REQ(json_validator=check_bool, default=None),
+    web_escape_navigates_to_home_view: Optional[bool] = REQ(
+        json_validator=check_bool, default=None
+    ),
     left_side_userlist: Optional[bool] = REQ(json_validator=check_bool, default=None),
     emojiset: Optional[str] = REQ(str_validator=check_string_in(emojiset_choices), default=None),
     demote_inactive_streams: Optional[int] = REQ(
@@ -564,6 +576,9 @@ def update_realm_user_settings_defaults(
     automatically_unmute_topics_in_muted_streams_policy: Optional[int] = REQ(
         json_validator=check_int_in(UserProfile.AUTOMATICALLY_CHANGE_VISIBILITY_POLICY_CHOICES),
         default=None,
+    ),
+    automatically_follow_topics_where_mentioned: Optional[bool] = REQ(
+        json_validator=check_bool, default=None
     ),
     presence_enabled: Optional[bool] = REQ(json_validator=check_bool, default=None),
     enter_sends: Optional[bool] = REQ(json_validator=check_bool, default=None),

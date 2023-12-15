@@ -1,5 +1,5 @@
-import datetime
 import logging
+from datetime import datetime, timedelta
 from typing import Any, Dict, Optional
 
 from django.conf import settings
@@ -14,6 +14,8 @@ from zerver.actions.realm_settings import (
     do_deactivate_realm,
 )
 from zerver.lib.bulk_create import create_users
+from zerver.lib.push_notifications import sends_notifications_directly
+from zerver.lib.remote_server import maybe_enqueue_audit_log_upload
 from zerver.lib.server_initialization import create_internal_realm, server_initialized
 from zerver.lib.streams import ensure_stream, get_signups_stream
 from zerver.lib.user_groups import (
@@ -35,11 +37,8 @@ from zerver.models import (
 )
 from zproject.backends import all_implemented_backend_names
 
-# if settings.CORPORATE_ENABLED:
-#     from corporate.lib.support import get_support_url
-
 if settings.ONEHASH_CORPORATE_ENABLED:
-    from onehash_corporate.lib.support import get_support_url
+    from onehash_corporate.lib.support import get_realm_support_url
 
 def do_change_realm_subdomain(
     realm: Realm,
@@ -124,8 +123,8 @@ def set_realm_permissions_based_on_org_type(realm: Realm) -> None:
 def set_default_for_realm_permission_group_settings(realm: Realm) -> None:
     system_groups_dict = get_role_based_system_groups_dict(realm)
 
-    for setting_name, permissions_configuration in Realm.REALM_PERMISSION_GROUP_SETTINGS.items():
-        group_name = permissions_configuration.default_group_name
+    for setting_name, permission_configuration in Realm.REALM_PERMISSION_GROUP_SETTINGS.items():
+        group_name = permission_configuration.default_group_name
         setattr(realm, setting_name, system_groups_dict[group_name])
 
     realm.save(update_fields=list(Realm.REALM_PERMISSION_GROUP_SETTINGS.keys()))
@@ -161,14 +160,17 @@ def do_create_realm(
     invite_required: Optional[bool] = None,
     plan_type: Optional[int] = None,
     org_type: Optional[int] = None,
-    date_created: Optional[datetime.datetime] = None,
+    default_language: Optional[str] = None,
+    date_created: Optional[datetime] = None,
     is_demo_organization: bool = False,
     enable_read_receipts: Optional[bool] = None,
     enable_spectator_access: Optional[bool] = None,
     prereg_realm: Optional[PreregistrationRealm] = None,
 ) -> Realm:
-    if string_id == settings.SOCIAL_AUTH_SUBDOMAIN:
-        raise AssertionError("Creating a realm on SOCIAL_AUTH_SUBDOMAIN is not allowed!")
+    if string_id in [settings.SOCIAL_AUTH_SUBDOMAIN, settings.SELF_HOSTING_MANAGEMENT_SUBDOMAIN]:
+        raise AssertionError(
+            "Creating a realm on SOCIAL_AUTH_SUBDOMAIN or SELF_HOSTING_MANAGEMENT_SUBDOMAIN is not allowed!"
+        )
     if Realm.objects.filter(string_id=string_id).exists():
         raise AssertionError(f"Realm {string_id} already exists!")
     if not server_initialized():
@@ -186,6 +188,8 @@ def do_create_realm(
         kwargs["plan_type"] = plan_type
     if org_type is not None:
         kwargs["org_type"] = org_type
+    if default_language is not None:
+        kwargs["default_language"] = default_language
     if enable_spectator_access is not None:
         if enable_spectator_access:
             # Realms with LIMITED plan cannot have spectators enabled.
@@ -214,20 +218,23 @@ def do_create_realm(
         kwargs["enable_read_receipts"] = (
             invite_required is None or invite_required is True or emails_restricted_to_domains
         )
+    # Initialize this property correctly in the case that no network activity
+    # is required to do so correctly.
+    kwargs["push_notifications_enabled"] = sends_notifications_directly()
 
     with transaction.atomic():
         realm = Realm(string_id=string_id, name=name, **kwargs)
         if is_demo_organization:
-            realm.demo_organization_scheduled_deletion_date = (
-                realm.date_created + datetime.timedelta(days=settings.DEMO_ORG_DEADLINE_DAYS)
+            realm.demo_organization_scheduled_deletion_date = realm.date_created + timedelta(
+                days=settings.DEMO_ORG_DEADLINE_DAYS
             )
 
         set_realm_permissions_based_on_org_type(realm)
 
         # For now a dummy value of -1 is given to groups fields which
         # is changed later before the transaction is committed.
-        for permissions_configuration in Realm.REALM_PERMISSION_GROUP_SETTINGS.values():
-            setattr(realm, permissions_configuration.id_field_name, -1)
+        for permission_configuration in Realm.REALM_PERMISSION_GROUP_SETTINGS.values():
+            setattr(realm, permission_configuration.id_field_name, -1)
 
         realm.save()
 
@@ -264,6 +271,8 @@ def do_create_realm(
                 for backend_name in all_implemented_backend_names()
             ]
         )
+
+        maybe_enqueue_audit_log_upload(realm)
 
     # Create stream once Realm object has been saved
     notifications_stream = ensure_stream(
@@ -308,7 +317,7 @@ def do_create_realm(
         admin_realm = get_realm(settings.SYSTEM_BOT_REALM)
         sender = get_system_bot(settings.NOTIFICATION_BOT, admin_realm.id)
 
-        support_url = get_support_url(realm)
+        support_url = get_realm_support_url(realm)
         organization_type = get_org_type_display_name(realm.org_type)
 
         message = "[{name}]({support_link}) ([{subdomain}]({realm_link})). Organization type: {type}".format(
